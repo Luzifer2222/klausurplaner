@@ -3,6 +3,7 @@
 $database_conf = array(
         'host' => "localhost",
         'user' => "root",
-        'password' => ""
+        'password' => "",
+        'database' => "klausurplaner"
 )
 ?>
