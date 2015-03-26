@@ -1,10 +1,10 @@
 <html>
 <head>
 <title>Index.pho</title>
-<?php include 'include/BaueKalender.php';
-      include 'include/FeiertagsBerechnung.php';
-      include 'include/LoginFunktion.php';
-      include 'include/MonatInDeutsch.php';?>
+<?php include 'include/bauekalender.php';
+      include 'include/feiertagsberechnung.php';
+      include 'include/loginfunktion.php';
+      include 'include/monatIndeutsch.php';?>
       <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>

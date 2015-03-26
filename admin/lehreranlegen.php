@@ -3,7 +3,7 @@
 <head>
 <title>Class Test Scheduler 'CTS' by Daniel Thielking, Robin Gebhardt, Pascal Lawitzky</title>
 <?php 
-include '../include/LoginFunktion.php';
+include '../include/loginfunktion.php';
 include '../config/database.conf.php';
 ?>
 
