@@ -20,7 +20,7 @@ Grundgerüst für HTML-Dokumente bitte immer dieses Verwenden!
     <!-- Einfügen der CSS-Dateine -->
 	<link rel="stylesheet" href="Hier Stylesheet rein" type="text/css">
     
-    <title>Titel</title>
+    <title>Class Test Scheduler 'CTS' by Daniel Thielking, Robin Gebhardt, Pascal Lawitzky</title>
   </head>
   <body>
     <! -- sichtbarer Inhalt -->
