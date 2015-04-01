@@ -4,7 +4,7 @@ body {
 	color:#000000;
 	margin: 0px;
 	padding: 0px;
-	background-color:red;
+	background-color:grey;
 	background-attachment:fixed;
 	background-image:;
 
@@ -88,4 +88,12 @@ body {
  
 .cp{
 	font-size:9px;
+}
+
+.error {
+	color: #ff0000;
+}
+
+.erfolgreich {
+	color: #00ff00;
 }
