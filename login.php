@@ -34,7 +34,7 @@ $_SESSION = array();
     <title>Login-Page</title>
   </head>
   <body>
-    <form action="index.php" method="post" name="anmeldeformular">
+    <form action="einloggen.php" method="post" name="anmeldeformular">
     <fieldset>
       <legend>Anmeldeformular</legend>
       <p><label for="benutzername">Benutzername<input type="text" name="benutzername"></label></p>
