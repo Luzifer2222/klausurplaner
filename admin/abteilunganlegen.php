@@ -1,3 +1,15 @@
+<?php 
+  //Starten/Wiederaufnehmen einer Session
+  session_start();
+
+  //Prüfen ob das Array der der Session initialisiert wurde
+  if (!isset($_SESSION['benutzername'])) 
+  {
+    //Programm abbruch, da die Session nicht initialisiert wurde.
+    exit("<p>Benutzername oder Passwort falsch!</p>
+          <p>Sie haben keinen Zugang zu der Seite! <br><a href=\"/login.php\">Login Seite</a>");
+  }
+?>
 
 <html>
 <head>
