@@ -6,8 +6,7 @@
   if (!isset($_SESSION['benutzername'])) 
   {
     //Programm abbruch, da die Session nicht initialisiert wurde.
-    exit("<p>Benutzername oder Passwort falsch!</p>
-          <p>Sie haben keinen Zugang zu der Seite! <br><a href=\"/login.php\">Login Seite</a>");
+    exit("<p>Sie haben keinen Zugang zu der Seite!<br><a href=\"/login.php\">Login Seite</a>");
   }
 ?>
 
