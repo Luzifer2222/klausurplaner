@@ -9,23 +9,33 @@
   //Überprüfung ob der Aufruf von login.php kommt
   if(isset($_POST['benutzername']))
   {
-      //Öffnen der SQL-Datenbank zur Überprüfung der Anmeldedaten
-      $link = mysqli_connect($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
-      $passwort = mysqli_query($link, 'SELECT passwort from lehrer where benutzername like $_POST[\'benutzername\']');
-      
-      //Überprüfung ob die Abfrage erfolgreich war
-      if (mysqli_num_rows($passwort) == 1) {
-          
-          //Passwort Überprüfung
-          if ($passwort == verschluesselLogin($_POST['passwort'])) {
-              $_SESSION['benutzername'] = $_POST['benutzername'];
-          }
+    //Öffnen der SQL-Datenbank zur Überprüfung der Anmeldedaten
+    $link = mysqli_connect($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
+    
+    //Erstellen der Abfrage um das Passwort des 
+    //Benutzers aus der Datenbank zu holen
+    $passwortabfrage = "SELECT passwort from lehrer where benutzername like '".$_POST['benutzername']."'";
+    $abfrageerg = mysqli_query($link, $passwortabfrage);
+    //Extrahieren der Daten aus der Abfrage
+    $passwortausdatenbank = mysqli_fetch_object($abfrageerg);
+    
+    //Überprüfung ob die Abfrage erfolgreich war
+    if (mysqli_num_rows($abfrageerg) == 1) 
+    {
+      //Passwort Überprüfung
+      if ($passwortausdatenbank->passwort == verschluesselLogin($_POST['passwort'])) 
+      {
+        //Setzen des Sessionarray mit dem Benutzernamen der eingegeben wurde
+        $_SESSION['benutzername'] = $_POST['benutzername'];
       }
+    }
   }
   
   //Prüfen ob das Array der der Session initialisiert wurde
   if (!isset($_SESSION['benutzername'])) {
-      exit("<p>Sie haben keinen Zugang zu der Seite! <br><a href=login.php>Login Seite</a>");
+      //Programm abbruch, da die Session nicht initialisiert wurde.
+      exit("<p>Benutzername oder Passwort falsch!</p>
+            <p>Sie haben keinen Zugang zu der Seite! <br><a href=login.php>Login Seite</a>");
   }
   
   mysqli_close($link);
@@ -54,6 +64,7 @@
     <title>Class Test Scheduler 'CTS' by Daniel Thielking, Robin Gebhardt, Pascal Lawitzky</title>
   </head>
   <body>
-
+    <p>Sie sind eingeloggt!</p>
+    <a href="./login.php">Ausloggen</a>
   </body>
 </html>
