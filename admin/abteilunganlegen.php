@@ -51,6 +51,9 @@ include '../config/cts.conf.php';
 // Öffnen der Datenbankverbindung
 $link = mysqli_connect($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
 
+// Datenbankverbindung auf UTF8 setzen
+mysqli_set_charset($link, "utf8");
+
 // Überprüfung ob der Button zum Anlegen einer neuen Abteilung betätigt wurde
 if (isset($_POST['abtanlegen']))
 {
