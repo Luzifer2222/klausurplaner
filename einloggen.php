@@ -54,6 +54,7 @@ mysqli_close($link);
 
 <!-- Angabe wie die Seite sich verhalten soll -->
 <meta http-equiv="expires" content="0">
+<meta http-equiv="refresh" content="3; URL=/index.php">
 <!-- Seite wird immer von Server geholt und nicht aus dem cache geladen -->
 
 <!-- Angabe zu den Autoren der Website und andere Informationen -->
