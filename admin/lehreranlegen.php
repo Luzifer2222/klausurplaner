@@ -67,7 +67,7 @@ if (isset($_POST['benanlegen']))
 		$insertquery = "insert into lehrer ";
 		$insertquery .= "(vorname, nachname, kuerzel, benutzername, passwort, administrator, abteilungID) values";
 		$insertquery .= "('" . $_POST['vname'] . "', '" . $_POST['nname'] . "', '" . $_POST['kuerzel'] . "', '" . $_POST['bname'] . "', '";
-		$insertquery .= verschluesselLogin($_POST['pwd']) . "', '" . $_POST['administrator'] . "', '" . $_POST['abteilung'] . "');";
+		$insertquery .= verschluesselLogin($_POST['pwd']) . "', '" . $_POST['administrator'][0] . "', '" . $_POST['abteilung'] . "');";
 		
 		// Einfügen der Formulardaten in die Lehrertabelle
 		mysqli_query($link, $insertquery);
@@ -103,7 +103,7 @@ if (isset($_POST['loeschelehrer']) && isset($_POST['loesche']))
 
 // Einfache Abfragen für das Extrahieren der Abteilungen und der Lehrer
 $abfrageabteilung = "select * from abteilung;";
-$abfragelehrer = "select l.lehrerID, l.vorname, l.nachname, l.kuerzel, l.benutzername, a.name ";
+$abfragelehrer = "select l.lehrerID, l.vorname, l.nachname, l.kuerzel, l.benutzername, l.administrator, a.name ";
 $abfragelehrer .= "from lehrer l, abteilung a ";
 $abfragelehrer .= "where l.abteilungID = a.abteilungID";
 
@@ -138,7 +138,7 @@ $ergabfragerlehrer = mysqli_query($link, $abfragelehrer);
         </select></label>
 			</p>
 			<p>
-				<label for="administrator">Administrator: <input type="checkbox" name="administrator" ></label>
+				<label for="administrator">Administrator: <input type="checkbox" name="administrator[]" value="1"></label>
 			</p>
 			<p>
 				<label for="benutzername">Benutzername: <br> <input type="text" min="4" maxlength="15" name="bname"></label>
@@ -168,6 +168,7 @@ $ergabfragerlehrer = mysqli_query($link, $abfragelehrer);
 			<th>Kürzel</th>
 			<th>Benutzername</th>
 			<th>Abteilung</th>
+			<th>Administrator?</th>
 			<th>
 				<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
 					<input type="submit" name="loeschelehrer" value="Löschen?">
@@ -184,6 +185,14 @@ $ergabfragerlehrer = mysqli_query($link, $abfragelehrer);
 					echo "<td>" . $lehrertabelle->kuerzel . "</td>";
 					echo "<td>" . $lehrertabelle->benutzername . "</td>";
 					echo "<td>" . $lehrertabelle->name . "</td>";
+					if ($lehrertabelle->administrator == 1)
+					{
+						echo "<td>Ja</td>";
+					}
+					else
+					{
+						echo "<td>Nein</td>";
+					}
 					echo "<td><input type=\"radio\" name=\"loesche\" value=\"" . $lehrertabelle->lehrerID . "\"></td>";
 					echo "</tr>";
 				}
@@ -195,7 +204,9 @@ $ergabfragerlehrer = mysqli_query($link, $abfragelehrer);
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
-			<td><input type="submit" name="loeschelehrer" value="Löschen?"></td>
+			<td>&nbsp;</td>
+			<td><input type="submit" name="loeschelehrer" value="Löschen?">
+				</form></td>
 		</tr>
 	</table>
 </body>
