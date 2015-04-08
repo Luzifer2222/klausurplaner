@@ -19,7 +19,7 @@ if (!isset($_SESSION['benutzername']))
 <!-- Angaben zum Zeichensatz, immer UTF-8 -->
 <meta charset="utf-8">
 <!-- Angabe des Zeichensatzes für HTML5 -->
-<meta http-eqiv="content-type" content="text/html; charset=utf-8">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
 <!-- Angabe des Zeichensatzes für ältere Browser -->
 
 <!-- Angabe wie die Seite sich verhalten soll -->

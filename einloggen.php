@@ -14,19 +14,20 @@ if (isset($_POST['benutzername']))
 	
 	// Erstellen der Abfrage um das Passwort des
 	// Benutzers aus der Datenbank zu holen
-	$passwortabfrage = "SELECT passwort from lehrer where benutzername like '" . $_POST['benutzername'] . "'";
+	$passwortabfrage = "SELECT passwort, administrator from lehrer where benutzername like '" . $_POST['benutzername'] . "'";
 	$abfrageerg = mysqli_query($link, $passwortabfrage);
 	// Extrahieren der Daten aus der Abfrage
-	$passwortausdatenbank = mysqli_fetch_object($abfrageerg);
+	$queryErgebnis = mysqli_fetch_object($abfrageerg);
 	
 	// Überprüfung ob die Abfrage erfolgreich war
 	if (mysqli_num_rows($abfrageerg) == 1)
 	{
 		// Passwort Überprüfung
-		if ($passwortausdatenbank->passwort == verschluesselLogin($_POST['passwort']))
+		if ($queryErgebnis->passwort == verschluesselLogin($_POST['passwort']))
 		{
 			// Setzen des Sessionarray mit dem Benutzernamen der eingegeben wurde
 			$_SESSION['benutzername'] = $_POST['benutzername'];
+			$_SESSION['administrator'] = $queryErgebnis->administrator;
 		}
 	}
 }
@@ -48,7 +49,7 @@ mysqli_close($link);
 <!-- Angaben zum Zeichensatz, immer UTF-8 -->
 <meta charset="utf-8">
 <!-- Angabe des Zeichensatzes für HTML5 -->
-<meta http-eqiv="content-type" content="text/html; charset=utf-8">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
 <!-- Angabe des Zeichensatzes für ältere Browser -->
 
 <!-- Angabe wie die Seite sich verhalten soll -->

@@ -3,10 +3,17 @@
 session_start();
 
 // Prüfen ob das Array der der Session initialisiert wurde
-if (!isset($_SESSION['benutzername']) && $_SESSION['admin'] == true)
+if (!isset($_SESSION['benutzername']) && !isset($_SESSION['administrator']))
 {
-	// Programm abbruch, da die Session nicht initialisiert wurde.
-	// Oder der Benutzer kein Administrator ist
+	// die Session nicht initialisiert wurde.
+	exit("<p>Sie haben keinen Zugang zu der Seite!<br><a href=\"/login.php\">Login Seite</a></p>");
+
+}
+
+if ($_SESSION['administrator'] != true)
+{
+	
+	// Programm abbruch, da der Benutzer kein Administrator ist
 	exit("<p>Sie haben keinen Zugang zu der Seite!<br><a href=\"/login.php\">Login Seite</a></p>");
 }
 ?>
@@ -19,12 +26,11 @@ include '../config/cts.conf.php';
 
 <html>
 <head>
-<title>Class Test Scheduler 'CTS' by Daniel Thielking, Robin Gebhardt,
-	Pascal Lawitzky</title>
+<title>Class Test Scheduler 'CTS' by Daniel Thielking, Robin Gebhardt, Pascal Lawitzky</title>
 <!-- Angaben zum Zeichensatz, immer UTF-8 -->
 <meta charset="utf-8">
 <!-- Angabe des Zeichensatzes für HTML5 -->
-<meta http-eqiv="content-type" content="text/html; charset=utf-8">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
 <!-- Angabe des Zeichensatzes für ältere Browser -->
 
 <!-- Angabe wie die Seite sich verhalten soll -->
@@ -32,14 +38,12 @@ include '../config/cts.conf.php';
 <!-- Seite wird immer von Server geholt und nicht aus dem cache geladen -->
 
 <!-- Angabe zu den Autoren der Website und andere Informationen -->
-<meta name="author"
-	content="Daniel Thielking, Robin Gebhardt, Pascal Lawitzky">
+<meta name="author" content="Daniel Thielking, Robin Gebhardt, Pascal Lawitzky">
 <meta name="project-group" content="PHPmeetsSQL G3">
 <meta name="description" content="Klausurplaner Software">
 
 <!-- Einfügen des FavoritenIcons -->
-<link rel="icon" href="../pictures/favicon/favicon.png"
-	sizes="16x16 32x32" type="images/png">
+<link rel="icon" href="../pictures/favicon/favicon.png" sizes="16x16 32x32" type="images/png">
 <!-- Einfügen der CSS-Dateine -->
 <link href="../style/style.css" rel="stylesheet" type="text/css" />
     
@@ -61,9 +65,9 @@ if (isset($_POST['benanlegen']))
 		
 		// Erstellen der Einfüge anweisung in SQL
 		$insertquery = "insert into lehrer ";
-		$insertquery .= "(vorname, nachname, kuerzel, benutzername, passwort, abteilungID) values";
+		$insertquery .= "(vorname, nachname, kuerzel, benutzername, passwort, administrator, abteilungID) values";
 		$insertquery .= "('" . $_POST['vname'] . "', '" . $_POST['nname'] . "', '" . $_POST['kuerzel'] . "', '" . $_POST['bname'] . "', '";
-		$insertquery .= verschluesselLogin($_POST['pwd']) . "', '" . $_POST['abteilung'] . "');";
+		$insertquery .= verschluesselLogin($_POST['pwd']) . "', '" . $_POST['administrator'] . "', '" . $_POST['abteilung'] . "');";
 		
 		// Einfügen der Formulardaten in die Lehrertabelle
 		mysqli_query($link, $insertquery);
@@ -110,25 +114,20 @@ $ergabfragerlehrer = mysqli_query($link, $abfragelehrer);
 </head>
 <body>
 
-	<form action="<?php $_SERVER['PHP_SELF']?>" method="post"
-		name="lehrereinfuegen" class="lehrereinfuegen">
+	<form action="<?php $_SERVER['PHP_SELF']?>" method="post" name="lehrereinfuegen" class="lehrereinfuegen">
 		<fieldset>
 			<legend>Einfügen des Lehrpersonals in das 'CTS'</legend>
 			<p>
-				<label for="vorname">Vorname: <br> <input type="text" maxlength="50"
-					name="vname" id="vorname"></label>
+				<label for="vorname">Vorname: <br> <input type="text" maxlength="50" name="vname" id="vorname"></label>
 			</p>
 			<p>
-				<label for="nachname">Nachname: <br> <input type="text"
-					maxlength="50" name="nname" id="nachname"></label>
+				<label for="nachname">Nachname: <br> <input type="text" maxlength="50" name="nname" id="nachname"></label>
 			</p>
 			<p>
-				<label for="kuerzel">Kürzel: <br> <input type="text" min="4"
-					maxlength="5" name="kuerzel" id="kuerzel"></label>
+				<label for="kuerzel">Kürzel: <br> <input type="text" min="4" maxlength="5" name="kuerzel" id="kuerzel"></label>
 			</p>
 			<p>
-				<label for="abteilung">Abteilung: <br> <select name="abteilung"
-					id="abteilung">
+				<label for="abteilung">Abteilung: <br> <select name="abteilung" id="abteilung">
           <?php
 										$ergabteilungdb = mysqli_query($link, $abfrageabteilung);
 										while ($daten = mysqli_fetch_object($ergabteilungdb))
@@ -139,12 +138,13 @@ $ergabfragerlehrer = mysqli_query($link, $abfragelehrer);
         </select></label>
 			</p>
 			<p>
-				<label for="benutzername">Benutzername: <br> <input type="text"
-					min="4" maxlength="15" name="bname"></label>
+				<label for="administrator">Administrator: <input type="checkbox" name="administrator" ></label>
 			</p>
 			<p>
-				<label for="passwort">Passwort: <br> <input type="password" min="5"
-					name="pwd"></label>
+				<label for="benutzername">Benutzername: <br> <input type="text" min="4" maxlength="15" name="bname"></label>
+			</p>
+			<p>
+				<label for="passwort">Passwort: <br> <input type="password" min="5" name="pwd"></label>
 			</p>
 			<p>
 				<input type="submit" name="benanlegen" value="Lehrer anlegen">
@@ -168,8 +168,11 @@ $ergabfragerlehrer = mysqli_query($link, $abfragelehrer);
 			<th>Kürzel</th>
 			<th>Benutzername</th>
 			<th>Abteilung</th>
-			<th><form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-					<input type="submit" name="loeschelehrer" value="Löschen?"></th>
+			<th>
+				<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+					<input type="submit" name="loeschelehrer" value="Löschen?">
+			
+			</th>
 		</tr>
     <?php
 				while ($lehrertabelle = mysqli_fetch_object($ergabfragerlehrer))
@@ -192,8 +195,7 @@ $ergabfragerlehrer = mysqli_query($link, $abfragelehrer);
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
-			<td><input type="submit" name="loeschelehrer" value="Löschen?">
-				</form></td>
+			<td><input type="submit" name="loeschelehrer" value="Löschen?"></td>
 		</tr>
 	</table>
 </body>

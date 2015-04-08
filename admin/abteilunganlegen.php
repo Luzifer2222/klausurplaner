@@ -3,10 +3,17 @@
 session_start();
 
 // Prüfen ob das Array der der Session initialisiert wurde
-if (!isset($_SESSION['benutzername']) && $_SESSION['admin'] == true)
+if (!isset($_SESSION['benutzername']) && !isset($_SESSION['administrator']))
 {
-	// Programm abbruch, da die Session nicht initialisiert wurde.
-	// Oder der Benutzer kein Administrator ist
+	// die Session nicht initialisiert wurde.
+	exit("<p>Sie haben keinen Zugang zu der Seite!<br><a href=\"/login.php\">Login Seite</a></p>");
+
+}
+
+if ($_SESSION['administrator'] != true)
+{
+	
+	// Programm abbruch, da der Benutzer kein Administrator ist
 	exit("<p>Sie haben keinen Zugang zu der Seite!<br><a href=\"/login.php\">Login Seite</a></p>");
 }
 ?>
@@ -18,7 +25,7 @@ if (!isset($_SESSION['benutzername']) && $_SESSION['admin'] == true)
 <!-- Angaben zum Zeichensatz, immer UTF-8 -->
 <meta charset="utf-8">
 <!-- Angabe des Zeichensatzes für HTML5 -->
-<meta http-eqiv="content-type" content="text/html; charset=utf-8">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
 <!-- Angabe des Zeichensatzes für ältere Browser -->
 
 <!-- Angabe wie die Seite sich verhalten soll -->

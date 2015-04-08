@@ -1,4 +1,4 @@
-Grundgerüst für HTML-Dokumente bitte immer dieses Verwenden!
+<!-- Grundgerüst für HTML-Dokumente bitte immer dieses Verwenden!  -->
 
 <?php
 // Starten/Wiederaufnehmen einer Session
@@ -19,7 +19,7 @@ if (!isset($_SESSION['benutzername']))
 <!-- Angaben zum Zeichensatz, immer UTF-8 -->
 <meta charset="utf-8">
 <!-- Angabe des Zeichensatzes für HTML5 -->
-<meta http-eqiv="content-type" content="text/html; charset=utf-8">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
 <!-- Angabe des Zeichensatzes für ältere Browser -->
 
 <!-- Angabe wie die Seite sich verhalten soll -->
@@ -42,6 +42,6 @@ if (!isset($_SESSION['benutzername']))
 	Pascal Lawitzky</title>
 </head>
 <body>
-	<! -- sichtbarer Inhalt -->
+	<!-- sichtbarer Inhalt -->
 </body>
 </html>
