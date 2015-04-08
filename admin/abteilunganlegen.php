@@ -3,10 +3,11 @@
 session_start();
 
 // Prüfen ob das Array der der Session initialisiert wurde
-if (!isset($_SESSION['benutzername']) && $_SESSION['admin'] == true) {
-    // Programm abbruch, da die Session nicht initialisiert wurde.
-    //Oder der Benutzer kein Administrator ist
-    exit("<p>Sie haben keinen Zugang zu der Seite!<br><a href=\"/login.php\">Login Seite</a></p>");
+if (!isset($_SESSION['benutzername']) && $_SESSION['admin'] == true)
+{
+	// Programm abbruch, da die Session nicht initialisiert wurde.
+	// Oder der Benutzer kein Administrator ist
+	exit("<p>Sie haben keinen Zugang zu der Seite!<br><a href=\"/login.php\">Login Seite</a></p>");
 }
 ?>
 
@@ -41,52 +42,58 @@ if (!isset($_SESSION['benutzername']) && $_SESSION['admin'] == true) {
 include '../config/cts.conf.php';
 
 // Öffnen der Datenbankverbindung
-$link = mysqli_connect($database_conf['host'], $database_conf['user'], 
-        $database_conf['password'], $database_conf['database']);
+$link = mysqli_connect($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
 
 // Überprüfung ob der Button zum Anlegen einer neuen Abteilung betätigt wurde
-if (isset($_POST['abtanlegen'])) {
-    if ($_POST['abtname'] != "") {
-        // Erstellen der Abfrage zum erzeugen einer neuen Abteilung
-        // und Ausführen der Abfrage
-        $abfrageabteilung = "insert into abteilung (name) values ('" .
-                 $_POST['abtname'] . "');";
-        mysqli_query($link, $abfrageabteilung);
-        
-        // Überprüfung ob die Abfrage erfolgreich war
-        if (mysqli_affected_rows($link) > 0) {
-            // Speichern der Erfolgreichen Ausgabe in der Variable
-            $ausgabe = "<p class=\"erfolgreich\">Es wurde 1 Datensatz angelegt.</p>";
-        } else {
-            // Wenn nicht erfolgreich speichern der Errormeldung in der
-            // Variablen
-            $ausgabe = "<p class=\"error\">Es ist ein Fehler aufgetreten <br />Es wurde kein Datensatz erzeugt.</p>";
-        }
-    } else // Wenn kein Abteilungsname angegeben wurde
+if (isset($_POST['abtanlegen']))
 {
-        // Wenn nicht erfolgreich speichern der Errormeldung in der Variablen
-        $ausgabe = "<p class=\"error\">Sie müssen einen Abteilungsnamen angeben.</p>";
-    }
+	if ($_POST['abtname'] != "")
+	{
+		// Erstellen der Abfrage zum erzeugen einer neuen Abteilung
+		// und Ausführen der Abfrage
+		$abfrageabteilung = "insert into abteilung (name) values ('" . $_POST['abtname'] . "');";
+		mysqli_query($link, $abfrageabteilung);
+		
+		// Überprüfung ob die Abfrage erfolgreich war
+		if (mysqli_affected_rows($link) > 0)
+		{
+			// Speichern der Erfolgreichen Ausgabe in der Variable
+			$ausgabe = "<p class=\"erfolgreich\">Es wurde 1 Datensatz angelegt.</p>";
+		}
+		else
+		{
+			// Wenn nicht erfolgreich speichern der Errormeldung in der
+			// Variablen
+			$ausgabe = "<p class=\"error\">Es ist ein Fehler aufgetreten <br />Es wurde kein Datensatz erzeugt.</p>";
+		}
+	}
+	else // Wenn kein Abteilungsname angegeben wurde
+	{
+		// Wenn nicht erfolgreich speichern der Errormeldung in der Variablen
+		$ausgabe = "<p class=\"error\">Sie müssen einen Abteilungsnamen angeben.</p>";
+	}
 }
 
 // Wenn der Button zum Löschen einer Abteilung gedrückt wurde
-if (isset($_POST['loescheabt']) && isset($_POST['loesche'])) {
-    // Speichern der Abfrage zum löschen einer Abteilung
-    // und Ausführen der Abfrage
-    $abfrageabteilung = "delete from abteilung where abteilungID = " .
-             $_POST['loesche'] . ";";
-    mysqli_query($link, $abfrageabteilung);
-    
-    // Überprüfung ob die Abfrage erfolgreich war
-    if (mysqli_affected_rows($link) > 0) {
-        // Speichern der Erfolgsmeldung in der Variable
-        $ausgabe = "<p class=\"erfolgreich\">Es wurde der Datensatz mit der ID: " .
-                 $_POST['loesche'] . " gelöscht.</p>";
-    } else {
-        // Wenn die Abteilung nicht gelöscht wurde
-        // Speichern der Error meldung in die Variable
-        $ausgabe = "<p class=\"error\">Fehler! es wurde kein Datensatz gelöscht</p>";
-    }
+if (isset($_POST['loescheabt']) && isset($_POST['loesche']))
+{
+	// Speichern der Abfrage zum löschen einer Abteilung
+	// und Ausführen der Abfrage
+	$abfrageabteilung = "delete from abteilung where abteilungID = " . $_POST['loesche'] . ";";
+	mysqli_query($link, $abfrageabteilung);
+	
+	// Überprüfung ob die Abfrage erfolgreich war
+	if (mysqli_affected_rows($link) > 0)
+	{
+		// Speichern der Erfolgsmeldung in der Variable
+		$ausgabe = "<p class=\"erfolgreich\">Es wurde der Datensatz mit der ID: " . $_POST['loesche'] . " gelöscht.</p>";
+	}
+	else
+	{
+		// Wenn die Abteilung nicht gelöscht wurde
+		// Speichern der Error meldung in die Variable
+		$ausgabe = "<p class=\"error\">Fehler! es wurde kein Datensatz gelöscht</p>";
+	}
 }
 
 // Abfrage zur Ausgabe der Tabelle Abteilung
@@ -102,8 +109,8 @@ $datenbankAusgabe = mysqli_query($link, "select * from abteilung");
 		<fieldset>
 			<legend>Abteilung anlegen</legend>
 			<p>
-				<label>Abteilung: <br>
-				<input type="text" min="4" maxlength="50" name="abtname" /></label>
+				<label>Abteilung: <br> <input type="text" min="4" maxlength="50"
+					name="abtname" /></label>
 			</p>
 			<p>
 				<input type="submit" name="abtanlegen" value="Abteilung anlegen" />
@@ -112,9 +119,9 @@ $datenbankAusgabe = mysqli_query($link, "select * from abteilung");
 	</form>
       
   <?php
-if (isset($ausgabe))
-    echo $ausgabe;
-?>
+		if (isset($ausgabe))
+			echo $ausgabe;
+		?>
       
   <table>
 		<tr>
@@ -124,20 +131,20 @@ if (isset($ausgabe))
 					<input type="submit" name="loescheabt" value="Löschen?"></th>
 		</tr>
        <?php
-    while ($lehrertabelle = mysqli_fetch_assoc($datenbankAusgabe)) {
-        echo "<tr>";
-        echo "<td>" . $lehrertabelle["abteilungID"] . "</td>";
-        echo "<td>" . $lehrertabelle["name"] . "</td>";
-        echo "<td><input type=\"radio\" name=loesche value=\"" .
-                 $lehrertabelle["abteilungID"] . "\">";
-        echo "</tr>";
-    }
-    ?>
+							while ($lehrertabelle = mysqli_fetch_assoc($datenbankAusgabe))
+							{
+								echo "<tr>";
+								echo "<td>" . $lehrertabelle["abteilungID"] . "</td>";
+								echo "<td>" . $lehrertabelle["name"] . "</td>";
+								echo "<td><input type=\"radio\" name=loesche value=\"" . $lehrertabelle["abteilungID"] . "\">";
+								echo "</tr>";
+							}
+							?>
     <tr>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
 			<td><input type="submit" name="loescheabt" value="Löschen?">
-			</form></td>
+				</form></td>
 		</tr>
 	</table>
 

@@ -3,15 +3,16 @@
 session_start();
 
 // Prüfen ob das Array der der Session initialisiert wurde
-if (!isset($_SESSION['benutzername']) && $_SESSION['admin'] == true) {
-    // Programm abbruch, da die Session nicht initialisiert wurde.
-    //Oder der Benutzer kein Administrator ist
-    exit("<p>Sie haben keinen Zugang zu der Seite!<br><a href=\"/login.php\">Login Seite</a></p>");
+if (!isset($_SESSION['benutzername']) && $_SESSION['admin'] == true)
+{
+	// Programm abbruch, da die Session nicht initialisiert wurde.
+	// Oder der Benutzer kein Administrator ist
+	exit("<p>Sie haben keinen Zugang zu der Seite!<br><a href=\"/login.php\">Login Seite</a></p>");
 }
 ?>
 
-<?php 
-//Einfügen der Bibliotheken
+<?php
+// Einfügen der Bibliotheken
 include '../include/loginfunktion.php';
 include '../config/cts.conf.php';
 ?>
@@ -44,8 +45,7 @@ include '../config/cts.conf.php';
     
 <?php
 // Verbindung zu Datenbank herstellen
-$link = mysqli_connect($database_conf['host'], $database_conf['user'], 
-        $database_conf['password'], $database_conf['database']);
+$link = mysqli_connect($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
 
 // Datenbank Colloation auf UTF-8 stellen
 mysqli_set_charset($link, "utf8");
@@ -53,46 +53,48 @@ mysqli_set_charset($link, "utf8");
 // Überprüfung ob der Submitbutton gedrückt wurde
 // Zuständig für das Einfügen eines neuen Lehrers
 // in die Lehrer Tabelle
-if (isset($_POST['benanlegen'])) {
-    // Überprüfung ob alle Felder des Einfüge Formulars ausgefüllt wurden
-    if ($_POST['vname'] != "" && $_POST['nname'] != "" && $_POST['kuerzel'] != "" &&
-             $_POST['bname'] != "" && $_POST['pwd'] != "") {
-        
-        // Erstellen der Einfüge anweisung in SQL
-        $insertquery = "insert into lehrer ";
-        $insertquery .= "(vorname, nachname, kuerzel, benutzername, passwort, abteilungID) values";
-        $insertquery .= "('" . $_POST['vname'] . "', '" . $_POST['nname'] .
-                 "', '" . $_POST['kuerzel'] . "', '" . $_POST['bname'] . "', '";
-        $insertquery .= verschluesselLogin($_POST['pwd']) . "', '" .
-                 $_POST['abteilung'] . "');";
-        
-        // Einfügen der Formulardaten in die Lehrertabelle
-        mysqli_query($link, $insertquery);
-        
-        // Überprüfung ob der Datensatz angelegt wurde
-        if (mysqli_affected_rows($link) > 0) {
-            // Speichern des Ausgabestrings in eine Variable
-            $ausgabe = "<p class=\"erfolgreich\">Es wurde 1 Datensatz angelegt.</p>";
-        }
-    } else {
-        // Speichern des Fehlerstrings in eine Variable
-        $ausgabe = "<p class=\"error\">Alle Felder müssen ausgefüllt werden!</p>";
-    }
+if (isset($_POST['benanlegen']))
+{
+	// Überprüfung ob alle Felder des Einfüge Formulars ausgefüllt wurden
+	if ($_POST['vname'] != "" && $_POST['nname'] != "" && $_POST['kuerzel'] != "" && $_POST['bname'] != "" && $_POST['pwd'] != "")
+	{
+		
+		// Erstellen der Einfüge anweisung in SQL
+		$insertquery = "insert into lehrer ";
+		$insertquery .= "(vorname, nachname, kuerzel, benutzername, passwort, abteilungID) values";
+		$insertquery .= "('" . $_POST['vname'] . "', '" . $_POST['nname'] . "', '" . $_POST['kuerzel'] . "', '" . $_POST['bname'] . "', '";
+		$insertquery .= verschluesselLogin($_POST['pwd']) . "', '" . $_POST['abteilung'] . "');";
+		
+		// Einfügen der Formulardaten in die Lehrertabelle
+		mysqli_query($link, $insertquery);
+		
+		// Überprüfung ob der Datensatz angelegt wurde
+		if (mysqli_affected_rows($link) > 0)
+		{
+			// Speichern des Ausgabestrings in eine Variable
+			$ausgabe = "<p class=\"erfolgreich\">Es wurde 1 Datensatz angelegt.</p>";
+		}
+	}
+	else
+	{
+		// Speichern des Fehlerstrings in eine Variable
+		$ausgabe = "<p class=\"error\">Alle Felder müssen ausgefüllt werden!</p>";
+	}
 }
 
 // Überprüfung ob der Button 'Lösche' gelöscht gedrückt wurde
-if (isset($_POST['loeschelehrer']) && isset($_POST['loesche'])) {
-    
-    // Speichern der delete Abfrage und durchführung der Abfrage
-    $abfloeschelehrer = "delete from lehrer where lehrerID = " .
-             $_POST['loesche'] . ";";
-    mysqli_query($link, $abfloeschelehrer);
-    
-    //
-    if (mysqli_affected_rows($link) > 0) {
-        $ausgabe = "<p class=\"erfolgreich\">Es wurde der Datensatz mit der ID: " .
-                 $_POST['loesche'] . " gelöscht.</p>";
-    }
+if (isset($_POST['loeschelehrer']) && isset($_POST['loesche']))
+{
+	
+	// Speichern der delete Abfrage und durchführung der Abfrage
+	$abfloeschelehrer = "delete from lehrer where lehrerID = " . $_POST['loesche'] . ";";
+	mysqli_query($link, $abfloeschelehrer);
+	
+	//
+	if (mysqli_affected_rows($link) > 0)
+	{
+		$ausgabe = "<p class=\"erfolgreich\">Es wurde der Datensatz mit der ID: " . $_POST['loesche'] . " gelöscht.</p>";
+	}
 }
 
 // Einfache Abfragen für das Extrahieren der Abteilungen und der Lehrer
@@ -113,36 +115,36 @@ $ergabfragerlehrer = mysqli_query($link, $abfragelehrer);
 		<fieldset>
 			<legend>Einfügen des Lehrpersonals in das 'CTS'</legend>
 			<p>
-				<label for="vorname">Vorname: <br>
-				<input type="text" maxlength="50" name="vname" id="vorname"></label>
+				<label for="vorname">Vorname: <br> <input type="text" maxlength="50"
+					name="vname" id="vorname"></label>
 			</p>
 			<p>
-				<label for="nachname">Nachname: <br>
-				<input type="text" maxlength="50" name="nname" id="nachname"></label>
+				<label for="nachname">Nachname: <br> <input type="text"
+					maxlength="50" name="nname" id="nachname"></label>
 			</p>
 			<p>
-				<label for="kuerzel">Kürzel: <br>
-				<input type="text" min="4" maxlength="5" name="kuerzel" id="kuerzel"></label>
+				<label for="kuerzel">Kürzel: <br> <input type="text" min="4"
+					maxlength="5" name="kuerzel" id="kuerzel"></label>
 			</p>
 			<p>
-				<label for="abteilung">Abteilung: <br>
-				<select name="abteilung" id="abteilung">
+				<label for="abteilung">Abteilung: <br> <select name="abteilung"
+					id="abteilung">
           <?php
-        $ergabteilungdb = mysqli_query($link, $abfrageabteilung);
-        while ($daten = mysqli_fetch_object($ergabteilungdb)) {
-            echo "<option value=$daten->abteilungID>" . $daten->name .
-                     "</option>";
-        }
-        ?>
+										$ergabteilungdb = mysqli_query($link, $abfrageabteilung);
+										while ($daten = mysqli_fetch_object($ergabteilungdb))
+										{
+											echo "<option value=$daten->abteilungID>" . $daten->name . "</option>";
+										}
+										?>
         </select></label>
 			</p>
 			<p>
-				<label for="benutzername">Benutzername: <br>
-				<input type="text" min="4" maxlength="15" name="bname"></label>
+				<label for="benutzername">Benutzername: <br> <input type="text"
+					min="4" maxlength="15" name="bname"></label>
 			</p>
 			<p>
-				<label for="passwort">Passwort: <br>
-				<input type="password" min="5" name="pwd"></label>
+				<label for="passwort">Passwort: <br> <input type="password" min="5"
+					name="pwd"></label>
 			</p>
 			<p>
 				<input type="submit" name="benanlegen" value="Lehrer anlegen">
@@ -151,11 +153,12 @@ $ergabfragerlehrer = mysqli_query($link, $abfragelehrer);
 	</form>
   
   <?php
-// Ausgabe ob eintrag in die Datenbank erfolgreich war.
-if (isset($ausgabe)) {
-    echo $ausgabe;
-}
-?>
+		// Ausgabe ob eintrag in die Datenbank erfolgreich war.
+		if (isset($ausgabe))
+		{
+			echo $ausgabe;
+		}
+		?>
   
   <table>
 		<tr>
@@ -169,19 +172,19 @@ if (isset($ausgabe)) {
 					<input type="submit" name="loeschelehrer" value="Löschen?"></th>
 		</tr>
     <?php
-    while ($lehrertabelle = mysqli_fetch_object($ergabfragerlehrer)) {
-        echo "<tr>";
-        echo "<td>" . $lehrertabelle->lehrerID . "</td>";
-        echo "<td>" . $lehrertabelle->vorname . "</td>";
-        echo "<td>" . $lehrertabelle->nachname . "</td>";
-        echo "<td>" . $lehrertabelle->kuerzel . "</td>";
-        echo "<td>" . $lehrertabelle->benutzername . "</td>";
-        echo "<td>" . $lehrertabelle->name . "</td>";
-        echo "<td><input type=\"radio\" name=\"loesche\" value=\"" .
-                 $lehrertabelle->lehrerID . "\"></td>";
-        echo "</tr>";
-    }
-    ?>
+				while ($lehrertabelle = mysqli_fetch_object($ergabfragerlehrer))
+				{
+					echo "<tr>";
+					echo "<td>" . $lehrertabelle->lehrerID . "</td>";
+					echo "<td>" . $lehrertabelle->vorname . "</td>";
+					echo "<td>" . $lehrertabelle->nachname . "</td>";
+					echo "<td>" . $lehrertabelle->kuerzel . "</td>";
+					echo "<td>" . $lehrertabelle->benutzername . "</td>";
+					echo "<td>" . $lehrertabelle->name . "</td>";
+					echo "<td><input type=\"radio\" name=\"loesche\" value=\"" . $lehrertabelle->lehrerID . "\"></td>";
+					echo "</tr>";
+				}
+				?>
     <tr>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
@@ -190,7 +193,7 @@ if (isset($ausgabe)) {
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
 			<td><input type="submit" name="loeschelehrer" value="Löschen?">
-			</form></td>
+				</form></td>
 		</tr>
 	</table>
 </body>
