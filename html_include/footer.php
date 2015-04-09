@@ -1,0 +1,1 @@
+<footer>Copyright &copy;2015 Daniel Thielking, Robin Gebhardt, Pascal Lawitzky</footer>
