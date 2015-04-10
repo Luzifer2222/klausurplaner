@@ -126,6 +126,10 @@ form.anlegen label {
 	float: left;
 }
 
+form.anlegen select,input[type=text], input[type=password]{
+	width: 200px;
+}
+
 table caption {
 	padding: 10px;
 }
