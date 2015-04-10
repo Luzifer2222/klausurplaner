@@ -2,7 +2,7 @@
 
 <?php
 // Einfügen der Bibliotheken
-include '../include/sessionkontrolle.php';
+include '../include/sessionkontrolle.class.php';
 ?>
 
 <?php

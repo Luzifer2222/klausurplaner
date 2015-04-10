@@ -1,6 +1,6 @@
 <?php
 // Einfügen der Bibliotheken
-include '../include/sessionkontrolle.php';
+include '../include/sessionkontrolle.class.php';
 include '../include/loginfunktion.php';
 include '../config/cts.conf.php';
 ?>
