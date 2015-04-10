@@ -12,12 +12,12 @@ $pruefeSession = new sessionkontrolle();
 $pruefeSession->UserBereich();
 
 ?>
-
+<!Doctype html>
 <html>
 <head>
 <?php
 // Einfügen der im head-Bereich nötigen Informationen
-include '../html_include/head.php';
+include_once $wurzelVerzeichnis . '/html_include/head.php';
 ?>
 </head>
 <body>

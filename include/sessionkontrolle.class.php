@@ -3,8 +3,6 @@
 class sessionkontrolle
 {
 
-	private $sessionErfolgreich = false;
-
 	function AdminBereich ()
 	{
 		// Starten/Wiederaufnehmen einer Session
@@ -14,7 +12,7 @@ class sessionkontrolle
 		if (!isset($_SESSION['benutzername']) && !isset($_SESSION['administrator']))
 		{
 			// die Session nicht initialisiert wurde.
-			exit("<p>Sie haben keinen Zugang zu der Seite!<br><a href=\"/login.php\">Login Seite</a></p>");
+			exit("<p>Sie haben keinen Zugang zu der Seite!<br><a href=\"/index.php\">Hauptseite</a></p>");
 		
 		}
 		
@@ -22,10 +20,8 @@ class sessionkontrolle
 		{
 			
 			// Programm abbruch, da der Benutzer kein Administrator ist
-			exit("<p>Sie haben keinen Zugang zu der Seite!<br><a href=\"/login.php\">Login Seite</a></p>");
+			exit("<p>Sie haben keinen Zugang zu der Seite!<br><a href=\"/index.php\">Hauptseite</a></p>");
 		}
-		
-		$this->sessionErfolgreich = true;
 	
 	}
 
@@ -41,15 +37,35 @@ class sessionkontrolle
 			exit(
 						"<p>Benutzername oder Passwort falsch!</p>
           <p>Sie haben keinen Zugang zu der Seite! <br>
-		  <a href=login.php>Login Seite</a>");
+		  <a href=\"/index.php\">Hauptseite</a>");
 		}
-		
-		$this->sessionErfolgreich = true;
 	}
 	
-	function sessionErfolgreich() {
-		return $this->sessionErfolgreich;
+	function navigation (){
+					
+			// Prüfen ob das Array der der Session initialisiert wurde
+			if (isset($_SESSION['benutzername']))
+			{
+				 return $sessionErfolgreich = 1;
+			}
+			
+			return $sessionErfolgreich = 0;
+		
+			
 	}
+
+	function ausloggen ()
+	{
+		
+		// Beenden einer Session
+		session_destroy();
+		
+		// Vorbesetzen des Session Arrays
+		// Damit alle daten aus dem $_SESSION
+		// Array gelöscht sind (Sicherheit!)
+		$_SESSION = array();
+	}
+
 }
 
 ?>
