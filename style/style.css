@@ -104,8 +104,61 @@ nav ul li.admin:hover a, nav ul li.cat3:hover>ul li a {
 	background-color: #008C74;
 }
 
-nav ul li.login:hover a, nav ul li.cat4:hover > ul li a {
-    background-color: #004C66;
+nav ul li.login:hover a, nav ul li.cat4:hover>ul li a {
+	background-color: #004C66;
+}
+
+form.anmeldeformular label {
+	width: 110px;
+	display: block;
+	float: left;
+}
+
+form.anlegen {
+	margin: auto;
+	width: 400px;
+	padding-top: 10px;
+}
+
+form.anlegen label {
+	width: 150px;
+	display: block;
+	float: left;
+}
+
+table caption {
+	padding: 10px;
+}
+
+table.ausgabe {
+	border-radius: 10px;
+	padding-top: 10px;
+	border-style: solid 0px;
+	margin: auto;
+}
+
+table.ausgabe tr {
+	background-color: #E0E0E0;
+}
+
+table.ausgabe tr:nth-child(odd) {
+	background-color: #FAFAFA;
+}
+
+tr>th {
+	background-color: #FAFAFA;
+}
+
+p.erfolgreich {
+	text-align: center;
+	font-weight: bold;
+	color: #017e00;
+}
+
+p.error {
+	text-align: center;
+	font-weight: bold;
+	color: #FF0000
 }
 
 main {
