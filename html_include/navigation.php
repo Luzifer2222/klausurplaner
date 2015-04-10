@@ -13,22 +13,21 @@
 				<li><a href="/admin/abteilunganlegen.php">Abteilung anlegen</a></li>
 
 			</ul></li>
-
 		<li class="login"><a href="#">Login</a>
 			<ul>
-			<li>
-				<form action="../einloggen.php" method="post" name="anmeldeformular" class="anmeldeformular">
-					<fieldset>
-						<legend>Anmeldeformular</legend>
-						<p>
-							<label for="benutzername">Benutzername:</label><input type="text" name="benutzername" id="benutzername">
-						</p>
-						<p>
-							<label for="passwort">Passwort:</label><input type="password" name="passwort" id="passwort">
-						</p>
-						<input type="submit">
-					</fieldset>
-				</form>
+				<li>
+					<form action="../einloggen.php" method="post" name="anmeldeformular" class="anmeldeformular">
+						<fieldset>
+							<legend>Anmeldeformular</legend>
+							<p>
+								<label for="benutzername">Benutzername:</label><input type="text" name="benutzername" id="benutzername">
+							</p>
+							<p>
+								<label for="passwort">Passwort:</label><input type="password" name="passwort" id="passwort">
+							</p>
+							<input type="submit">
+						</fieldset>
+					</form>
 				</li>
 			</ul></li>
 	</ul>
