@@ -1,58 +1,30 @@
 <?php
-// Starten/Wiederaufnehmen einer Session
-session_start();
-
-// Prüfen ob das Array der der Session initialisiert wurde
-if (!isset($_SESSION['benutzername']) && !isset($_SESSION['administrator']))
-{
-	// die Session nicht initialisiert wurde.
-	exit("<p>Sie haben keinen Zugang zu der Seite!<br><a href=\"/login.php\">Login Seite</a></p>");
-
-}
-
-if ($_SESSION['administrator'] != true)
-{
-	
-	// Programm abbruch, da der Benutzer kein Administrator ist
-	exit("<p>Sie haben keinen Zugang zu der Seite!<br><a href=\"/login.php\">Login Seite</a></p>");
-}
-?>
-
-<?php
 // Einfügen der Bibliotheken
+include '../include/sessionkontrolle.php';
 include '../include/loginfunktion.php';
 include '../config/cts.conf.php';
 ?>
 
+<?php
+
+$pruefeAdmin = new sessionkontrolle();
+$pruefeAdmin->AdminBereich();
+
+?>
+
 <html>
 <head>
-<title>Class Test Scheduler 'CTS' by Daniel Thielking, Robin Gebhardt, Pascal Lawitzky</title>
-<!-- Angaben zum Zeichensatz, immer UTF-8 -->
-<meta charset="utf-8">
-<!-- Angabe des Zeichensatzes für HTML5 -->
-<meta http-equiv="content-type" content="text/html; charset=utf-8">
-<!-- Angabe des Zeichensatzes für ältere Browser -->
-
-<!-- Angabe wie die Seite sich verhalten soll -->
-<meta http-equiv="expires" content="0">
-<!-- Seite wird immer von Server geholt und nicht aus dem cache geladen -->
-
-<!-- Angabe zu den Autoren der Website und andere Informationen -->
-<meta name="author" content="Daniel Thielking, Robin Gebhardt, Pascal Lawitzky">
-<meta name="project-group" content="PHPmeetsSQL G3">
-<meta name="description" content="Klausurplaner Software">
-
-<!-- Einfügen des FavoritenIcons -->
-<link rel="icon" href="../pictures/favicon/favicon.png" sizes="16x16 32x32" type="images/png">
-<!-- Einfügen der CSS-Dateine -->
-<link href="../style/style.css" rel="stylesheet" type="text/css" />
+<?php
+// Einfügen der im head-Bereich nötigen Informationen
+include '../html_include/head.php';
+?>
     
 <?php
 // Verbindung zu Datenbank herstellen
-$link = mysqli_connect($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
+$datenbank = new mysqli($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
 
 // Datenbank Colloation auf UTF-8 stellen
-mysqli_set_charset($link, "utf8");
+$datenbank->set_charset('utf8');
 
 // Überprüfung ob der Submitbutton gedrückt wurde
 // Zuständig für das Einfügen eines neuen Lehrers
@@ -70,19 +42,19 @@ if (isset($_POST['benanlegen']))
 		$insertquery .= verschluesselLogin($_POST['pwd']) . "', '" . $_POST['administrator'][0] . "', '" . $_POST['abteilung'] . "');";
 		
 		// Einfügen der Formulardaten in die Lehrertabelle
-		mysqli_query($link, $insertquery);
+		$datenbank->query($insertquery);
 		
 		// Überprüfung ob der Datensatz angelegt wurde
-		if (mysqli_affected_rows($link) > 0)
+		if ($datenbank->affected_rows > 0)
 		{
 			// Speichern des Ausgabestrings in eine Variable
-			$ausgabe = "<p class=\"erfolgreich\">Es wurde 1 Datensatz angelegt.</p>";
+			$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde 1 Datensatz angelegt.</p>";
 		}
 	}
 	else
 	{
 		// Speichern des Fehlerstrings in eine Variable
-		$ausgabe = "<p class=\"error\">Alle Felder müssen ausgefüllt werden!</p>";
+		$ausgabe = "<hr><p class=\"error\">Alle Felder müssen ausgefüllt werden!</p>";
 	}
 }
 
@@ -92,12 +64,12 @@ if (isset($_POST['loeschelehrer']) && isset($_POST['loesche']))
 	
 	// Speichern der delete Abfrage und durchführung der Abfrage
 	$abfloeschelehrer = "delete from lehrer where lehrerID = " . $_POST['loesche'] . ";";
-	mysqli_query($link, $abfloeschelehrer);
+	$datenbank->query($abfloeschelehrer);
 	
 	//
-	if (mysqli_affected_rows($link) > 0)
+	if ($datenbank->affected_rows > 0)
 	{
-		$ausgabe = "<p class=\"erfolgreich\">Es wurde der Datensatz mit der ID: " . $_POST['loesche'] . " gelöscht.</p>";
+		$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde der Datensatz mit der ID: " . $_POST['loesche'] . " gelöscht.</p>";
 	}
 }
 
@@ -108,49 +80,59 @@ $abfragelehrer .= "from lehrer l, abteilung a ";
 $abfragelehrer .= "where l.abteilungID = a.abteilungID";
 
 // Ergebnis der Abfrage aus $abfragelehrer
-$ergabfragerlehrer = mysqli_query($link, $abfragelehrer);
+$ergabfragerlehrer = $datenbank->query($abfragelehrer);
 ?>
 
 </head>
 <body>
+	<div id="container">
+		<?php
+		include '../html_include/header.php';
+		include '../html_include/navigation.php';
+		?>
+		<div id="content">
 
-	<form action="<?php $_SERVER['PHP_SELF']?>" method="post" name="lehrereinfuegen" class="lehrereinfuegen">
-		<fieldset>
-			<legend>Einfügen des Lehrpersonals in das 'CTS'</legend>
-			<p>
-				<label for="vorname">Vorname: <br> <input type="text" maxlength="50" name="vname" id="vorname"></label>
-			</p>
-			<p>
-				<label for="nachname">Nachname: <br> <input type="text" maxlength="50" name="nname" id="nachname"></label>
-			</p>
-			<p>
-				<label for="kuerzel">Kürzel: <br> <input type="text" min="4" maxlength="5" name="kuerzel" id="kuerzel"></label>
-			</p>
-			<p>
-				<label for="abteilung">Abteilung: <br> <select name="abteilung" id="abteilung">
-          <?php
-										$ergabteilungdb = mysqli_query($link, $abfrageabteilung);
-										while ($daten = mysqli_fetch_object($ergabteilungdb))
-										{
-											echo "<option value=$daten->abteilungID>" . $daten->name . "</option>";
-										}
-										?>
-        </select></label>
-			</p>
-			<p>
-				<label for="administrator">Administrator: <input type="checkbox" name="administrator[]" value="1"></label>
-			</p>
-			<p>
-				<label for="benutzername">Benutzername: <br> <input type="text" min="4" maxlength="15" name="bname"></label>
-			</p>
-			<p>
-				<label for="passwort">Passwort: <br> <input type="password" min="5" name="pwd"></label>
-			</p>
-			<p>
-				<input type="submit" name="benanlegen" value="Lehrer anlegen">
-			</p>
-		</fieldset>
-	</form>
+			<main>
+			<form class="anlegen" action="<?php $_SERVER['PHP_SELF']?>" method="post" name="lehrereinfuegen" class="lehrereinfuegen">
+				<fieldset>
+					<legend>Einfügen des Lehrpersonals in das 'CTS'</legend>
+					<p>
+						<label for="vorname">Vorname:</label> <input type="text" maxlength="50" name="vname" id="vorname">
+					</p>
+					<p>
+						<label for="nachname">Nachname:</label> <input type="text" maxlength="50" name="nname" id="nachname">
+					</p>
+					<p>
+						<label for="kuerzel">Kürzel:</label> <input type="text" min="4" maxlength="5" name="kuerzel" id="kuerzel">
+					</p>
+					<p>
+						<label for="abteilung">Abteilung:</label> <select name="abteilung" id="abteilung">
+							<?php
+							
+							$ergabteilungdb = $datenbank->query($abfrageabteilung);
+							while ($daten = $ergabteilungdb->fetch_object())
+							{
+								echo "<option value=$daten->abteilungID>" . $daten->name . "</option>";
+							}
+							
+							?>
+        </select>
+					</p>
+					<p>
+						<label for="administrator">Administrator:</label> <input type="checkbox" name="administrator[]" value="1">
+					</p>
+					<p>
+						<label for="benutzername">Benutzername:</label> <input type="text" min="4" maxlength="15" name="bname">
+					</p>
+					<p>
+						<label for="passwort">Passwort:</label> <input type="password" min="5" name="pwd">
+					</p>
+					<p class="button">
+						<input type="submit" name="benanlegen" value="Lehrer anlegen"> <input type="reset" name="reset" value="Zurücksetzen">
+					</p>
+				</fieldset>
+			</form>
+			
   
   <?php
 		// Ausgabe ob eintrag in die Datenbank erfolgreich war.
@@ -159,24 +141,24 @@ $ergabfragerlehrer = mysqli_query($link, $abfragelehrer);
 			echo $ausgabe;
 		}
 		?>
-  
-  <table>
-		<tr>
-			<th>LehrerID</th>
-			<th>Vorname</th>
-			<th>Nachname</th>
-			<th>Kürzel</th>
-			<th>Benutzername</th>
-			<th>Abteilung</th>
-			<th>Administrator?</th>
-			<th>
-				<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-					<input type="submit" name="loeschelehrer" value="Löschen?">
-			
-			</th>
-		</tr>
+  <hr>
+			<table class="ausgabe">
+				<caption>Angelegte Lehrer</caption>
+				<tr>
+					<th>LehrerID</th>
+					<th>Vorname</th>
+					<th>Nachname</th>
+					<th>Kürzel</th>
+					<th>Benutzername</th>
+					<th>Abteilung</th>
+					<th>Admin</th>
+					<th>
+						<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+							<input type="submit" name="loeschelehrer" value="Löschen?">
+					</th>
+				</tr>
     <?php
-				while ($lehrertabelle = mysqli_fetch_object($ergabfragerlehrer))
+				while ($lehrertabelle = $ergabfragerlehrer->fetch_object())
 				{
 					echo "<tr>";
 					echo "<td>" . $lehrertabelle->lehrerID . "</td>";
@@ -198,21 +180,26 @@ $ergabfragerlehrer = mysqli_query($link, $abfragelehrer);
 				}
 				?>
     <tr>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			<td><input type="submit" name="loeschelehrer" value="Löschen?">
-				</form></td>
-		</tr>
-	</table>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td><input type="submit" name="loeschelehrer" value="Löschen?">
+						</form></td>
+				</tr>
+			</table>
+			</main>
+		</div>
+		<footer>Copyright &copy; 2015 Daniel Thielking, Robin Gebhardt, Pascal Lawitzky</footer>
+
+	</div>
 </body>
 
 <?php
 // Schließen der Datenbank am Ende der Seite
-mysqli_close($link);
+$datenbank->close();
 ?>
 </html>
