@@ -1,8 +1,9 @@
 <?php
 // Einfügen der Bibliotheken
-include '../include/sessionkontrolle.class.php';
-include '../include/loginfunktion.php';
-include '../config/cts.conf.php';
+$wurzelVerzeichnis = realpath($_SERVER['DOCUMENT_ROOT']);
+include_once $wurzelVerzeichnis.'/include/sessionkontrolle.class.php';
+include_once $wurzelVerzeichnis.'/include/loginfunktion.php';
+include_once $wurzelVerzeichnis.'/config/cts.conf.php';
 ?>
 
 <?php
@@ -16,7 +17,7 @@ $pruefeSession->AdminBereich();
 <head>
 <?php
 // Einfügen der im head-Bereich nötigen Informationen
-include '../html_include/head.php';
+include_once $wurzelVerzeichnis.'/html_include/head.php';
 ?>
     
 <?php
@@ -90,8 +91,8 @@ $ergabfragerlehrer = $datenbank->query($abfragelehrer);
 <body>
 	<div id="container">
 		<?php
-		include '../html_include/header.php';
-		include '../html_include/navigation.php';
+		include_once $wurzelVerzeichnis.'/html_include/header.php';
+		include_once $wurzelVerzeichnis.'/html_include/navigation.php';
 		?>
 		<div id="content">
 
@@ -198,7 +199,7 @@ $ergabfragerlehrer = $datenbank->query($abfragelehrer);
 		</div>
 		
 		<?php 
-		include '../html_include/footer.php';
+		include_once $wurzelVerzeichnis.'/html_include/footer.php';
 		?>
 
 	</div>

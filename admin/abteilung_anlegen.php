@@ -1,8 +1,9 @@
 <?php
 
 // Einfügen der Bibliotheken
-include '../include/sessionkontrolle.class.php';
-include '../config/cts.conf.php';
+$wurzelVerzeichnis = realpath($_SERVER['DOCUMENT_ROOT']);
+include_once $wurzelVerzeichnis.'/include/sessionkontrolle.class.php';
+include_once $wurzelVerzeichnis.'/config/cts.conf.php';
 
 ?>
 
@@ -17,7 +18,7 @@ $pruefeSession->AdminBereich();
 <head>
 <?php
 // Einfügen der im head-Bereich nötigen Informationen
-include '../html_include/head.php';
+include_once $wurzelVerzeichnis.'/html_include/head.php';
 ?>
     
 <?php
@@ -89,8 +90,8 @@ $datenbankAusgabe = $datenbank->query("select * from abteilung");
 <body>
 	<div id="container">
 	<?php
-	include '../html_include/header.php';
-	include '../html_include/navigation.php';
+	include_once $wurzelVerzeichnis.'/html_include/header.php';
+	include_once  $wurzelVerzeichnis.'/html_include/navigation.php';
 	?>
 	<main> <!-- Formular zum erstellen einer neuen Abteilung -->
 		<form action="<?php $_SERVER['PHP_SELF']?>" method="post" class="anlegen">
@@ -137,7 +138,7 @@ $datenbankAusgabe = $datenbank->query("select * from abteilung");
 		</table>
 		</main>
 		<?php
-		include '../html_include/footer.php';
+		include_once $wurzelVerzeichnis.'/html_include/footer.php';
 		?>
 	</div>
 

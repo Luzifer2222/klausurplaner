@@ -2,7 +2,8 @@
 
 <?php
 // Einfügen der Bibliotheken
-include '../include/sessionkontrolle.class.php';
+$wurzelVerzeichnis = realpath($_SERVER['DOCUMENT_ROOT']);
+include_once $wurzelVerzeichnis.'/include/sessionkontrolle.class.php';
 ?>
 
 <?php
@@ -22,8 +23,8 @@ include '../html_include/head.php';
 <body>
 	<div id="container">
 		<?php
-		include '../html_include/header.php';
-		include '../html_include/navigation.php';
+		include_once $wurzelVerzeichnis.'/html_include/header.php';
+		include_once $wurzelVerzeichnis.'/html_include/navigation.php';
 		?>
 		<div id="content">
 		
@@ -34,7 +35,7 @@ include '../html_include/head.php';
 		</div>
 		
 		<?php
-		include '../html_include/footer.php';
+		include_once $wurzelVerzeichnis.'/html_include/footer.php';
 		?>
 
 	</div>

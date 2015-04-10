@@ -3,6 +3,8 @@
 class sessionkontrolle
 {
 
+	private $sessionErfolgreich = false;
+
 	function AdminBereich ()
 	{
 		// Starten/Wiederaufnehmen einer Session
@@ -22,6 +24,8 @@ class sessionkontrolle
 			// Programm abbruch, da der Benutzer kein Administrator ist
 			exit("<p>Sie haben keinen Zugang zu der Seite!<br><a href=\"/login.php\">Login Seite</a></p>");
 		}
+		
+		$this->sessionErfolgreich = true;
 	
 	}
 
@@ -39,6 +43,12 @@ class sessionkontrolle
           <p>Sie haben keinen Zugang zu der Seite! <br>
 		  <a href=login.php>Login Seite</a>");
 		}
+		
+		$this->sessionErfolgreich = true;
+	}
+	
+	function sessionErfolgreich() {
+		return $this->sessionErfolgreich;
 	}
 }
 

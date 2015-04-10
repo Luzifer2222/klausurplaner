@@ -1,3 +1,9 @@
+<?php
+// Einbinden der benötigten Bibliotheken
+$wurzelVerzeichniss = realpath($_SERVER['DOCUMENT_ROOT']);
+include_once $wurzelVerzeichniss.'/include/sessionkontrolle.class.php';
+?>
+
 <nav>
 	<ul>
 		<li class="user"><a href="#">Benutzer</a></li>

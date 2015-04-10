@@ -1,7 +1,8 @@
 <?php
-// Einbinden der benötigten Funktionen
-include './config/cts.conf.php';
-include './include/loginfunktion.php';
+// Einfügen der Bibliotheken
+$wurzelVerzeichnis = realpath($_SERVER['DOCUMENT_ROOT']);
+include_once $wurzelVerzeichnis.'/config/cts.conf.php';
+include_once $wurzelVerzeichnis.'/include/loginfunktion.php';
 
 // Starten/Wiederaufnehmen einer Session
 session_start();
