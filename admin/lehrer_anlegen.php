@@ -7,8 +7,8 @@ include '../config/cts.conf.php';
 
 <?php
 
-$pruefeAdmin = new sessionkontrolle();
-$pruefeAdmin->AdminBereich();
+$pruefeSession = new sessionkontrolle();
+$pruefeSession->AdminBereich();
 
 ?>
 
@@ -193,7 +193,10 @@ $ergabfragerlehrer = $datenbank->query($abfragelehrer);
 			</table>
 			</main>
 		</div>
-		<footer>Copyright &copy; 2015 Daniel Thielking, Robin Gebhardt, Pascal Lawitzky</footer>
+		
+		<?php 
+		include '../html_include/footer.php';
+		?>
 
 	</div>
 </body>

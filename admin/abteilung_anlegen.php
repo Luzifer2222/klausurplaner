@@ -8,8 +8,8 @@ include '../config/cts.conf.php';
 
 <?php
 
-$pruefeAdmin = new sessionkontrolle();
-$pruefeAdmin->AdminBereich();
+$pruefeSession = new sessionkontrolle();
+$pruefeSession->AdminBereich();
 
 ?>
 
