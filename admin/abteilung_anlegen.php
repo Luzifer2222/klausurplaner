@@ -111,6 +111,7 @@ $datenbankAusgabe = $datenbank->query("select * from abteilung");
 			?>
 		<hr>
 		<table class="ausgabe">
+		<caption>Angelegte Abteilungen</caption>
 			<tr>
 				<th>AbteilungsID</th>
 				<th>Abteilungsname</th>
@@ -135,7 +136,11 @@ $datenbankAusgabe = $datenbank->query("select * from abteilung");
 			</tr>
 		</table>
 		</main>
+		<?php
+		include '../html_include/footer.php';
+		?>
 	</div>
+
 </body>
 <?php
 $datenbank->close();
