@@ -34,11 +34,14 @@ if (isset($_POST['benanlegen']))
 	// Überprüfung ob alle Felder des Einfüge Formulars ausgefüllt wurden
 	if ($_POST['vname'] != "" && $_POST['nname'] != "" && $_POST['kuerzel'] != "" && $_POST['bname'] != "" && $_POST['pwd'] != "")
 	{
-		
+		if(!isset($_POST['administrator'][0]))
+		{
+			$_POST['administrator'][0] = 0;
+		}
 		// Erstellen der Einfüge anweisung in SQL
 		$insertquery = "insert into lehrer ";
 		$insertquery .= "(vorname, nachname, kuerzel, benutzername, passwort, administrator, abteilungID) values";
-		$insertquery .= "('" . $_POST['vname'] . "', '" . $_POST['nname'] . "', '" . $_POST['kuerzel'] . "', '" . $_POST['bname'] . "', '";
+		$insertquery .= "('" . $_POST['vname'] . "', '" . $_POST['nname'] . "', '" . strtoupper($_POST['kuerzel']) . "', '" . strtolower($_POST['bname']) . "', '";
 		$insertquery .= verschluesselLogin($_POST['pwd']) . "', '" . $_POST['administrator'][0] . "', '" . $_POST['abteilung'] . "');";
 		
 		// Einfügen der Formulardaten in die Lehrertabelle
