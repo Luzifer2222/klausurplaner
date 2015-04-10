@@ -16,18 +16,20 @@
 
 		<li class="login"><a href="#">Login</a>
 			<ul>
-				<form action="../einloggen.php" method="post" name="anmeldeformular">
+			<li>
+				<form action="../einloggen.php" method="post" name="anmeldeformular" class="anmeldeformular">
 					<fieldset>
 						<legend>Anmeldeformular</legend>
 						<p>
-							<label for="benutzername">Benutzername<input type="text" name="benutzername"></label>
+							<label for="benutzername">Benutzername:</label><input type="text" name="benutzername" id="benutzername">
 						</p>
 						<p>
-							<label for="passwort">Passwort<input type="password" name="passwort"></label>
+							<label for="passwort">Passwort:</label><input type="password" name="passwort" id="passwort">
 						</p>
 						<input type="submit">
 					</fieldset>
 				</form>
+				</li>
 			</ul></li>
 	</ul>
 </nav>
