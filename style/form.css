@@ -1,0 +1,23 @@
+@CHARSET "UTF-8";
+
+form.anmeldeformular label {
+	width: 110px;
+	display: block;
+	float: left;
+}
+
+form.anlegen {
+	margin: auto;
+	width: 400px;
+	padding-top: 10px;
+}
+
+form.anlegen label {
+	width: 150px;
+	display: block;
+	float: left;
+}
+
+form.anlegen select, input[type=text], input[type=password] {
+	width: 200px;
+}

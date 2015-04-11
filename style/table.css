@@ -1,20 +1,23 @@
 @CHARSET "UTF-8";
 
-table.kalender {
-	min-width: 100%;
+table caption {
+	padding: 10px;
+}
+
+table.ausgabe {
 	padding-top: 10px;
 	border-style: solid 0px;
 	margin: auto;
 }
 
-table.kalender tr {
+table.ausgabe tr {
 	background-color: #E0E0E0;
 }
 
-table.kalender tr:nth-child(odd) {
+table.ausgabe tr:nth-child(odd) {
 	background-color: #FAFAFA;
 }
 
-table.kalender td {
-	height: 70px;
+tr>th {
+	background-color: #FAFAFA;
 }
