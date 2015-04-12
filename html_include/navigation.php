@@ -24,6 +24,9 @@ include_once $wurzelVerzeichniss . '/include/sessionkontrolle.class.php';
 			<a href="#">Admin</a>
 			<ul>
 				<li>
+					<a href="/admin/klasse_anlegen.php">Klasse anlegen</a>
+				</li>
+				<li>
 					<a href="/admin/lehrer_anlegen.php">Lehrer anlegen</a>
 				</li>
 				<li>
