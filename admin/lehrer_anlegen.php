@@ -132,7 +132,7 @@ $ergabfragerlehrer = $datenbank->query($abfragelehrer);
 						<label for="passwort">Passwort:</label> <input type="password" min="5" name="pwd">
 					</p>
 					<p class="button">
-						<input type="submit" name="benanlegen" value="Lehrer anlegen"> <input type="reset" name="reset" value="Zurücksetzen">
+						<label>&nbsp;</label><input type="submit" name="benanlegen" value="Lehrer anlegen"> <input type="reset" name="reset" value="Zurücksetzen">
 					</p>
 				</fieldset>
 			</form>
