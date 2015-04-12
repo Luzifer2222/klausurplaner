@@ -10,7 +10,7 @@ include_once $wurzelVerzeichnis . '/config/cts.conf.php';
 <?php
 
 $pruefeSession = new sessionkontrolle();
-$pruefeSession->UserBereich();
+$pruefeSession->AdminBereich()
 
 ?>
 <!Doctype html>
