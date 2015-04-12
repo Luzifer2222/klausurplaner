@@ -4,6 +4,7 @@
 @IMPORT url("./navigation.css");
 @IMPORT url("./table.css");
 @IMPORT url("./paragraph.css");
+@IMPORT url("./form.css");
 
 body {
 	background-color: #999;
