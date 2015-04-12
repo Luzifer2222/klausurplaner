@@ -2,8 +2,8 @@
 
 // Einfügen der Bibliotheken
 $wurzelVerzeichnis = realpath($_SERVER['DOCUMENT_ROOT']);
-include_once $wurzelVerzeichnis.'/include/sessionkontrolle.class.php';
-include_once $wurzelVerzeichnis.'/config/cts.conf.php';
+include_once $wurzelVerzeichnis . '/include/sessionkontrolle.class.php';
+include_once $wurzelVerzeichnis . '/config/cts.conf.php';
 
 ?>
 
@@ -18,7 +18,7 @@ $pruefeSession->AdminBereich();
 <head>
 <?php
 // Einfügen der im head-Bereich nötigen Informationen
-include_once $wurzelVerzeichnis.'/html_include/head.php';
+include_once $wurzelVerzeichnis . '/html_include/head.php';
 ?>
     
 <?php
@@ -90,8 +90,8 @@ $datenbankAusgabe = $datenbank->query("select * from abteilung");
 <body>
 	<div id="container">
 	<?php
-	include_once $wurzelVerzeichnis.'/html_include/header.php';
-	include_once  $wurzelVerzeichnis.'/html_include/navigation.php';
+	include_once $wurzelVerzeichnis . '/html_include/header.php';
+	include_once $wurzelVerzeichnis . '/html_include/navigation.php';
 	?>
 	<main> <!-- Formular zum erstellen einer neuen Abteilung -->
 		<form action="<?php $_SERVER['PHP_SELF']?>" method="post" class="anlegen">
@@ -101,7 +101,7 @@ $datenbankAusgabe = $datenbank->query("select * from abteilung");
 					<label>Abteilungsname:</label><input type="text" min="4" maxlength="50" name="abtname" />
 				</p>
 				<p>
-					<label>&nbsp;</label> <input type="submit" name="abtanlegen" value="Abteilung anlegen" />
+					<label>&nbsp;</label> <input type="submit" name="abtanlegen" value="Abteilung anlegen" /> <input type="reset" value="Zurücksetzen" name="zuruecksetzen">
 				</p>
 			</fieldset>
 		</form>
@@ -112,7 +112,7 @@ $datenbankAusgabe = $datenbank->query("select * from abteilung");
 			?>
 		<hr>
 		<table class="ausgabe">
-		<caption>Angelegte Abteilungen</caption>
+			<caption>Angelegte Abteilungen</caption>
 			<tr>
 				<th>AbteilungsID</th>
 				<th>Abteilungsname</th>
@@ -138,7 +138,7 @@ $datenbankAusgabe = $datenbank->query("select * from abteilung");
 		</table>
 		</main>
 		<?php
-		include_once $wurzelVerzeichnis.'/html_include/footer.php';
+		include_once $wurzelVerzeichnis . '/html_include/footer.php';
 		?>
 	</div>
 
