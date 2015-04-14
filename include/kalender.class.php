@@ -100,7 +100,7 @@ class kalender
 				 */
 				if ($zeilen == 1)
 				{
-					echo "<td> {$wochentagNamenArray[$spalten-1]} </td>";
+					echo "<th>{$wochentagNamenArray[$spalten-1]}</th>";
 				}
 				else
 				{
