@@ -2,7 +2,8 @@
 
 nav {
 	padding: 0px 10px 0px 10px;
-	width: 980px;
+	width: 1000px;
+	margin: auto;
 }
 
 nav ul {
