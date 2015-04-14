@@ -2,7 +2,8 @@
 
 <?php
 // Einfügen der Bibliotheken
-include_once '../include/sessionkontrolle.class.php';
+$wurzelVerzeichnis = realpath($_SERVER['DOCUMENT_ROOT']);
+include_once $wurzelVerzeichnis.'/include/sessionkontrolle.class.php';
 ?>
 
 <?php
@@ -16,14 +17,14 @@ $pruefeSession->UserBereich();
 <head>
 <?php
 // Einfügen der im head-Bereich nötigen Informationen
-include_once '../html_include/head.php';
+include_once $wurzelVerzeichnis . '/html_include/head.php';
 ?>
 </head>
 <body>
 	<div id="container">
 		<?php
-		include_once '../html_include/header.php';
-		include_once '../html_include/navigation.php';
+		include_once $wurzelVerzeichnis.'/html_include/header.php';
+		include_once $wurzelVerzeichnis.'/html_include/navigation.php';
 		?>
 		<div id="content">
 		
@@ -34,7 +35,7 @@ include_once '../html_include/head.php';
 		</div>
 		
 		<?php
-		include_once '../html_include/footer.php';
+		include_once $wurzelVerzeichnis.'/html_include/footer.php';
 		?>
 
 	</div>
