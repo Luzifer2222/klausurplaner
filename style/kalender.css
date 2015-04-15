@@ -23,3 +23,11 @@ table.kalender th {
 table.kalender td {
 	height: 70px;
 }
+
+td.vormonat {
+	color: #acaaaa;
+}
+
+td.heute {
+	font-weight: bold;
+}
