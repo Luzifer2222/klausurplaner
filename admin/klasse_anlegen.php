@@ -41,12 +41,12 @@ if (isset($_POST['loescheklasse']) && isset($_POST['loesche']))
 
 // Abfrage Bereich
 $abfrageLehrer = "select * from lehrer;";
-$abfrageKlasse = "select k.klassenID, k.name, l.vorname, l.nachname from klassen k, lehrer l ";
-$abfrageKlasse .= "where k.klassenlehrerID = l.lehrerID;";
+$abfrageFach = "select k.klassenID, k.name, l.vorname, l.nachname from klassen k, lehrer l ";
+$abfrageFach .= "where k.klassenlehrerID = l.lehrerID;";
 
 // Ergebnisse der Abfragen
 $ergebnisLehrer = $datenbank->query($abfrageLehrer);
-$ergebnisKlasse = $datenbank->query($abfrageKlasse);
+$ergebnisFach = $datenbank->query($abfrageFach);
 
 // Einfügen der neuen Klasse
 if (isset($_POST['klasseanlegen']))
@@ -123,7 +123,7 @@ if (isset($_POST['klasseanlegen']))
 							<input type="submit" value="Löschen" name="loescheklasse" /></th>
 				</tr>
 				<?php
-				while ($daten = $ergebnisKlasse->fetch_object())
+				while ($daten = $ergebnisFach->fetch_object())
 				{
 					echo "<tr>";
 					echo "<td>" . $daten->klassenID . "</td>";
