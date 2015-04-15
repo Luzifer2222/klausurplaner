@@ -40,8 +40,7 @@ if (isset($_POST['fachanlegen']))
 		$insertQuery .= "('" . strtoupper($_POST['fach']) . "');";
 
 		$datenbank->query($insertQuery);
-		echo $datenbank->errno;
-		echo $datenbank->error;
+
 		if ($datenbank->affected_rows > 0)
 		{
 			// Speichern des Erfolgsstrings in eine Variable
