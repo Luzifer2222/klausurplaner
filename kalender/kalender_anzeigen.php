@@ -31,7 +31,14 @@ include '../html_include/head.php';
 			<?php 
 			$kalender = new kalender();
 			
-			$kalender->baueKalender(2015, 4);
+			if (isset($_POST['jahr']) && isset($_POST['monat']))
+			{
+			$kalender->baueKalender($_Post['jahr'], $_POST['monat']);
+			}
+			else 
+			{
+				$kalender->baueKalender(date("Y"), date("m"));
+			}
 			?>
 			 </main>
 			
