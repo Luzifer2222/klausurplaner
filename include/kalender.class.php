@@ -18,112 +18,62 @@ class kalender
 	private $fach;
 
 	private $lehrer;
-	
+
 	private $bundesland;
 
-	function baueKalender ($jahr, $monat)
+	private $locale;
+
+	function baueKalender ($jahr = NULL, $monat = NULL)
 	{
-		$internesJahr = $jahr;
-		$internerMonat = $monat;
+		setlocale(LC_TIME, "de_DE.utf8");
+		$kal_datum = mktime(0, 0, 0, $monat, 0, $jahr);
+		$kal_tage_gesamt = date("t", $kal_datum);
+		$kal_start_timestamp = mktime(0, 0, 0, date("n", $kal_datum), 1, date("Y", $kal_datum));
+		$kal_start_tag = date("N", $kal_start_timestamp);
+		$kal_ende_tag = date("N", mktime(0, 0, 0, date("n", $kal_datum), $kal_tage_gesamt, date("Y", $kal_datum)));
 		
-		/*
-		 * Generierung des Zeitstempels für den ersten Wochentag im angegebenen Monat
-		 */
-		$generiereZeitstempelDesErstenWochentagsImMonat = mktime(1, 0, 0, $internerMonat, 1, $internesJahr, 0);
+		echo "<table class=\"kalender\">\n";
+		echo "<caption>" . strftime("%B %Y", $kal_datum) . "</caption>\n";
+		echo "<tr>\n";
+		echo "<th>Montag</th>\n";
+		echo "<th>Dienstag</th>\n";
+		echo "<th>Mittwoch</th>\n";
+		echo "<th>Donnerstag</th>\n";
+		echo "<th>Freitag</th>\n";
+		echo "<th>Samstag</th>\n";
+		echo "<th>Sonntag</th>\n";
+		echo "</tr>\n";
 		
-		/*
-		 * Angabe über den ersten Wochentag in Numerischerform
-		 */
-		$ersterWochentagImMonat = date("w", $generiereZeitstempelDesErstenWochentagsImMonat);
-		
-		/*
-		 * Gibt einen Wert zwischen 28 und 31 zurück, jenachdem wie lang der Monat ist
-		 */
-		$anzahlTageDesMonats = date("t", mktime(1, 1, 1, $internerMonat));
-		
-		/*
-		 * Boolscherwert der auf true gesetzt wird, sobald der erste Tag in den Kalender geschrieben
-		 * wurde
-		 */
-		$wurdeErsterWochentagGeschrieben = false;
-		
-		/*
-		 * Wurde mit der Nummerierung im Kalender schon begonnen wird diese Variable auf True
-		 * gesetzt
-		 */
-		$beginneMitNummerierung = false;
-		
-		/*
-		 * Zähl Variable um eine Wochtagnummerierung im generierten Kalender einzufügen
-		 */
-		$tagDatum = 1;
-		
-		$wochentagNamenArray = array(
-			
-				// Erstellung der Tabelle für die
-				// Monatsansicht
-				"Montag", 
-				"Dienstag", 
-				"Mittwoch", 
-				"Donnerstag", 
-				"Freitag", 
-				"Samstag", 
-				"Sonntag"
-		);
-		
-		// Damit der Sonntag als 7ter Tag der Woche gilt und nicht der 0te
-		if ($ersterWochentagImMonat == 0)
+		for ($i = 1 ; $i <= $kal_tage_gesamt + ($kal_start_tag - 1) + (7 - $kal_ende_tag) ; $i++)
 		{
-			$ersterWochentagImMonat += 7;
-		}
-		
-		// Beginn der Kalender Tabelle
-		echo "<table class=\"kalender\">";
-		
-		/*
-		 * Schleife für die Zeilenanzahl Anzahl der Zeilen sind 7
-		 */
-		for ($zeilen = 1 ; $zeilen <= 7 ; $zeilen++)
-		{
-			echo "<tr>";
-			
-			/*
-			 * Schleife für die Spaltenanzahl Da eine Woche sieben Tage hat hat die Tabelle auch
-			 * sieben Spalten, wobei die erste Spalte mit Montag beginnt
-			 */
-			for ($spalten = 1 ; $spalten <= 7 ; $spalten++)
+			$kal_anzeige_akt_tag = $i - $kal_start_tag;
+			$kal_anzeige_heute_timestamp = strtotime($kal_anzeige_akt_tag . " day", $kal_start_timestamp);
+			$kal_anzeige_heute_tag = date("j", $kal_anzeige_heute_timestamp);
+			if (date("N", $kal_anzeige_heute_timestamp) == 1)
 			{
-				
-				/*
-				 * Prüft ob gerade die erste Zeile der Tabelle geschrieben wird, wenn ja wird der
-				 * Wochentagname geschrieben
-				 */
-				if ($zeilen == 1)
-				{
-					echo "<th>{$wochentagNamenArray[$spalten-1]}</th>";
-				}
-				else
-				{
-					if ($ersterWochentagImMonat == $spalten && $wurdeErsterWochentagGeschrieben == false)
-					{
-						echo "<td><p class=\"datum\">$tagDatum</p></td>";
-						$tagDatum++;
-						$beginneMitNummerierung = true;
-						$wurdeErsterWochentagGeschrieben = true;
-					}
-					elseif ($beginneMitNummerierung == true && $tagDatum <= $anzahlTageDesMonats)
-					{
-						echo "<td><p class=\"datum\">$tagDatum</p></td>";
-						$tagDatum++;
-					}
-					else
-					{
-						echo "<td>&nbsp;</td>";
-					}
-				}
+				echo "<tr>\n";
+			}
+			
+			if (date("dmY", $kal_datum) == date("dmY", $kal_anzeige_heute_timestamp))
+			{
+				echo "<td class=\"heute\">" , $kal_anzeige_heute_tag , "</td>\n";
+			}
+			elseif ($kal_anzeige_akt_tag >= 0 and $kal_anzeige_akt_tag < $kal_tage_gesamt)
+			{
+				echo "<td>" , $kal_anzeige_heute_tag , "</td>\n";
+			}
+			else
+			{
+				echo "<td class=\"vormonat\">" , $kal_anzeige_heute_tag , "</td>\n";
+			}
+			if (date("N", $kal_anzeige_heute_timestamp) == 7)
+			{
+				echo "</tr>\n";
 			}
 		}
+		
 		echo "</table>";
+	
 	}
 
 	function berechneFeiertage ($jahr, $bundesland)
@@ -147,7 +97,6 @@ class kalender
 		$allerheiligen = date("d.m.Y", mktime(0, 0, 0, 11, 1, $jahr));
 		$ersterWeihnachtsfeiertag = date("d.m.Y", mktime(0, 0, 0, 12, 25, $jahr));
 		$zweiterWeihnachtsfeiertag = date("d.m.Y", mktime(0, 0, 0, 12, 26, $jahr));
-		
 		
 		// Rückgabe aller Feiertage mit dazugehörigem Namen
 		// Zur Ausgabe muss eine foreach ( $name as $key => $value ) verwendet werden
