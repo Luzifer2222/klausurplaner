@@ -14,7 +14,7 @@ body {
 }
 
 #container {
-	/*width: 1000px;*/
+	min-width: 1020px;
 	background-color: white;
 	margin: auto;
 }
