@@ -23,57 +23,46 @@ class kalender
 
 	private $locale;
 
-	function baueKalender ($jahr = NULL, $monat = NULL)
+	function baueKalender ($jahr)
 	{
-		setlocale(LC_TIME, "de_DE.utf8");
-		$kal_datum = mktime(0, 0, 0, $monat, 0, $jahr);
-		$kal_tage_gesamt = date("t", $kal_datum);
-		$kal_start_timestamp = mktime(0, 0, 0, date("n", $kal_datum), 1, date("Y", $kal_datum));
-		$kal_start_tag = date("N", $kal_start_timestamp);
-		$kal_ende_tag = date("N", mktime(0, 0, 0, date("n", $kal_datum), $kal_tage_gesamt, date("Y", $kal_datum)));
+		$unterrichtsWoche = 1;
+		$kalenderAnfang = date("d.m.Y", mktime(0, 0, 0, 8, 1, $jahr));
+		$kalenderEnde = date("d.m.Y", mktime(0, 0, 0, 7, 31, ($jahr + 1)));
 		
-		echo "<table class=\"kalender\">\n";
-		echo "<caption>" . strftime("%B %Y", $kal_datum) . "</caption>\n";
-		echo "<tr>\n";
-		echo "<th>Montag</th>\n";
-		echo "<th>Dienstag</th>\n";
-		echo "<th>Mittwoch</th>\n";
-		echo "<th>Donnerstag</th>\n";
-		echo "<th>Freitag</th>\n";
-		echo "<th>Samstag</th>\n";
-		echo "<th>Sonntag</th>\n";
-		echo "</tr>\n";
+		$wochentagKalenderAnfang = date("N", strtotime($kalenderAnfang));
 		
-		for ($i = 1 ; $i <= $kal_tage_gesamt + ($kal_start_tag - 1) + (7 - $kal_ende_tag) ; $i++)
+		while ($wochentagKalenderAnfang > 1)
 		{
-			$kal_anzeige_akt_tag = $i - $kal_start_tag;
-			$kal_anzeige_heute_timestamp = strtotime($kal_anzeige_akt_tag . " day", $kal_start_timestamp);
-			$kal_anzeige_heute_tag = date("j", $kal_anzeige_heute_timestamp);
-			if (date("N", $kal_anzeige_heute_timestamp) == 1)
-			{
-				echo "<tr>\n";
-			}
-			
-			if (date("dmY", $kal_datum) == date("dmY", $kal_anzeige_heute_timestamp))
-			{
-				echo "<td class=\"heute\">" , $kal_anzeige_heute_tag , "</td>\n";
-			}
-			elseif ($kal_anzeige_akt_tag >= 0 and $kal_anzeige_akt_tag < $kal_tage_gesamt)
-			{
-				echo "<td>" , $kal_anzeige_heute_tag , "</td>\n";
-			}
-			else
-			{
-				echo "<td class=\"vormonat\">" , $kal_anzeige_heute_tag , "</td>\n";
-			}
-			if (date("N", $kal_anzeige_heute_timestamp) == 7)
-			{
-				echo "</tr>\n";
-			}
+			$kalenderAnfang = date("d.m.Y", strtotime("$kalenderAnfang -1 day"));
+			$wochentagKalenderAnfang--;
 		}
 		
+		echo "<table class=\"kalender\">";
+		echo "<tr>
+				<th>KW</th>
+				<th class=\"vonbis\">Von - Bis</th>
+				<th>Montag</th>
+				<th>Dienstag</th>
+				<th>Mittwoch</th>
+				<th>Donnerstag</th>
+				<th>Freitag</th>
+			  </tr>\n";
+		while (strtotime($kalenderAnfang) < strtotime($kalenderEnde))
+		{
+			echo "<tr>";
+			echo "<td>" . date("W", strtotime($kalenderAnfang)) . "</td>\n";
+			echo "<td>" . date("d.m.", strtotime("$kalenderAnfang")) . " - " .
+						 date("d.m.", strtotime("$kalenderAnfang next friday")) . "</td>\n";
+			echo "<td class=\"tage\"></td>\n";
+			echo "<td class=\"tage\"></td>\n";
+			echo "<td class=\"tage\"></td>\n";
+			echo "<td class=\"tage\"></td>\n";
+			echo "<td class=\"tage\"></td>\n";
+			echo "</tr>\n";
+			
+			$kalenderAnfang = date("d.m.Y", strtotime("$kalenderAnfang +1 week"));
+		}
 		echo "</table>";
-	
 	}
 
 	function berechneFeiertage ($jahr, $bundesland)
