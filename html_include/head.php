@@ -13,4 +13,4 @@
 <!-- Einfügen des FavoritenIcons -->
 <link rel="icon" href="../pictures/favicon/favicon.png" sizes="16x16 32x32" type="images/png">
 <!-- Einfügen der CSS-Dateine -->
-<link href="../style/style.css" rel="stylesheet" type="text/css" />
+<link href="/style/style.css" rel="stylesheet" type="text/css" />
