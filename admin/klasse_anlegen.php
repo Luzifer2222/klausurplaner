@@ -51,8 +51,6 @@ $ergebnisFach = $datenbank->query($abfrageFach);
 // Einfügen der neuen Klasse
 if (isset($_POST['klasseanlegen']))
 {
-	echo $_POST['klasse'];
-	echo $_POST['klassenlehrer'];
 	if ($_POST['klasse'] != "")
 	{
 		$insertQuery = "INSERT INTO klassen ";
