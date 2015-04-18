@@ -1,12 +1,13 @@
-<?php 
-//Einfügen der Konfigurations-Dateien
+<?php
+// Einfügen der Konfigurations-Dateien
 require_once 'config/cts.conf.php';
 ?>
 
-<?php 
-//Einfügen der Bibliotheken
+<?php
+// Einfügen der Bibliotheken
 require_once 'include/sessionkontrolle.class.php';
 require_once 'include/loginfunktion.php';
+include_once 'include/kalender.class.php';
 ?>
 
 <?php session_start()?>
@@ -45,6 +46,9 @@ require_once 'include/loginfunktion.php';
 						break;
 					case 'lehrer_anlegen.php':
 						include_once 'admin/lehrer_anlegen.php';
+						break;
+					case 'kalender_anzeigen.php':
+						include_once 'kalender/kalender_anzeigen.php';
 						break;
 				}
 			}

@@ -24,9 +24,6 @@ class sessionkontrolle
 
 	function UserBereich ()
 	{
-		// Starten/Wiederaufnehmen einer Session
-		session_start();
-		
 		// Prüfen ob das Array der der Session initialisiert wurde
 		if (!isset($_SESSION['benutzername']))
 		{
@@ -37,18 +34,18 @@ class sessionkontrolle
 		  <a href=\"/index.php\">Hauptseite</a>");
 		}
 	}
-	
-	function navigation (){
-					
-			// Prüfen ob das Array der der Session initialisiert wurde
-			if (isset($_SESSION['benutzername']))
-			{
-				 return $sessionErfolgreich = 1;
-			}
-			
-			return $sessionErfolgreich = 0;
+
+	function navigation ()
+	{
 		
-			
+		// Prüfen ob das Array der der Session initialisiert wurde
+		if (isset($_SESSION['benutzername']))
+		{
+			return $sessionErfolgreich = 1;
+		}
+		
+		return $sessionErfolgreich = 0;
+	
 	}
 
 	function ausloggen ()
