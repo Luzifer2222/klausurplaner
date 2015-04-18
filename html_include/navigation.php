@@ -1,9 +1,3 @@
-<?php
-// Einbinden der benötigten Bibliotheken
-$wurzelVerzeichniss = realpath($_SERVER['DOCUMENT_ROOT']);
-include_once $wurzelVerzeichniss . '/include/sessionkontrolle.class.php';
-?>
-
 <nav>
 	<ul>
 		<li class="user">
@@ -13,10 +7,10 @@ include_once $wurzelVerzeichniss . '/include/sessionkontrolle.class.php';
 			<a href="#">Kalender</a>
 			<ul>
 				<li>
-					<a href="/kalender/kalender_anzeigen.php">Anzeigen</a>
+					<a href="/index.php?seite=kalender_anzeigen.php">Anzeigen</a>
 				</li>
 				<li>
-					<a href="/kalender/neuer_eintrag.php">Eintrag</a>
+					<a href="/index.php?seite=neuer_eintrag.php">Eintrag</a>
 				</li>
 			</ul>
 		</li>
@@ -24,16 +18,16 @@ include_once $wurzelVerzeichniss . '/include/sessionkontrolle.class.php';
 			<a href="#">Admin</a>
 			<ul>
 				<li>
-					<a href="/admin/klasse_anlegen.php">Klasse anlegen</a>
+					<a href="/index.php?seite=klasse_anlegen.php">Klasse anlegen</a>
 				</li>
 				<li>
-					<a href="/admin/fach_anlegen.php">Fach anlegen</a>
+					<a href="/index.php?seite=fach_anlegen.php">Fach anlegen</a>
 				</li>
 				<li>
-					<a href="/admin/lehrer_anlegen.php">Lehrer anlegen</a>
+					<a href="/index.php?seite=lehrer_anlegen.php">Lehrer anlegen</a>
 				</li>
 				<li>
-				<a href="/admin/abteilung_anlegen.php">Abteilung anlegen</a>
+				<a href="/index.php?seite=abteilung_anlegen.php">Abteilung anlegen</a>
 				</li>
 
 			</ul>
