@@ -5,9 +5,6 @@ class sessionkontrolle
 
 	function AdminBereich ()
 	{
-		// Starten/Wiederaufnehmen einer Session
-		session_start();
-		
 		// Prüfen ob das Array der der Session initialisiert wurde
 		if (!isset($_SESSION['benutzername']) && !isset($_SESSION['administrator']))
 		{
