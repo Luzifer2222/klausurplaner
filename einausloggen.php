@@ -1,15 +1,4 @@
 <?php
-// Einfügen der Bibliotheken
-$wurzelVerzeichnis = realpath($_SERVER['DOCUMENT_ROOT']);
-include_once $wurzelVerzeichnis . '/config/cts.conf.php';
-include_once $wurzelVerzeichnis . '/include/loginfunktion.php';
-include_once $wurzelVerzeichnis . '/include/sessionkontrolle.class.php';
-
-?>
-
-<?php
-// Starten/Wiederaufnehmen einer Session
-session_start();
 
 $angemeldet = false;
 
@@ -38,7 +27,7 @@ if (isset($_POST['anmelden']))
 				// Setzen des Sessionarray mit dem Benutzernamen der eingegeben wurde
 				$_SESSION['benutzername'] = $_POST['benutzername'];
 				$_SESSION['administrator'] = $queryErgebnis->administrator;
-				$angemeldet=true;
+				$angemeldet = true;
 			}
 		}
 	}
@@ -47,8 +36,7 @@ if (isset($_POST['anmelden']))
 	if (!isset($_SESSION['benutzername']))
 	{
 		// Programm abbruch, da die Session nicht initialisiert wurde.
-		exit("<p style=\"font-weight: bold; color: #FF0000\">Benutzername oder Passwort falsch!<br />
-            Sie haben keinen Zugang zu der Seite! <br /><a href=index.php>Hauptseite</a>");
+		$einausgeloggt = "<p class=\"error\">Benutzername oder Passwort falsch!";
 	}
 	
 	$datenbank->close();
@@ -60,46 +48,20 @@ if (isset($_POST['abmelden']))
 	
 	$session->ausloggen();
 	
-	$angemeldet=false;
+	$angemeldet = false;
 }
 ?>
 
-<!Doctype html>
-<html>
-<head>
-<?php
-// Einfügen der im head-Bereich nötigen Informationen
-include_once $wurzelVerzeichnis . '/html_include/head.php';
-?>
-</head>
-<body>
-	<div id="container">
-		<?php
-		include_once $wurzelVerzeichnis . '/html_include/header.php';
-		include_once $wurzelVerzeichnis . '/html_include/navigation.php';
-		?>
-		<div id="content">
-
-			<main>
-			<?php 
-				if($angemeldet)
-				{	
-					echo "<p>Sie sind nun eingeloggt!</p>";
-				}
-				else
-				{
-					echo "<p>Sie sind nun ausgeloggt!</p>";
-				}
+			<?php
+			if ($angemeldet)
+			{
+				$einausgeloggt = "<p class=\"erfolgreich\">Sie sind nun eingeloggt!</p>";
+			}
+			elseif (isset($einausgeloggt))
+			{}
+			elseif (!$angemeldet)
+			{
+				$einausgeloggt = "<p class=\"erfolgreich\">Sie sind nun ausgeloggt!</p>";
+			}
 			?>
-			</main>
-
-		</div>
-		
-		<?php
-		include_once $wurzelVerzeichnis . '/html_include/footer.php';
-		?>
-
-	</div>
-</body>
-
-</html>
+			

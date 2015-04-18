@@ -1,13 +1,13 @@
 <?php
 // Einfügen der Konfigurations-Dateien
-require_once 'config/cts.conf.php';
+require_once './config/cts.conf.php';
 ?>
 
 <?php
 // Einfügen der Bibliotheken
-require_once 'include/sessionkontrolle.class.php';
-require_once 'include/loginfunktion.php';
-include_once 'include/kalender.class.php';
+require_once './include/sessionkontrolle.class.php';
+require_once './include/loginfunktion.php';
+include_once './include/kalender.class.php';
 ?>
 
 <?php session_start()?>
@@ -20,6 +20,8 @@ include_once 'include/kalender.class.php';
 	<div id="container">
 		<?php
 		include_once 'html_include/header.php';
+		if (isset($_GET['seite']) && $_GET['seite'] == 'einausloggen.php')
+			include_once './einausloggen.php';
 		include_once 'html_include/navigation.php';
 		?>
 		<div id="content">
@@ -27,6 +29,8 @@ include_once 'include/kalender.class.php';
 
 			<main>
 			<?php
+			if(isset($einausgeloggt))
+			echo $einausgeloggt;
 			
 			if (isset($_GET['seite']))
 			{
