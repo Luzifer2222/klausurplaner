@@ -1,10 +1,3 @@
-<?php
-// Einfügen der Bibliotheken
-$wurzelVerzeichnis = realpath($_SERVER['DOCUMENT_ROOT']);
-include_once $wurzelVerzeichnis.'/include/sessionkontrolle.class.php';
-include_once $wurzelVerzeichnis.'/include/loginfunktion.php';
-include_once $wurzelVerzeichnis.'/config/cts.conf.php';
-?>
 
 <?php
 
@@ -12,14 +5,7 @@ $pruefeSession = new sessionkontrolle();
 $pruefeSession->AdminBereich();
 
 ?>
-
-<html>
-<head>
-<?php
-// Einfügen der im head-Bereich nötigen Informationen
-include_once $wurzelVerzeichnis.'/html_include/head.php';
-?>
-    
+   
 <?php
 // Verbindung zu Datenbank herstellen
 $datenbank = new mysqli($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
@@ -35,14 +21,15 @@ if (isset($_POST['benanlegen']))
 	// Überprüfung ob alle Felder des Einfüge Formulars ausgefüllt wurden
 	if ($_POST['vname'] != "" && $_POST['nname'] != "" && $_POST['kuerzel'] != "" && $_POST['bname'] != "" && $_POST['pwd'] != "")
 	{
-		if(!isset($_POST['administrator'][0]))
+		if (!isset($_POST['administrator'][0]))
 		{
 			$_POST['administrator'][0] = 0;
 		}
 		// Erstellen der Einfüge anweisung in SQL
 		$insertquery = "insert into lehrer ";
 		$insertquery .= "(vorname, nachname, kuerzel, benutzername, passwort, administrator, abteilungID) values";
-		$insertquery .= "('" . $_POST['vname'] . "', '" . $_POST['nname'] . "', '" . strtoupper($_POST['kuerzel']) . "', '" . strtolower($_POST['bname']) . "', '";
+		$insertquery .= "('" . $_POST['vname'] . "', '" . $_POST['nname'] . "', '" . strtoupper($_POST['kuerzel']) . "', '" .
+					 strtolower($_POST['bname']) . "', '";
 		$insertquery .= verschluesselLogin($_POST['pwd']) . "', '" . $_POST['administrator'][0] . "', '" . $_POST['abteilung'] . "');";
 		
 		// Einfügen der Formulardaten in die Lehrertabelle
@@ -86,31 +73,20 @@ $abfragelehrer .= "where l.abteilungID = a.abteilungID";
 // Ergebnis der Abfrage aus $abfragelehrer
 $ergabfragerlehrer = $datenbank->query($abfragelehrer);
 ?>
-
-</head>
-<body>
-	<div id="container">
-		<?php
-		include_once $wurzelVerzeichnis.'/html_include/header.php';
-		include_once $wurzelVerzeichnis.'/html_include/navigation.php';
-		?>
-		<div id="content">
-
-			<main>
-			<form class="anlegen" action="<?php $_SERVER['PHP_SELF']?>" method="post" name="lehrereinfuegen" class="lehrereinfuegen">
-				<fieldset>
-					<legend>Einfügen des Lehrpersonals in das 'CTS'</legend>
-					<p>
-						<label for="vorname">Vorname:</label> <input type="text" maxlength="50" name="vname" id="vorname">
-					</p>
-					<p>
-						<label for="nachname">Nachname:</label> <input type="text" maxlength="50" name="nname" id="nachname">
-					</p>
-					<p>
-						<label for="kuerzel">Kürzel:</label> <input type="text" min="4" maxlength="5" name="kuerzel" id="kuerzel">
-					</p>
-					<p>
-						<label for="abteilung">Abteilung:</label> <select name="abteilung" id="abteilung">
+<form class="anlegen" action="<?php $_SERVER['PHP_SELF']?>" method="post" name="lehrereinfuegen" class="lehrereinfuegen">
+	<fieldset>
+		<legend>Einfügen des Lehrpersonals in das 'CTS'</legend>
+		<p>
+			<label for="vorname">Vorname:</label> <input type="text" maxlength="50" name="vname" id="vorname">
+		</p>
+		<p>
+			<label for="nachname">Nachname:</label> <input type="text" maxlength="50" name="nname" id="nachname">
+		</p>
+		<p>
+			<label for="kuerzel">Kürzel:</label> <input type="text" min="4" maxlength="5" name="kuerzel" id="kuerzel">
+		</p>
+		<p>
+			<label for="abteilung">Abteilung:</label> <select name="abteilung" id="abteilung">
 							<?php
 							
 							$ergabteilungdb = $datenbank->query($abfrageabteilung);
@@ -121,46 +97,47 @@ $ergabfragerlehrer = $datenbank->query($abfragelehrer);
 							
 							?>
         </select>
-					</p>
-					<p>
-						<label for="administrator">Administrator:</label> <input type="checkbox" name="administrator[]" value="1">
-					</p>
-					<p>
-						<label for="benutzername">Benutzername:</label> <input type="text" min="4" maxlength="15" name="bname">
-					</p>
-					<p>
-						<label for="passwort">Passwort:</label> <input type="password" min="5" name="pwd">
-					</p>
-					<p class="button">
-						<label>&nbsp;</label><input type="submit" name="benanlegen" value="Lehrer anlegen"> <input type="reset" name="reset" value="Zurücksetzen">
-					</p>
-				</fieldset>
-			</form>
-			
-  
-  <?php
-		// Ausgabe ob eintrag in die Datenbank erfolgreich war.
-		if (isset($ausgabe))
-		{
-			echo $ausgabe;
-		}
-		?>
-  <hr>
-			<table class="ausgabe">
-				<caption>Angelegte Lehrer</caption>
-				<tr>
-					<th>LehrerID</th>
-					<th>Vorname</th>
-					<th>Nachname</th>
-					<th>Kürzel</th>
-					<th>Benutzername</th>
-					<th>Abteilung</th>
-					<th>Admin</th>
-					<th>
-						<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-							<input type="submit" name="loeschelehrer" value="Löschen?">
-					</th>
-				</tr>
+		</p>
+		<p>
+			<label for="administrator">Administrator:</label> <input type="checkbox" name="administrator[]" value="1">
+		</p>
+		<p>
+			<label for="benutzername">Benutzername:</label> <input type="text" min="4" maxlength="15" name="bname">
+		</p>
+		<p>
+			<label for="passwort">Passwort:</label> <input type="password" min="5" name="pwd">
+		</p>
+		<p class="button">
+			<label>&nbsp;</label><input type="submit" name="benanlegen" value="Lehrer anlegen"> <input type="reset" name="reset" value="Zurücksetzen">
+		</p>
+	</fieldset>
+</form>
+
+
+<?php
+// Ausgabe ob eintrag in die Datenbank erfolgreich war.
+if (isset($ausgabe))
+{
+	echo $ausgabe;
+}
+?>
+<hr>
+<table class="ausgabe">
+	<caption>Angelegte Lehrer</caption>
+	<tr>
+		<th>LehrerID</th>
+		<th>Vorname</th>
+		<th>Nachname</th>
+		<th>Kürzel</th>
+		<th>Benutzername</th>
+		<th>Abteilung</th>
+		<th>Admin</th>
+		<th>
+			<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+				<input type="submit" name="loeschelehrer" value="Löschen?">
+		
+		</th>
+	</tr>
     <?php
 				while ($lehrertabelle = $ergabfragerlehrer->fetch_object())
 				{
@@ -184,26 +161,17 @@ $ergabfragerlehrer = $datenbank->query($abfragelehrer);
 				}
 				?>
     <tr>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td><input type="submit" name="loeschelehrer" value="Löschen?">
-						</form></td>
-				</tr>
-			</table>
-			</main>
-		</div>
-		
-		<?php 
-		include_once $wurzelVerzeichnis.'/html_include/footer.php';
-		?>
-
-	</div>
-</body>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td><input type="submit" name="loeschelehrer" value="Löschen?">
+			</form></td>
+	</tr>
+</table>
 
 <?php
 // Schließen der Datenbank am Ende der Seite

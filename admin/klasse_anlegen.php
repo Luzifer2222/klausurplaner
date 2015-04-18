@@ -1,25 +1,8 @@
-<!-- Grundgerüst für HTML-Dokumente bitte immer dieses Verwenden!  -->
-
-<?php
-// Einfügen der Bibliotheken
-$wurzelVerzeichnis = realpath($_SERVER['DOCUMENT_ROOT']);
-include_once $wurzelVerzeichnis . '/include/sessionkontrolle.class.php';
-include_once $wurzelVerzeichnis . '/config/cts.conf.php';
-?>
-
 <?php
 
 $pruefeSession = new sessionkontrolle();
-$pruefeSession->AdminBereich()
+$pruefeSession->AdminBereich()?>
 
-?>
-<!Doctype html>
-<html>
-<head>
-<?php
-// Einfügen der im head-Bereich nötigen Informationen
-include_once $wurzelVerzeichnis . '/html_include/head.php';
-?>
 
 <?php
 // Datenbankverbindung initialisieren
@@ -30,9 +13,9 @@ if (isset($_POST['loescheklasse']) && isset($_POST['loesche']))
 {
 	echo $_POST['loescheklasse'];
 	$loescheQuery = "delete from klassen where klassenID = " . $_POST['loesche'];
-
+	
 	$datenbank->query($loescheQuery);
-
+	
 	if ($datenbank->affected_rows > 0)
 	{
 		$ausgabe = "<p class=\"erfolgreich\">Es wurde der Datensatz mit der ID " . $_POST['loesche'] . " gelöscht.</p><hr>";
@@ -73,24 +56,14 @@ if (isset($_POST['klasseanlegen']))
 }
 
 ?>
-</head>
-<body>
-	<div id="container">
-		<?php
-		include_once $wurzelVerzeichnis . '/html_include/header.php';
-		include_once $wurzelVerzeichnis . '/html_include/navigation.php';
-		?>
-		<div id="content">
-
-			<main>
-			<form class="anlegen" action="<?php $_SERVER['PHP_SELF']?>" method="post">
-				<fieldset>
-					<legend>Klasse anlegen</legend>
-					<p>
-						<label for="klasse">Klasse</label><input type="text" id="klasse" name="klasse">
-					</p>
-					<p>
-						<label for="klassenlehrer">Klassen Lehrer</label> <select id="klassenlehrer" name="klassenlehrer">
+<form class="anlegen" action="<?php $_SERVER['PHP_SELF']?>" method="post">
+	<fieldset>
+		<legend>Klasse anlegen</legend>
+		<p>
+			<label for="klasse">Klasse</label><input type="text" id="klasse" name="klasse">
+		</p>
+		<p>
+			<label for="klassenlehrer">Klassen Lehrer</label> <select id="klassenlehrer" name="klassenlehrer">
 							<?php
 							while ($daten = $ergebnisLehrer->fetch_object())
 							{
@@ -98,28 +71,28 @@ if (isset($_POST['klasseanlegen']))
 							}
 							?>
 						</select>
-					</p>
-					<p>
-						<label>&nbsp;</label><input type="submit" value="Klasse anlegen" name="klasseanlegen"> <input type="reset" value="Zurücksetzen" name="zuruecksetzen">
-					</p>
-				</fieldset>
-			</form>
-			<hr>
-			<?php
-			if (isset($ausgabe))
-			{
-				echo $ausgabe;
-			}
-			?>
+		</p>
+		<p>
+			<label>&nbsp;</label><input type="submit" value="Klasse anlegen" name="klasseanlegen"> <input type="reset" value="Zurücksetzen" name="zuruecksetzen">
+		</p>
+	</fieldset>
+</form>
+<hr>
+<?php
+if (isset($ausgabe))
+{
+	echo $ausgabe;
+}
+?>
 
-			<table class="ausgabe">
-				<tr>
-					<th>KlassenID</th>
-					<th>Klassenname</th>
-					<th>Klassen Lehrer</th>
-					<th><form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-							<input type="submit" value="Löschen" name="loescheklasse" /></th>
-				</tr>
+<table class="ausgabe">
+	<tr>
+		<th>KlassenID</th>
+		<th>Klassenname</th>
+		<th>Klassen Lehrer</th>
+		<th><form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+				<input type="submit" value="Löschen" name="loescheklasse" /></th>
+	</tr>
 				<?php
 				while ($daten = $ergebnisFach->fetch_object())
 				{
@@ -132,24 +105,14 @@ if (isset($_POST['klasseanlegen']))
 				}
 				?>
 				<tr>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td><input type="submit" value="Löschen" name="loescheklasse" /></form></td>
-			
-			</table>
-			</main>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td><input type="submit" value="Löschen" name="loescheklasse" />
+		</form></td>
 
-		</div>
-		
-		<?php
-		include_once $wurzelVerzeichnis . '/html_include/footer.php';
-		?>
+</table>
 
-	</div>
-</body>
-
-</html>
-<?php 
+<?php
 $datenbank->close();
 ?>

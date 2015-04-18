@@ -1,26 +1,9 @@
-<?php
-
-// Einfügen der Bibliotheken
-$wurzelVerzeichnis = realpath($_SERVER['DOCUMENT_ROOT']);
-include_once $wurzelVerzeichnis . '/include/sessionkontrolle.class.php';
-include_once $wurzelVerzeichnis . '/config/cts.conf.php';
-
+<?php 
+//Kontrolle ob User angemeldet ist und Administratorrechte hat
+$session = new sessionkontrolle();
+$session->AdminBereich();
 ?>
 
-<?php
-
-$pruefeSession = new sessionkontrolle();
-$pruefeSession->AdminBereich();
-
-?>
-
-<html>
-<head>
-<?php
-// Einfügen der im head-Bereich nötigen Informationen
-include_once $wurzelVerzeichnis . '/html_include/head.php';
-?>
-    
 <?php
 
 // Öffnen der Datenbankverbindung
@@ -86,39 +69,31 @@ if (isset($_POST['loescheabt']) && isset($_POST['loesche']))
 $datenbankAusgabe = $datenbank->query("select * from abteilung");
 
 ?>
-</head>
-<body>
-	<div id="container">
-	<?php
-	include_once $wurzelVerzeichnis . '/html_include/header.php';
-	include_once $wurzelVerzeichnis . '/html_include/navigation.php';
-	?>
-	<main> <!-- Formular zum erstellen einer neuen Abteilung -->
-		<form action="<?php $_SERVER['PHP_SELF']?>" method="post" class="anlegen">
-			<fieldset>
-				<legend>Abteilung anlegen</legend>
-				<p>
-					<label>Abteilungsname:</label><input type="text" min="4" maxlength="50" name="abtname" />
-				</p>
-				<p>
-					<label>&nbsp;</label> <input type="submit" name="abtanlegen" value="Abteilung anlegen" /> <input type="reset" value="Zurücksetzen" name="zuruecksetzen">
-				</p>
-			</fieldset>
-		</form>
-		
- 	 <?php
-			if (isset($ausgabe))
-				echo $ausgabe;
-			?>
-		<hr>
-		<table class="ausgabe">
-			<caption>Angelegte Abteilungen</caption>
-			<tr>
-				<th>AbteilungsID</th>
-				<th>Abteilungsname</th>
-				<th><form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-						<input type="submit" name="loescheabt" value="Löschen?"></th>
-			</tr>
+<form action="<?php $_SERVER['PHP_SELF']?>" method="post" class="anlegen">
+	<fieldset>
+		<legend>Abteilung anlegen</legend>
+		<p>
+			<label>Abteilungsname:</label><input type="text" min="4" maxlength="50" name="abtname" />
+		</p>
+		<p>
+			<label>&nbsp;</label> <input type="submit" name="abtanlegen" value="Abteilung anlegen" /> <input type="reset" value="Zurücksetzen" name="zuruecksetzen">
+		</p>
+	</fieldset>
+</form>
+
+<?php
+if (isset($ausgabe))
+	echo $ausgabe;
+?>
+<hr>
+<table class="ausgabe">
+	<caption>Angelegte Abteilungen</caption>
+	<tr>
+		<th>AbteilungsID</th>
+		<th>Abteilungsname</th>
+		<th><form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+				<input type="submit" name="loescheabt" value="Löschen?"></th>
+	</tr>
     	   <?php
 								while ($lehrertabelle = $datenbankAusgabe->fetch_object())
 								{
@@ -130,20 +105,15 @@ $datenbankAusgabe = $datenbank->query("select * from abteilung");
 								}
 								?>
 	    <tr>
-				<td>&nbsp;</td>
-				<td>&nbsp;</td>
-				<td><input type="submit" name="loescheabt" value="Löschen?">
-					</form></td>
-			</tr>
-		</table>
-		</main>
-		<?php
-		include_once $wurzelVerzeichnis . '/html_include/footer.php';
-		?>
-	</div>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td><input type="submit" name="loescheabt" value="Löschen?">
+			</form></td>
+	</tr>
+</table>
 
-</body>
+
+
 <?php
 $datenbank->close();
 ?>
-</html>
