@@ -7,10 +7,10 @@
 			<a href="#">Kalender</a>
 			<ul>
 				<li>
-					<a href="/index.php?seite=kalender_anzeigen.php">Anzeigen</a>
+					<a href="./index.php?seite=kalender_anzeigen.php">Anzeigen</a>
 				</li>
 				<li>
-					<a href="/index.php?seite=neuer_eintrag.php">Eintrag</a>
+					<a href="./index.php?seite=neuer_eintrag.php">Eintrag</a>
 				</li>
 			</ul>
 		</li>
@@ -18,16 +18,16 @@
 			<a href="#">Admin</a>
 			<ul>
 				<li>
-					<a href="/index.php?seite=klasse_anlegen.php">Klasse anlegen</a>
+					<a href="./index.php?seite=klasse_anlegen.php">Klasse anlegen</a>
 				</li>
 				<li>
-					<a href="/index.php?seite=fach_anlegen.php">Fach anlegen</a>
+					<a href="./index.php?seite=fach_anlegen.php">Fach anlegen</a>
 				</li>
 				<li>
-					<a href="/index.php?seite=lehrer_anlegen.php">Lehrer anlegen</a>
+					<a href="./index.php?seite=lehrer_anlegen.php">Lehrer anlegen</a>
 				</li>
 				<li>
-				<a href="/index.php?seite=abteilung_anlegen.php">Abteilung anlegen</a>
+				<a href="./index.php?seite=abteilung_anlegen.php">Abteilung anlegen</a>
 				</li>
 
 			</ul>
@@ -42,7 +42,7 @@
 			<a href="#">Eingeloggt</a>
 			<ul>
 				<li>
-					<form action="/einausloggen.php" method="post" name="abmeldeformular" class="abmeldeformular">
+					<form action="./index.php?seite=einausloggen.php" method="post" name="abmeldeformular" class="abmeldeformular">
 						<fieldset>
 							<legend>Eingeloggt</legend>
 							<p><?php echo "Benutzername: " . $_SESSION['benutzername']?></p>
@@ -59,7 +59,7 @@
 			<a href="#">Login</a>
 			<ul>
 				<li>
-					<form action="/einausloggen.php" method="post" name="anmeldeformular" class="anmeldeformular">
+					<form action="./index.php?seite=einausloggen.php" method="post" name="anmeldeformular" class="anmeldeformular">
 						<fieldset>
 							<legend>Anmeldeformular</legend>
 							<p>
