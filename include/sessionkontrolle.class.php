@@ -9,7 +9,7 @@ class sessionkontrolle
 		if (!isset($_SESSION['benutzername']) && !isset($_SESSION['administrator']))
 		{
 			// die Session nicht initialisiert wurde.
-			exit("<p>Sie haben keinen Zugang zu der Seite!<br><a href=\"/index.php\">Hauptseite</a></p>");
+			exit("<p class=\"error\">Sie haben keinen Zugang zu der Seite!<br>Sie sind nicht angemeldet.</p>");
 		
 		}
 		
@@ -17,7 +17,7 @@ class sessionkontrolle
 		{
 			
 			// Programm abbruch, da der Benutzer kein Administrator ist
-			exit("<p>Sie haben keinen Zugang zu der Seite!<br><a href=\"/index.php\">Hauptseite</a></p>");
+			exit("<p class=\"error\">Sie haben keinen Zugang zu der Seite!<br /> Sie sind kein Administrator</p>");
 		}
 	
 	}
@@ -28,10 +28,7 @@ class sessionkontrolle
 		if (!isset($_SESSION['benutzername']))
 		{
 			// Programm abbruch, da die Session nicht initialisiert wurde.
-			exit(
-						"<p>Benutzername oder Passwort falsch!</p>
-          <p>Sie haben keinen Zugang zu der Seite! <br>
-		  <a href=\"/index.php\">Hauptseite</a>");
+			exit("<p class=\"error\">Sie haben keinen Zugang zu der Seite!<br>Sie sind nicht angemeldet.</p>");
 		}
 	}
 
