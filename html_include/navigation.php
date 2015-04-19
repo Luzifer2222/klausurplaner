@@ -18,6 +18,9 @@
 			<a href="#">Admin</a>
 			<ul>
 				<li>
+					<a href="./index.php?seite=globale_termine_anlegen.php">Globale Termine anlegen</a>
+				</li>
+				<li>
 					<a href="./index.php?seite=klasse_anlegen.php">Klasse anlegen</a>
 				</li>
 				<li>
