@@ -54,6 +54,9 @@ include_once './include/kalender.class.php';
 					case 'kalender_anzeigen.php':
 						include_once 'kalender/kalender_anzeigen.php';
 						break;
+					case 'globale_termine_anlegen.php':
+						include_once 'admin/globale_termine_anlegen.php';
+						break;
 				}
 			}
 			
