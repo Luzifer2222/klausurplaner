@@ -63,7 +63,7 @@ if (isset($_POST['klasseanlegen']))
 			<label for="klasse">Klasse</label><input type="text" id="klasse" name="klasse">
 		</p>
 		<p>
-			<label for="klassenlehrer">Klassen Lehrer</label> <select id="klassenlehrer" name="klassenlehrer">
+			<label for="klassenlehrer">Klassenlehrer</label> <select id="klassenlehrer" name="klassenlehrer">
 							<?php
 							while ($daten = $ergebnisLehrer->fetch_object())
 							{
