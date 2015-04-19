@@ -27,7 +27,7 @@
 					<a href="./index.php?seite=fach_anlegen.php">Fach anlegen</a>
 				</li>
 				<li>
-					<a href="./index.php?seite=lehrer_anlegen.php">Lehrer anlegen</a>
+					<a href="./index.php?seite=lehrer_anlegen.php">Lehrer anlegen/ändern</a>
 				</li>
 				<li>
 				<a href="./index.php?seite=abteilung_anlegen.php">Abteilung anlegen</a>
