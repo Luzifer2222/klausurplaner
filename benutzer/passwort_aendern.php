@@ -20,20 +20,28 @@ if (isset($_POST['aendern']))
 	// Überprüfung ob alle Felder des Einfüge Formulars ausgefüllt wurden
 	if ($_POST['pwd'] != "")
 	{
-		// Erstellen der Einfüge anweisung in SQL
-		$insertquery = "UPDATE lehrer ";
-		$insertquery .= "SET passwort = '";
-		$insertquery .= verschluesselLogin($_POST['pwd']);
-		$insertquery .= "' WHERE lehrerID = '" . $_SESSION['ID'] . "'";
-		
-		// Einfügen der Formulardaten in die Lehrertabelle
-		$datenbank->query($insertquery);
-		
-		// Überprüfung ob der Datensatz angelegt wurde
-		if ($datenbank->affected_rows > 0)
+		if ($_POST['pwd'] == $_POST['wiederholen'])
 		{
-			// Speichern des Ausgabestrings in eine Variable
-			$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde das Passwort geändert.</p>";
+			// Erstellen der Einfüge anweisung in SQL
+			$insertquery = "UPDATE lehrer ";
+			$insertquery .= "SET passwort = '";
+			$insertquery .= verschluesselLogin($_POST['pwd']);
+			$insertquery .= "' WHERE lehrerID = '" . $_SESSION['ID'] . "'";
+			
+			// Einfügen der Formulardaten in die Lehrertabelle
+			$datenbank->query($insertquery);
+			
+			// Überprüfung ob der Datensatz angelegt wurde
+			if ($datenbank->affected_rows > 0)
+			{
+				// Speichern des Ausgabestrings in eine Variable
+				$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde das Passwort geändert.</p>";
+			}
+		}
+		else
+		{
+			// Speichern des Fehlerstrings in eine Variable
+			$ausgabe = "<hr><p class=\"error\">Das Passwort stimmt nicht überein!</p>";
 		}
 	}
 	else
@@ -55,6 +63,9 @@ if (isset($_POST['aendern']))
 		</p>
 		<p>
 			<label for="passwort">Passwort:</label> <input type="password" min="4" name="pwd">
+		</p>
+		<p>
+			<label for="wiederholen">Wiederholen:</label> <input type="password" min="5" name="wiederholen">
 		</p>
 		<p class="button">
 			<label>&nbsp;</label><input type="submit" name="aendern" value="Passwort ändern"> <input type="reset" name="reset" value="Zurücksetzen">

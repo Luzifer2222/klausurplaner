@@ -21,20 +21,28 @@ if (isset($_POST['aendern']))
 	// Überprüfung ob alle Felder des Einfüge Formulars ausgefüllt wurden
 	if ($_POST['pwd'] != "")
 	{
-		// Erstellen der Einfüge anweisung in SQL
-		$insertquery = "UPDATE lehrer ";
-		$insertquery .= "SET passwort = '";
-		$insertquery .= verschluesselLogin($_POST['pwd']);
-		$insertquery .= "' WHERE lehrerID = '" . $_POST['benutzername'] . "'";
-		
-		// Einfügen der Formulardaten in die Lehrertabelle
-		$datenbank->query($insertquery);
-		
-		// Überprüfung ob der Datensatz angelegt wurde
-		if ($datenbank->affected_rows > 0)
+		if ($_POST['pwd'] == $_POST['wiederholen'])
 		{
-			// Speichern des Ausgabestrings in eine Variable
-			$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde 1 Datensatz geaendert.</p>";
+			// Erstellen der Einfüge anweisung in SQL
+			$insertquery = "UPDATE lehrer ";
+			$insertquery .= "SET passwort = '";
+			$insertquery .= verschluesselLogin($_POST['pwd']);
+			$insertquery .= "' WHERE lehrerID = '" . $_POST['benutzername'] . "'";
+			
+			// Einfügen der Formulardaten in die Lehrertabelle
+			$datenbank->query($insertquery);
+			
+			// Überprüfung ob der Datensatz angelegt wurde
+			if ($datenbank->affected_rows > 0)
+			{
+				// Speichern des Ausgabestrings in eine Variable
+				$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde 1 Datensatz geaendert.</p>";
+			}
+		}
+		else
+		{
+			// Speichern des Fehlerstrings in eine Variable
+			$ausgabe = "<hr><p class=\"error\">Das Passwort stimmt nicht überein!</p>";
 		}
 	}
 	else
@@ -52,25 +60,33 @@ if (isset($_POST['benanlegen']))
 	// Überprüfung ob alle Felder des Einfüge Formulars ausgefüllt wurden
 	if ($_POST['vname'] != "" && $_POST['nname'] != "" && $_POST['kuerzel'] != "" && $_POST['bname'] != "" && $_POST['pwd'] != "")
 	{
-		if (!isset($_POST['administrator'][0]))
+		if ($_POST['pwd'] == $_POST['wiederholen'])
 		{
-			$_POST['administrator'][0] = 0;
+			if (!isset($_POST['administrator'][0]))
+			{
+				$_POST['administrator'][0] = 0;
+			}
+			// Erstellen der Einfüge anweisung in SQL
+			$insertquery = "insert into lehrer ";
+			$insertquery .= "(vorname, nachname, kuerzel, benutzername, passwort, administrator, abteilungID) values";
+			$insertquery .= "('" . $_POST['vname'] . "', '" . $_POST['nname'] . "', '" . strtoupper($_POST['kuerzel']) . "', '" .
+						 strtolower($_POST['bname']) . "', '";
+			$insertquery .= verschluesselLogin($_POST['pwd']) . "', '" . $_POST['administrator'][0] . "', '" . $_POST['abteilung'] . "');";
+			
+			// Einfügen der Formulardaten in die Lehrertabelle
+			$datenbank->query($insertquery);
+			
+			// Überprüfung ob der Datensatz angelegt wurde
+			if ($datenbank->affected_rows > 0)
+			{
+				// Speichern des Ausgabestrings in eine Variable
+				$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde 1 Datensatz angelegt.</p>";
+			}
 		}
-		// Erstellen der Einfüge anweisung in SQL
-		$insertquery = "insert into lehrer ";
-		$insertquery .= "(vorname, nachname, kuerzel, benutzername, passwort, administrator, abteilungID) values";
-		$insertquery .= "('" . $_POST['vname'] . "', '" . $_POST['nname'] . "', '" . strtoupper($_POST['kuerzel']) . "', '" .
-					 strtolower($_POST['bname']) . "', '";
-		$insertquery .= verschluesselLogin($_POST['pwd']) . "', '" . $_POST['administrator'][0] . "', '" . $_POST['abteilung'] . "');";
-		
-		// Einfügen der Formulardaten in die Lehrertabelle
-		$datenbank->query($insertquery);
-		
-		// Überprüfung ob der Datensatz angelegt wurde
-		if ($datenbank->affected_rows > 0)
+		else
 		{
-			// Speichern des Ausgabestrings in eine Variable
-			$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde 1 Datensatz angelegt.</p>";
+			// Speichern des Fehlerstrings in eine Variable
+			$ausgabe = "<hr><p class=\"error\">Das Passwort stimmt nicht überein!</p>";
 		}
 	}
 	else
@@ -78,6 +94,7 @@ if (isset($_POST['benanlegen']))
 		// Speichern des Fehlerstrings in eine Variable
 		$ausgabe = "<hr><p class=\"error\">Alle Felder müssen ausgefüllt werden!</p>";
 	}
+
 }
 
 // Überprüfung ob der Button 'Lösche' gelöscht gedrückt wurde
@@ -141,6 +158,9 @@ $ergabfragerlehrer = $datenbank->query($abfragelehrer);
 		<p>
 			<label for="passwort">Passwort:</label> <input type="password" min="5" name="pwd">
 		</p>
+		<p>
+			<label for="wiederholen">Wiederholen:</label> <input type="password" min="5" name="wiederholen">
+		</p>
 		<p class="button">
 			<label>&nbsp;</label><input type="submit" name="benanlegen" value="Lehrer anlegen"> <input type="reset" name="reset" value="Zurücksetzen">
 		</p>
@@ -163,6 +183,9 @@ $ergabfragerlehrer = $datenbank->query($abfragelehrer);
 		</p>
 		<p>
 			<label for="passwort">Passwort:</label> <input type="password" min="5" name="pwd">
+		</p>
+		<p>
+			<label for="wiederholen">Wiederholen:</label> <input type="password" min="5" name="wiederholen">
 		</p>
 		<p class="button">
 			<label>&nbsp;</label><input type="submit" name="aendern" value="Passwort ändern"> <input type="reset" name="reset" value="Zurücksetzen">
