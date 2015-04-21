@@ -21,6 +21,8 @@ if (isset($_POST['anlegen']))
 	
 	if ($_POST['nametermin'] != "" && $_POST['beginndatum'] != "" && $_POST['endedatum'] != "")
 	{
+		if (strtotime($_POST['beginndatum']) <= strtotime($_POST['endedatum']))
+		{
 		$insertquery = "INSERT INTO belegtetage (name, beginndatum, endedatum, ganzertag) values ";
 		$insertquery .= "('" . $_POST['nametermin'] . "', '" . $_POST['beginndatum'] . "', '" . $_POST['endedatum'];
 		$insertquery .= "', '" . $_POST['ganzertag'][0] . "');";
@@ -37,6 +39,11 @@ if (isset($_POST['anlegen']))
 		if ($datenbank->affected_rows > 0)
 		{
 			$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde 1 Datensatz angelegt.</p>";
+		}
+		}
+		else
+		{
+			$ausgabe = "<hr><p class=\"error\">Der Terminbeginn muss vor dem Terminende liegen!</p>";
 		}
 	}
 	else
