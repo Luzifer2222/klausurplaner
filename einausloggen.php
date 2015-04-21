@@ -13,7 +13,7 @@ if (isset($_POST['anmelden']))
 		
 		// Erstellen der Abfrage um das Passwort des
 		// Benutzers aus der Datenbank zu holen
-		$passwortabfrage = "SELECT passwort, administrator from lehrer where benutzername like '" . $_POST['benutzername'] . "'";
+		$passwortabfrage = "SELECT lehrerID, passwort, administrator  from lehrer where benutzername like '" . $_POST['benutzername'] . "'";
 		$abfrageerg = $datenbank->query($passwortabfrage);
 		// Extrahieren der Daten aus der Abfrage
 		$queryErgebnis = $abfrageerg->fetch_object();
@@ -27,6 +27,7 @@ if (isset($_POST['anmelden']))
 				// Setzen des Sessionarray mit dem Benutzernamen der eingegeben wurde
 				$_SESSION['benutzername'] = $_POST['benutzername'];
 				$_SESSION['administrator'] = $queryErgebnis->administrator;
+				$_SESSION['ID'] = $queryErgebnis->lehrerID;
 				$angemeldet = true;
 			}
 		}
