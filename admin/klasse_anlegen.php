@@ -11,7 +11,6 @@ $datenbank->set_charset('utf8');
 
 if (isset($_POST['loescheklasse']) && isset($_POST['loesche']))
 {
-	echo $_POST['loescheklasse'];
 	$loescheQuery = "delete from klassen where klassenID = " . $_POST['loesche'];
 	
 	$datenbank->query($loescheQuery);
