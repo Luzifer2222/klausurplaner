@@ -26,18 +26,28 @@ table.kalender th.vonbis {
 	width: 50px;
 }
 
-table.kalender td.tage {
+table.kalender td {
 	min-width: 50px;
 	max-width: 150px;
 	overflow: hidden;
 }
 
-table.kalender td.tage:hover {
+table.kalender td:hover {
 	overflow: visible;
 	background-color: #c7c7c7;
 	
 }
 
+td.heute {
+	background-color: #FF0000;
+}
+
 p.globaletermine {
 	padding: 0px;
+}
+
+form.formular {
+	margin: auto;
+	width: 200px;
+	padding-top: 10px;
 }
