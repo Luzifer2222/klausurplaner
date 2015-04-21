@@ -29,6 +29,7 @@ class kalender
 		}
 		
 		echo "<table class=\"kalender\">";
+		echo "<caption>Schuljahr " . $jahr . "/" . ($jahr + 1) . "</caption>";
 		echo "<tr>
 				<th>KW</th>
 				<th class=\"vonbis\">Von - Bis</th>
@@ -46,18 +47,28 @@ class kalender
 			
 			for ($i = 0 ; $i < 5 ; $i++)
 			{
-				$globaleTermineQuery = "SELECT name, beginndatum, endedatum FROM belegtetage WHERE '" .
-							 date("Y-m-d", strtotime("$kalenderAnfang + $i day")) . "' BETWEEN beginndatum AND endedatum;";
+				$globaleTermineQuery = "SELECT name, beginndatum, endedatum ";
+				$globaleTermineQuery .= "FROM belegtetage ";
+				$globaleTermineQuery .= "WHERE '" . date("Y-m-d", strtotime("$kalenderAnfang + $i day")) . "' ";
+				$globaleTermineQuery .= "BETWEEN beginndatum AND endedatum;";
 				$globaleTermineErgebnis = $datenbank->query($globaleTermineQuery);
 				
 				if ($globaleTermineErgebnis->num_rows > 0)
 				{
-					echo "<td class=\"tage\">";
+					if (strtotime(date("Y-m-d", time())) == strtotime("$kalenderAnfang + $i day"))
+					{
+						echo "<td class=\"heute\">\n";
+					}
+					else
+					{
+						echo "<td class=\"tage\">\n";
+					}
 					while ($daten = $globaleTermineErgebnis->fetch_object())
 					{
-						echo "<p class=\"globalertermin\">" .$daten->name . "</p>";
+						echo "<p class=\"globalertermin\">" . $daten->name . "</p>\n";
 					}
-					echo "</td>";
+					
+					echo "</td>\n";
 				}
 				else
 				{
