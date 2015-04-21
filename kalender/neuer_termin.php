@@ -124,7 +124,7 @@ $ergebnisFach = $datenbank->query($abfrageFach);
 			<label for="thema">Thema:</label><input type="text" id="thema" name="thema">
 		</p>
 		<p>
-			<label for="vonstunde">Begin:</label><select id="vonstunde" name="vonstunde">
+			<label for="vonstunde">Beginn:</label><select id="vonstunde" name="vonstunde">
 	 		<?php
 				for ($i = 1 ; $i <= 12 ; $i++)
 				{
