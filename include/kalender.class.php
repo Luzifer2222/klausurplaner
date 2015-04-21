@@ -11,7 +11,7 @@ class kalender
 
 	private $database;
 
-	function baueKalender ($jahr)
+	function baueKalender ($jahr, $klassenID = null)
 	{
 		// Datenbankverbindung initialisieren
 		$datenbank = new mysqli($this->host, $this->user, $this->password, $this->database);
@@ -53,7 +53,19 @@ class kalender
 				$globaleTermineQuery .= "BETWEEN beginndatum AND endedatum;";
 				$globaleTermineErgebnis = $datenbank->query($globaleTermineQuery);
 				
-				if ($globaleTermineErgebnis->num_rows > 0)
+				if ($klassenID != null && $klassenID != 0)
+				{
+					$klasseTerminQuery = "SELECT kal.art, kal.thema, kal.vonstunde, kal.bisstunde, fach.name AS 'fachname', lehrer.kuerzel ";
+					$klasseTerminQuery .= "FROM kalendertermine kal, faecher fach, lehrer, klassen klasse ";
+					$klasseTerminQuery .= "WHERE kal.klassenID = " . $klassenID . " ";
+					$klasseTerminQuery .= "AND kal.datum like '" . date("Y-m-d", strtotime("$kalenderAnfang + $i day")) . "' ";
+					$klasseTerminQuery .= "AND kal.fachID = fach.fachID ";
+					$klasseTerminQuery .= "AND kal.lehrerID = lehrer.lehrerID ";
+					$klasseTerminQuery .= "AND kal.klassenID = klasse.klassenID;";
+					$klasseTerminErgebnis = $datenbank->query($klasseTerminQuery);
+				}
+				
+				if ($globaleTermineErgebnis->num_rows > 0 || isset($klasseTerminErgebnis) && $klasseTerminErgebnis->num_rows > 0)
 				{
 					if (strtotime(date("Y-m-d", time())) == strtotime("$kalenderAnfang + $i day"))
 					{
@@ -63,9 +75,31 @@ class kalender
 					{
 						echo "<td class=\"tage\">\n";
 					}
-					while ($daten = $globaleTermineErgebnis->fetch_object())
+					
+					if ($globaleTermineErgebnis->num_rows > 0)
 					{
-						echo "<p class=\"globalertermin\">" . $daten->name . "</p>\n";
+						while ($daten = $globaleTermineErgebnis->fetch_object())
+						{
+							echo "<p class=\"globalertermin\">" . $daten->name . "</p>\n";
+						}
+					}
+					
+					if ($klassenID != null && $klassenID != 0)
+					{
+						if ($klasseTerminErgebnis->num_rows > 0)
+						{
+							while ($daten = $klasseTerminErgebnis->fetch_object())
+							{
+								if ($daten->art == 1)
+								{
+									echo "<p class=\"klassentermin\">" . $daten->vonstunde . "-". $daten->bisstunde. "std. ". $daten->kuerzel . "<br /> Klausur: " . $daten->thema . "</p>\n";
+								}
+								else
+								{
+									echo "<p class=\"klassentermin\">" . $daten->vonstunde. "-". $daten->bisstunde. " " .  $daten->thema."(Test)" . "</p>\n";
+								}
+							}
+						}
 					}
 					
 					echo "</td>\n";
