@@ -10,7 +10,7 @@
 					<a href="./index.php?seite=kalender_anzeigen.php">Anzeigen</a>
 				</li>
 				<li>
-					<a href="./index.php?seite=neuer_eintrag.php">Eintrag</a>
+					<a href="./index.php?seite=neuer_termin.php">Eintrag</a>
 				</li>
 			</ul>
 		</li>
