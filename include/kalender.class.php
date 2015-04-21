@@ -3,29 +3,20 @@
 class kalender
 {
 
-	private $jahr;
+	private $host;
 
-	private $monat;
+	private $user;
 
-	private $art;
+	private $password;
 
-	private $thema;
-
-	private $von;
-
-	private $bis;
-
-	private $fach;
-
-	private $lehrer;
-
-	private $bundesland;
-
-	private $locale;
+	private $database;
 
 	function baueKalender ($jahr)
 	{
-		$unterrichtsWoche = 1;
+		// Datenbankverbindung initialisieren
+		$datenbank = new mysqli($this->host, $this->user, $this->password, $this->database);
+		$datenbank->set_charset('utf8');
+		
 		$kalenderAnfang = date("d.m.Y", mktime(0, 0, 0, 8, 1, $jahr));
 		$kalenderEnde = date("d.m.Y", mktime(0, 0, 0, 7, 31, ($jahr + 1)));
 		
@@ -51,16 +42,33 @@ class kalender
 		{
 			echo "<tr>";
 			echo "<td>" . date("W", strtotime($kalenderAnfang)) . "</td>\n";
-			echo "<td>" . date("d.m.", strtotime("$kalenderAnfang")) . " - " .
-						 date("d.m.", strtotime("$kalenderAnfang next friday")) . "</td>\n";
-			echo "<td class=\"tage\"></td>\n";
-			echo "<td class=\"tage\"></td>\n";
-			echo "<td class=\"tage\"></td>\n";
-			echo "<td class=\"tage\"></td>\n";
-			echo "<td class=\"tage\"></td>\n";
+			echo "<td>" . date("d.m.", strtotime("$kalenderAnfang")) . " - " . date("d.m.", strtotime("$kalenderAnfang next friday")) . "</td>\n";
+			
+			for ($i = 0 ; $i < 5 ; $i++)
+			{
+				$globaleTermineQuery = "SELECT name, beginndatum, endedatum FROM belegtetage WHERE '" .
+							 date("Y-m-d", strtotime("$kalenderAnfang + $i day")) . "' BETWEEN beginndatum AND endedatum;";
+				$globaleTermineErgebnis = $datenbank->query($globaleTermineQuery);
+				
+				if ($globaleTermineErgebnis->num_rows > 0)
+				{
+					echo "<td class=\"tage\">";
+					while ($daten = $globaleTermineErgebnis->fetch_object())
+					{
+						echo "<p class=\"globalertermin\">" .$daten->name . "</p>";
+					}
+					echo "</td>";
+				}
+				else
+				{
+					echo "<td class=\"tage\"></td>\n";
+				}
+			}
+			
 			echo "</tr>\n";
 			
 			$kalenderAnfang = date("d.m.Y", strtotime("$kalenderAnfang +1 week"));
+		
 		}
 		echo "</table>";
 	}
@@ -105,15 +113,14 @@ class kalender
 		);
 	}
 
-	function setTermin ($art, $thema, $von, $bis, $fach, $lehrer)
+	function setDatabaseconnection ($host, $user, $password, $database)
 	{
-	
+		$this->host = $host;
+		$this->user = $user;
+		$this->password = $password;
+		$this->database = $database;
 	}
 
-	function getTermin ()
-	{
-	
-	}
 }
 
 ?>
