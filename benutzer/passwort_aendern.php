@@ -33,7 +33,7 @@ if (isset($_POST['aendern']))
 		if ($datenbank->affected_rows > 0)
 		{
 			// Speichern des Ausgabestrings in eine Variable
-			$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde 1 Datensatz geaendert.</p>";
+			$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde das Passwort geändert.</p>";
 		}
 	}
 	else
@@ -54,7 +54,7 @@ if (isset($_POST['aendern']))
 							?>
 		</p>
 		<p>
-			<label for="passwort">Passwort:</label> <input type="password" min="5" name="pwd">
+			<label for="passwort">Passwort:</label> <input type="password" min="4" name="pwd">
 		</p>
 		<p class="button">
 			<label>&nbsp;</label><input type="submit" name="aendern" value="Passwort ändern"> <input type="reset" name="reset" value="Zurücksetzen">
