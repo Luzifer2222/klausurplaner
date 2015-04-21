@@ -2,6 +2,11 @@
 	<ul>
 		<li class="user">
 			<a href="#">Benutzer</a>
+			<ul>
+				<li>
+					<a href="./index.php?seite=user_passwort_aendern.php">Passwort ändern</a>
+				</li>
+			</ul>
 		</li>
 		<li class="kalender">
 			<a href="#">Kalender</a>

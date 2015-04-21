@@ -60,6 +60,9 @@ include_once './include/kalender.class.php';
 					case 'neuer_termin.php':
 						include_once 'kalender/neuer_termin.php';
 						break;
+					case 'user_passwort_aendern.php':
+						include_once 'benutzer/user_passwort_aendern.php';
+						break;
 				}
 			}
 			
