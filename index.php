@@ -29,8 +29,8 @@ include_once './include/kalender.class.php';
 
 			<main>
 			<?php
-			if(isset($einausgeloggt))
-			echo $einausgeloggt;
+			if (isset($einausgeloggt))
+				echo $einausgeloggt;
 			
 			if (isset($_GET['seite']))
 			{
@@ -56,6 +56,9 @@ include_once './include/kalender.class.php';
 						break;
 					case 'globale_termine_anlegen.php':
 						include_once 'admin/globale_termine_anlegen.php';
+						break;
+					case 'neuer_termin.php':
+						include_once 'kalender/neuer_termin.php';
 						break;
 				}
 			}
