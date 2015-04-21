@@ -15,7 +15,7 @@ $datenbank = new mysqli($database_conf['host'], $database_conf['user'], $databas
 $datenbank->set_charset('utf8');
 ?>
 
-<form action="<?php $_SERVER['PHP_SELF']?>" method="post">
+<form action="<?php $_SERVER['PHP_SELF']?>" method="post" class="formular">
 	<fieldset>
 		<legend>Auswahl des Schuljahrs</legend>
 		<label for="schuljahr"></label> <select id="schuljahr" name="schuljahr">
@@ -33,6 +33,7 @@ $datenbank->set_charset('utf8');
 				</select> <input type="submit" name="anzeigen" value="Anzeigen">
 	</fieldset>
 </form>
+<hr />
 <?php
 $kalender = new kalender();
 $kalender->setDatabaseconnection($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
