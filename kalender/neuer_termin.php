@@ -13,36 +13,44 @@ $datenbank->set_charset('utf8');
 
 if (isset($_POST['anlegen']))
 {
-	
-	if (!isset($_POST['art'][0]))
+	if ($_POST['vonstunde'] <= $_POST['bisstunde'])
 	{
-		$_POST['art'][0] = 0;
-	}
-	
-	if ($_POST['thema'] != "" && $_POST['datum'] != "")
-	{
-		$insertquery = "INSERT INTO kalendertermine (datum, art, thema, vonstunde, bisstunde, fachID, lehrerID, klassenID) VALUES ";
-		$insertquery .= "('" . $_POST['datum'] . "', '" . $_POST['art'][0] . "', '" . $_POST['thema'] . "', '" . $_POST['vonstunde'] . "', '" .
-					 $_POST['bisstunde'] . "', '" . $_POST['fach'] . "', '" . $_SESSION['benutzername'] . "', '" . $_POST['klasse'] . "')";
-		
-		try
+		if ($_POST['thema'] != "" && $_POST['datum'] != "" && $_POST['art'] != "")
 		{
-			$datenbank->query($insertquery);
+			$insertquery = "INSERT INTO kalendertermine (datum, art, thema, vonstunde, bisstunde, fachID, klassenID, lehrerID) VALUES ";
+			$insertquery .= "('" . $_POST['datum'] . "', '" . $_POST['art'][0] . "', '" . $_POST['thema'] . "', '" . $_POST['vonstunde'] . "', '" .
+						 $_POST['bisstunde'] . "', '" . $_POST['fach'] . "', '" . $_POST['klasse'] . "', '" . $_SESSION['ID'] . "')";
+			
+			try
+			{
+				$datenbank->query($insertquery);
+			}
+			catch (Exception $e)
+			{
+				echo $e->getMessage();
+			}
+			
+			if ($datenbank->affected_rows > 0)
+			{
+				$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde 1 Datensatz angelegt.</p>";
+			}
 		}
-		catch (Exception $e)
+		else
 		{
-			echo $e->getMessage();
-		}
-		
-		if ($datenbank->affected_rows > 0)
-		{
-			$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde 1 Datensatz angelegt.</p>";
+			// Speichern des Fehlerstrings in eine Variable
+			$ausgabe = "<hr><p class=\"error\">Alle Felder müssen ausgefüllt werden!</p>";
 		}
 	}
 	else
 	{
-		// Speichern des Fehlerstrings in eine Variable
-		$ausgabe = "<hr><p class=\"error\">Alle Felder müssen ausgefüllt werden!</p>";
+		if ($_POST['art'][0] == 1)
+		{
+			$ausgabe = "<hr><p class=\"error\">Der Endzeitpunkt der Klausur ist vor dem Beginn. Bitte ändern!</p>";
+		}
+		else
+		{
+			$ausgabe = "<hr><p class=\"error\">Der Endzeitpunkt des Tests ist vor dem Beginn. Bitte ändern!</p>";
+		}
 	}
 }
 
@@ -59,15 +67,19 @@ if (isset($_POST['loeschetermin']) && isset($_POST['loesche']))
 	else
 	{
 		// Wenn der Termin nicht gelöscht wurde
-		// Speichern der Error meldung in die Variable
+		// Speichern der Errormeldung in die Variable
 		$ausgabe = "<hr><p class=\"error\">Fehler! es wurde kein Datensatz gelöscht</p>";
 	}
 }
 
 // Abfragen
-$terminQuery = "SELECT * from kalendertermine;";
-$abfrageKlasse = "SELECT * from klassen;";
-$abfrageFach = "SELECT * from faecher;";
+$terminQuery = "SELECT kal.terminID, kal.datum, kal.art, kal.thema, kal.vonstunde, kal.bisstunde, fach.name AS 'fachname', lehrer.nachname, klasse.name AS 'klassenname' ";
+$terminQuery .= "FROM kalendertermine kal, faecher fach, lehrer, klassen klasse ";
+$terminQuery .= "WHERE kal.fachID = fach.fachID ";
+$terminQuery .= "AND kal.lehrerID = lehrer.lehrerID ";
+$terminQuery .= "AND kal.klassenID = klasse.klassenID";
+$abfrageKlasse = "SELECT klassenID, name from klassen;";
+$abfrageFach = "SELECT fachID, name from faecher;";
 
 // Durchgeführte Abfrage
 $terminErgebnis = $datenbank->query($terminQuery);
@@ -177,12 +189,12 @@ if (isset($ausgabe))
 					echo "<tr>";
 					echo "<td>" . $daten->terminID . "</td>";
 					echo "<td>" . $daten->thema . "</td>";
-					echo "<td>" . $daten->klassenID . "</td>";
-					echo "<td>" . $daten->lehrerID . "</td>";
-					echo "<td>" . $daten->fachID . "</td>";
+					echo "<td>" . $daten->klassenname . "</td>";
+					echo "<td>" . $daten->nachname . "</td>";
+					echo "<td>" . $daten->fachname . "</td>";
 					echo "<td>" . date("d.m.Y", strtotime($daten->datum)) . "</td>";
-					echo "<td>" . $daten->vonstunde . "</td>";
-					echo "<td>" . $daten->bisstunde . "</td>";
+					echo "<td>" . $daten->vonstunde . ". Stunde</td>";
+					echo "<td>" . $daten->bisstunde . ". Stunde</td>";
 					if ($daten->art == 1)
 					{
 						echo "<td>Ja</td>";
