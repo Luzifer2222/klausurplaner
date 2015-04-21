@@ -37,3 +37,7 @@ table.kalender td.tage:hover {
 	background-color: #c7c7c7;
 	
 }
+
+p.globaletermine {
+	padding: 0px;
+}
