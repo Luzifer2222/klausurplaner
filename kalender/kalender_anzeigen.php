@@ -10,6 +10,9 @@ $pruefeSession->UserBereich();
 $schuljahresbegin = date("d.m.Y", mktime(0, 0, 0, 1, 1, date("Y", time()) - 2));
 $schuljahresende = date("d.m.Y", strtotime("$schuljahresbegin +1 year"));
 
+// Datenbankverbindung initialisieren
+$datenbank = new mysqli($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
+$datenbank->set_charset('utf8');
 ?>
 
 <form action="<?php $_SERVER['PHP_SELF']?>" method="post">
@@ -32,6 +35,7 @@ $schuljahresende = date("d.m.Y", strtotime("$schuljahresbegin +1 year"));
 </form>
 <?php
 $kalender = new kalender();
+$kalender->setDatabaseconnection($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
 
 if (isset($_POST['anzeigen']))
 {
@@ -39,6 +43,6 @@ if (isset($_POST['anzeigen']))
 }
 else
 {
-	$kalender->baueKalender(date("Y", time()));
+	$kalender->baueKalender(date("Y",time())-1);
 }
 ?>
