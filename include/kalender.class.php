@@ -118,7 +118,7 @@ class kalender
 		echo "</table>";
 	}
 
-	function berechneFeiertage ($jahr, $bundesland)
+	function berechneFeiertage ($jahr, $bundesland = null)
 	{
 		// Berechnung der Variablen Feiertage anhand der easter_date Funktion
 		$osterSonntag = date("d.m.Y", easter_date($jahr));
