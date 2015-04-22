@@ -22,9 +22,9 @@ $klassenErgebnis = $datenbank->query($klassenQuery);
 
 <form action="<?php $_SERVER['PHP_SELF']?>" method="post" class="formular">
 	<fieldset>
-		<legend>Auswahl des Schuljahrs</legend>
+		<legend>Auswahl des Schuljahres</legend>
 		<p>
-			<label for="schuljahr"></label> <select id="schuljahr" name="schuljahr">
+			<label for="schuljahr">&nbsp;</label> <select id="schuljahr" name="schuljahr">
 					<?php
 					
 					for ($i = 0 ; $i < 5 ; $i++)
@@ -36,7 +36,7 @@ $klassenErgebnis = $datenbank->query($klassenQuery);
 					}
 					
 					?>
-				</select> <label for="klassenID"></label> <select id="klassenID" name="klassenID">
+				</select> <label for="klassenID">&nbsp;</label> <select id="klassenID" name="klassenID">
 				<option value="0">Global</option>
 					<?php
 					
@@ -47,9 +47,7 @@ $klassenErgebnis = $datenbank->query($klassenQuery);
 					
 					?>
 				</select>
-		</p>
-		<p>
-			<input type="submit" name="anzeigen" value="Anzeigen">
+		<input type="submit" name="anzeigen" value="Anzeigen">
 		</p>
 	</fieldset>
 </form>
