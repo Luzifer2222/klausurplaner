@@ -17,7 +17,6 @@ table.kalender tr:nth-child(odd) {
 
 table.kalender tr th {
 	background-color: #c7c7c7
-	
 }
 
 table.kalender td {
@@ -40,7 +39,6 @@ table.kalender td {
 table.kalender td:hover {
 	overflow: visible;
 	background-color: #c7c7c7;
-	
 }
 
 td.heute {
@@ -53,6 +51,10 @@ p.globaletermine {
 
 form.formular {
 	margin: auto;
-	width: 200px;
+	width: 450px;
 	padding-top: 10px;
+}
+
+form.formular p{
+	text-align: center;
 }
