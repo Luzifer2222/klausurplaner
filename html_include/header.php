@@ -1,3 +1,3 @@
 <header>
-<h1>Class Test Schedule 'CTS'</h1>
+<p><img src="pictures/header.png"></p>
 </header>
