@@ -17,6 +17,9 @@ body {
 	min-width: 1020px;
 	background-color: white;
 	margin: auto;
+	-moz-box-shadow: 0px 0px 20px #000; /*Firefox*/
+    -webkit-box-shadow: 0px 0px 20px #000;  /*Chrome*/
+    box-shadow: 0px 0px 20px #000; /*restliche Browser*/
 }
 
 header {
