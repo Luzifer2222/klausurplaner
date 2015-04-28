@@ -16,7 +16,7 @@ $datenbank->set_charset('utf8');
 // Überprüfung ob der Submitbutton gedrückt wurde
 // Zuständig für das Ändern des Passwortes
 // in der Lehrer Tabelle
-if (isset($_POST['aendern']))
+if (isset($_POST['pwd']))
 {
 	// Überprüfung ob alle Felder des Einfüge Formulars ausgefüllt wurden
 	if ($_POST['pwd'] != "")
@@ -49,6 +49,58 @@ if (isset($_POST['aendern']))
 	{
 		// Speichern des Fehlerstrings in eine Variable
 		$ausgabe = "<hr><p class=\"error\">Alle Felder müssen ausgefüllt werden!</p>";
+	}
+}
+
+// Überprüfung ob der Submitbutton gedrückt wurde
+// Zuständig für das Bearbeiten von Lehrern
+// in der Tabelle Lehrer
+if (isset($_POST['nachnameaendern']))
+{
+	// Erstellen der Einfüge anweisung in SQL
+	$insertquery = "UPDATE lehrer ";
+	$insertquery .= "SET nachname = '" . $_POST['neuernachname'] . "'";
+	$insertquery .= " WHERE lehrerID = '" . $_POST['benutzernachname'] . "'";
+	
+	// Einfügen der Formulardaten in die Lehrertabelle
+	$datenbank->query($insertquery);
+	
+	// Überprüfung ob der Datensatz angelegt wurde
+	if ($datenbank->affected_rows > 0)
+	{
+		// Speichern des Ausgabestrings in eine Variable
+		$ausgabe = "<hr><p class=\"erfolgreich\">Der Nachname wurde geändert.</p>";
+	}
+	else
+	{
+		// Speichern des Fehlerstrings in eine Variable
+		$ausgabe = "<hr><p class=\"error\">Der Nachname konnte nicht geändert werden!</p>";
+	}
+}
+
+// Überprüfung ob der Submitbutton gedrückt wurde
+// Zuständig für das Bearbeiten von Lehrern
+// in der Tabelle Lehrer
+if (isset($_POST['abteilungaendern']))
+{
+	// Erstellen der Einfüge anweisung in SQL
+	$insertquery = "UPDATE lehrer ";
+	$insertquery .= "SET abteilungID = '" . $_POST['neueabteilung'] . "'";
+	$insertquery .= " WHERE lehrerID = '" . $_POST['benutzerabteilung'] . "'";
+	
+	// Einfügen der Formulardaten in die Lehrertabelle
+	$datenbank->query($insertquery);
+	
+	// Überprüfung ob der Datensatz angelegt wurde
+	if ($datenbank->affected_rows > 0)
+	{
+		// Speichern des Ausgabestrings in eine Variable
+		$ausgabe = "<hr><p class=\"erfolgreich\">Die Abteilung wurde geändert.</p>";
+	}
+	else
+	{
+		// Speichern des Fehlerstrings in eine Variable
+		$ausgabe = "<hr><p class=\"error\">Die Abteilung konnte nicht geändert werden!</p>";
 	}
 }
 
@@ -115,7 +167,7 @@ if (isset($_POST['loeschelehrer']) && isset($_POST['loesche']))
 // Einfache Abfragen für das Extrahieren der Abteilungen und der Lehrer
 $abfrageabteilung = "select * from abteilung;";
 $abfrageBenutzer = "select * from lehrer;";
-$abfragelehrer = "select l.lehrerID, l.vorname, l.nachname, l.kuerzel, l.benutzername, l.administrator, a.name ";
+$abfragelehrer = "select l.lehrerID, l.vorname, l.nachname, l.kuerzel, l.benutzername, l.administrator, l.abteilungID, a.name ";
 $abfragelehrer .= "from lehrer l, abteilung a ";
 $abfragelehrer .= "where l.abteilungID = a.abteilungID";
 ;
@@ -167,9 +219,9 @@ $ergabfragerlehrer = $datenbank->query($abfragelehrer);
 	</fieldset>
 </form>
 
-<form class="anlegen" action="<?php $_SERVER['PHP_SELF']?>" method="post" name="passwortaendern" class="passwortaendern">
+<form class="anlegen" action="<?php $_SERVER['PHP_SELF']?>" method="post" name="aendern" class="aendern">
 	<fieldset>
-		<legend>Passwort ändern des Lehrpersonals</legend>
+		<legend>Ändern des Lehrpersonals</legend>
 		<p>
 			<label for="benutzername">Benutzername:</label> <select id="benutzername" name="benutzername">
 							<?php
@@ -189,6 +241,50 @@ $ergabfragerlehrer = $datenbank->query($abfragelehrer);
 		</p>
 		<p class="button">
 			<label>&nbsp;</label><input type="submit" name="aendern" value="Passwort ändern"> <input type="reset" name="reset" value="Zurücksetzen">
+		</p>
+		<p>
+			<label for="benutzernachname">Benutzername:</label> <select id="benutzernachname" name="benutzernachname">
+							<?php
+							$ergebnisBenutzer = $datenbank->query($abfrageBenutzer);
+							while ($daten = $ergebnisBenutzer->fetch_object())
+							{
+								echo "<option value=\"$daten->lehrerID\">" . $daten->vorname . " " . $daten->nachname . "</option>";
+							}
+							?>
+						</select>
+		</p>
+		<p>
+			<label for="neuernachname">Neuer Nachname:</label> <input type="text" maxlength="50" name="neuernachname" id="neuernachname">
+		</p>
+		<p class="button">
+			<label>&nbsp;</label><input type="submit" name="nachnameaendern" value="Nachname ändern"> <input type="reset" name="reset" value="Zurücksetzen">
+		</p>
+		<p>
+			<label for="benutzerabteilung">Benutzername:</label> <select id="benutzerabteilung" name="benutzerabteilung">
+							<?php
+							$ergebnisBenutzer = $datenbank->query($abfrageBenutzer);
+							while ($daten = $ergebnisBenutzer->fetch_object())
+							{
+								echo "<option value=\"$daten->lehrerID\">" . $daten->vorname . " " . $daten->nachname . "</option>";
+							}
+							?>
+						</select>
+		</p>
+		<p>
+			<label for="neueabteilung">Neue Abteilung:</label> <select name="neueabteilung" id="neueabteilung">
+							<?php
+							
+							$ergabteilungdb = $datenbank->query($abfrageabteilung);
+							while ($daten = $ergabteilungdb->fetch_object())
+							{
+								echo "<option value=$daten->abteilungID>" . $daten->name . "</option>";
+							}
+							
+							?>
+        </select>
+		</p>
+		<p class="button">
+			<label>&nbsp;</label><input type="submit" name="abteilungaendern" value="Abteilung ändern"> <input type="reset" name="reset" value="Zurücksetzen">
 		</p>
 	</fieldset>
 </form>
@@ -220,13 +316,26 @@ if (isset($ausgabe))
     <?php
 				while ($lehrertabelle = $ergabfragerlehrer->fetch_object())
 				{
-					echo "<tr>";
-					echo "<td>" . $lehrertabelle->lehrerID . "</td>";
-					echo "<td>" . $lehrertabelle->vorname . "</td>";
-					echo "<td>" . $lehrertabelle->nachname . "</td>";
-					echo "<td>" . $lehrertabelle->kuerzel . "</td>";
-					echo "<td>" . $lehrertabelle->benutzername . "</td>";
-					echo "<td>" . $lehrertabelle->name . "</td>";
+					echo "<tr>\n";
+					echo "<td>" . $lehrertabelle->lehrerID . "</td>\n";
+					echo "<td>" . $lehrertabelle->vorname . "</td>\n";
+					echo "<td><input type=\"text\" class=\"aendern\" name=\"name\" value=\"" . $lehrertabelle->nachname . "\"></td>\n";
+					echo "<td>" . $lehrertabelle->kuerzel . "</td>\n";
+					echo "<td><input type=\"text\" class=\"aendern\" name=\"name\" value=\"" . $lehrertabelle->benutzername . "\"></td>\n";
+					echo "<td><select class=\"aendern\">\n";
+					
+					$ergabteilungdb = $datenbank->query($abfrageabteilung);
+					while ($daten = $ergabteilungdb->fetch_object())
+					{
+						echo "<option value=\"$daten->abteilungID\" ";
+						if ($daten->abteilungID == $lehrertabelle->abteilungID)
+						{
+							echo "selected=\"selected\"";
+						}
+						echo " >" . $daten->name . "</option>";
+					}
+					echo "</select></td>\n";
+					
 					if ($lehrertabelle->administrator == 1)
 					{
 						echo "<td>Ja</td>";
