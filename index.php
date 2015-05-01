@@ -8,7 +8,6 @@ require_once './config/cts.conf.php';
 require_once './include/sessionkontrolle.class.php';
 require_once './include/loginfunktion.php';
 include_once './include/kalender.class.php';
-;
 ?>
 
 <?php session_start()?>
@@ -47,10 +46,12 @@ include_once './include/kalender.class.php';
 						include_once 'admin/globalen_termin_anlegen.php';
 						break;
 					case 'klasse_anlegen.php':
-						include_once 'admin/klasse_anlegen.php';
+						// include_once 'admin/klasse_anlegen.php';
+						include_once 'test/klasse_anlegen.php';
 						break;
 					case 'lehrer_anlegen.php':
-						include_once 'admin/lehrer_anlegen.php';
+						// include_once 'admin/lehrer_anlegen.php';
+						include_once 'test/lehrer_anlegen.php';
 						break;
 					case 'kalender_anzeigen.php':
 						include_once 'kalender/kalender_anzeigen.php';
@@ -63,6 +64,12 @@ include_once './include/kalender.class.php';
 						break;
 					case 'passwort_aendern.php':
 						include_once 'benutzer/passwort_aendern.php';
+						break;
+					case 'gewichtung_anlegen.php':
+						include_once 'test/gewichtung_anlegen.php';
+						break;
+					case 'stundenplan_anlegen.php':
+						include_once 'test/stundenplan_anlegen.php';
 						break;
 				}
 			}
