@@ -5,29 +5,33 @@ $pruefeSession = new sessionkontrolle();
 $pruefeSession->AdminBereich();
 
 ?>
-   
+ 
 <?php
-// Verbindung zu Datenbank herstellen
+// Verbindung zur Datenbank herstellen
 $datenbank = new mysqli($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
 
 // Datenbank Colloation auf UTF-8 stellen
 $datenbank->set_charset('utf8');
 
-// Überprüfung ob der Submitbutton gedrückt wurde
-// Zuständig für das Ändern des Passwortes
+// Ändern eines oder mehrerer Lehrer
 // in der Lehrer Tabelle
-if (isset($_POST['pwd']))
+if (isset($_POST['aendernlehrer']) && isset($_POST['checkaendern']))
 {
-	// Überprüfung ob alle Felder des Einfüge Formulars ausgefüllt wurden
-	if ($_POST['pwd'] != "")
+	// Überprüfung ob ein neues Passwort eingegeben wurde
+	// Zuständig für das Ändern des Passwortes
+	// in der Lehrer Tabelle
+	
+	$ausgabe = "<hr><p class=\"erfolgreich\">Folgendes wurde geändert:</p>";	
+	
+	if ($_POST['neupwd'] != "")
 	{
-		if ($_POST['pwd'] == $_POST['wiederholen'])
+		if ($_POST['neupwd'] == $_POST['neuwiederholen'])
 		{
-			// Erstellen der Einfüge anweisung in SQL
+			// Erstellen der Einfügeanweisung in SQL
 			$insertquery = "UPDATE lehrer ";
 			$insertquery .= "SET passwort = '";
-			$insertquery .= verschluesselLogin($_POST['pwd']);
-			$insertquery .= "' WHERE lehrerID = '" . $_POST['benutzername'] . "'";
+			$insertquery .= verschluesselLogin($_POST['neupwd']);
+			$insertquery .= "' WHERE lehrerID = '" . $_POST['checkaendern'] . "'";
 			
 			// Einfügen der Formulardaten in die Lehrertabelle
 			$datenbank->query($insertquery);
@@ -36,80 +40,151 @@ if (isset($_POST['pwd']))
 			if ($datenbank->affected_rows > 0)
 			{
 				// Speichern des Ausgabestrings in eine Variable
-				$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde 1 Datensatz geaendert.</p>";
+				$ausgabe .= "<p class=\"erfolgreich\">Das Passwort wurde geändert.</p>";
 			}
 		}
 		else
 		{
 			// Speichern des Fehlerstrings in eine Variable
-			$ausgabe = "<hr><p class=\"error\">Das Passwort stimmt nicht überein!</p>";
+			$ausgabe .= "<p class=\"error\">Das Passwort stimmt nicht überein!</p>";
 		}
 	}
-	else
+	
+	// Überprüfung ob ein neuer Nachname eingegeben wurde
+	// Zuständig für das Ändern des Nachnamens
+	// in der Tabelle Lehrer
+	if ($_POST['neuernachname'] != "")
 	{
-		// Speichern des Fehlerstrings in eine Variable
-		$ausgabe = "<hr><p class=\"error\">Alle Felder müssen ausgefüllt werden!</p>";
-	}
-}
+		// Einfache Abfragen
+		$fragelehrer = "select l.lehrerID, l.nachname ";
+		$fragelehrer .= "from lehrer l ";
+		$fragelehrer .= "where l.lehrerID = '" . $_POST['checkaendern'] . "';";
 
-// Überprüfung ob der Submitbutton gedrückt wurde
-// Zuständig für das Bearbeiten von Lehrern
-// in der Tabelle Lehrer
-if (isset($_POST['nachnameaendern']))
-{
-	// Erstellen der Einfüge anweisung in SQL
-	$insertquery = "UPDATE lehrer ";
-	$insertquery .= "SET nachname = '" . $_POST['neuernachname'] . "'";
-	$insertquery .= " WHERE lehrerID = '" . $_POST['benutzernachname'] . "'";
+		// Ergebnis der Abfrage aus $fragelehrer
+		$ergfragelehrer = $datenbank->query($fragelehrer);
+		
+		while ($daten = $ergfragelehrer->fetch_object())
+		{
+		$pruefe = $daten->nachname;
+		}
+		
+		if ($_POST['neuernachname'] != $pruefe)
+		{
+		// Erstellen der Einfügeanweisung in SQL
+		$insertquery = "UPDATE lehrer ";
+		$insertquery .= "SET nachname = '" . $_POST['neuernachname'] . "'";
+		$insertquery .= " WHERE lehrerID = '" . $_POST['checkaendern'] . "'";
 	
-	// Einfügen der Formulardaten in die Lehrertabelle
-	$datenbank->query($insertquery);
-	
-	// Überprüfung ob der Datensatz angelegt wurde
-	if ($datenbank->affected_rows > 0)
-	{
-		// Speichern des Ausgabestrings in eine Variable
-		$ausgabe = "<hr><p class=\"erfolgreich\">Der Nachname wurde geändert.</p>";
-	}
-	else
-	{
-		// Speichern des Fehlerstrings in eine Variable
-		$ausgabe = "<hr><p class=\"error\">Der Nachname konnte nicht geändert werden!</p>";
-	}
-}
+		// Einfügen der Formulardaten in die Lehrertabelle
+		$datenbank->query($insertquery);
 
-// Überprüfung ob der Submitbutton gedrückt wurde
-// Zuständig für das Bearbeiten von Lehrern
-// in der Tabelle Lehrer
-if (isset($_POST['abteilungaendern']))
-{
-	// Erstellen der Einfüge anweisung in SQL
-	$insertquery = "UPDATE lehrer ";
-	$insertquery .= "SET abteilungID = '" . $_POST['neueabteilung'] . "'";
-	$insertquery .= " WHERE lehrerID = '" . $_POST['benutzerabteilung'] . "'";
-	
-	// Einfügen der Formulardaten in die Lehrertabelle
-	$datenbank->query($insertquery);
-	
-	// Überprüfung ob der Datensatz angelegt wurde
-	if ($datenbank->affected_rows > 0)
-	{
-		// Speichern des Ausgabestrings in eine Variable
-		$ausgabe = "<hr><p class=\"erfolgreich\">Die Abteilung wurde geändert.</p>";
+		// Überprüfung ob der Datensatz angelegt wurde
+		if ($datenbank->affected_rows > 0)
+		{
+			// Speichern des Ausgabestrings in eine Variable
+			$ausgabe .= "<p class=\"erfolgreich\">Der Nachname wurde geändert.</p>";
+		}
+		else
+		{
+			// Speichern des Fehlerstrings in eine Variable
+			$ausgabe .= "<p class=\"error\">Der Nachname konnte nicht geändert werden!</p>";
+		}
+		}		
 	}
-	else
+	
+	// Überprüfung ob ein neuer Benutzername eingegeben wurde
+	// Zuständig für das Ändern des Benutzernamens
+	// in der Tabelle Lehrer
+	if ($_POST['neuerbenutzername'] != "")
 	{
-		// Speichern des Fehlerstrings in eine Variable
-		$ausgabe = "<hr><p class=\"error\">Die Abteilung konnte nicht geändert werden!</p>";
+		// Einfache Abfragen
+		$fragelehrer = "select l.lehrerID, l.benutzername ";
+		$fragelehrer .= "from lehrer l ";
+		$fragelehrer .= "where l.lehrerID = '" . $_POST['checkaendern'] . "';";
+
+		// Ergebnis der Abfrage aus $fragelehrer
+		$ergfragelehrer = $datenbank->query($fragelehrer);
+		
+		while ($daten = $ergfragelehrer->fetch_object())
+		{
+		$pruefe = $daten->benutzername;
+		}
+		
+		if ($_POST['neuerbenutzername'] != $pruefe)
+		{
+		
+		// Erstellen der Einfügeanweisung in SQL
+		$insertquery = "UPDATE lehrer ";
+		$insertquery .= "SET benutzername = '" . $_POST['neuerbenutzername'] . "'";
+		$insertquery .= " WHERE lehrerID = '" . $_POST['checkaendern'] . "'";
+	
+		// Einfügen der Formulardaten in die Lehrertabelle
+		$datenbank->query($insertquery);
+
+		// Überprüfung ob der Datensatz angelegt wurde
+		if ($datenbank->affected_rows > 0)
+		{
+			// Speichern des Ausgabestrings in eine Variable
+			$ausgabe .= "<p class=\"erfolgreich\">Der Benutzername wurde geändert.</p>";
+		}
+		else
+		{
+			// Speichern des Fehlerstrings in eine Variable
+			$ausgabe .= "<p class=\"error\">Der Benutzername konnte nicht geändert werden!</p>";
+		}
+		}
+	}
+
+	// Überprüfung ob die Abteilung geändert wurde
+	// Zuständig für das Ändern der Abteilung
+	// in der Tabelle Lehrer
+	if ($_POST['neueabteilung'] != "")
+	{
+		// Einfache Abfragen
+		$fragelehrer = "select a.abteilungID, a.name, l.lehrerID ";
+		$fragelehrer .= "from lehrer l, abteilung a ";
+		$fragelehrer .= "where l.lehrerID = '" . $_POST['checkaendern'] . "';";
+
+		// Ergebnis der Abfrage aus $fragelehrer
+		$ergfragelehrer = $datenbank->query($fragelehrer);
+		
+		while ($daten = $ergfragelehrer->fetch_object())
+		{
+		$pruefe = $daten->abteilungID;
+		}
+		
+		if ($_POST['neueabteilung'] != $pruefe)
+		{
+		
+		// Erstellen der Einfügeanweisung in SQL
+		$insertquery = "UPDATE lehrer ";
+		$insertquery .= "SET abteilungID = '" . $_POST['neueabteilung'] . "'";
+		$insertquery .= " WHERE lehrerID = '" . $_POST['checkaendern'] . "'";
+
+		// Einfügen der Formulardaten in die Lehrertabelle
+		$datenbank->query($insertquery);
+
+		// Überprüfung ob der Datensatz angelegt wurde
+		if ($datenbank->affected_rows > 0)
+		{
+			// Speichern des Ausgabestrings in eine Variable
+			$ausgabe .= "<p class=\"erfolgreich\">Die Abteilung wurde geändert.</p>";
+		}
+		else
+		{
+			// Speichern des Fehlerstrings in eine Variable
+			$ausgabe .= "<p class=\"error\">Die Abteilung konnte nicht geändert werden!</p>";
+		}
+		}
 	}
 }
 
 // Überprüfung ob der Submitbutton gedrückt wurde
 // Zuständig für das Einfügen eines neuen Lehrers
 // in die Lehrer Tabelle
-if (isset($_POST['benanlegen']))
+if (isset($_POST['neuanlegen']))
 {
-	// Überprüfung ob alle Felder des Einfüge Formulars ausgefüllt wurden
+	// Überprüfung ob alle Felder des Einfügeformulars ausgefüllt wurden
 	if ($_POST['vname'] != "" && $_POST['nname'] != "" && $_POST['kuerzel'] != "" && $_POST['bname'] != "" && $_POST['pwd'] != "")
 	{
 		if ($_POST['pwd'] == $_POST['wiederholen'])
@@ -118,7 +193,7 @@ if (isset($_POST['benanlegen']))
 			{
 				$_POST['administrator'][0] = 0;
 			}
-			// Erstellen der Einfüge anweisung in SQL
+			// Erstellen der Einfügeanweisung in SQL
 			$insertquery = "insert into lehrer ";
 			$insertquery .= "(vorname, nachname, kuerzel, benutzername, passwort, administrator, abteilungID) values";
 			$insertquery .= "('" . $_POST['vname'] . "', '" . $_POST['nname'] . "', '" . strtoupper($_POST['kuerzel']) . "', '" .
@@ -149,11 +224,11 @@ if (isset($_POST['benanlegen']))
 
 }
 
-// Überprüfung ob der Button 'Lösche' gelöscht gedrückt wurde
+// Überprüfung ob der Button 'Lösche' gedrückt wurde
 if (isset($_POST['loeschelehrer']) && isset($_POST['loesche']))
 {
 	
-	// Speichern der delete Abfrage und durchführung der Abfrage
+	// Speichern der delete Abfrage und Durchführung der Abfrage
 	$abfloeschelehrer = "delete from lehrer where lehrerID = " . $_POST['loesche'] . ";";
 	$datenbank->query($abfloeschelehrer);
 	
@@ -214,83 +289,13 @@ $ergabfragerlehrer = $datenbank->query($abfragelehrer);
 			<label for="wiederholen">Wiederholen:</label> <input type="password" min="5" name="wiederholen">
 		</p>
 		<p class="button">
-			<label>&nbsp;</label><input type="submit" name="benanlegen" value="Lehrer anlegen"> <input type="reset" name="reset" value="Zurücksetzen">
-		</p>
-	</fieldset>
-</form>
-
-<form class="anlegen" action="<?php $_SERVER['PHP_SELF']?>" method="post" name="aendern" class="aendern">
-	<fieldset>
-		<legend>Ändern des Lehrpersonals</legend>
-		<p>
-			<label for="benutzername">Benutzername:</label> <select id="benutzername" name="benutzername">
-							<?php
-							$ergebnisBenutzer = $datenbank->query($abfrageBenutzer);
-							while ($daten = $ergebnisBenutzer->fetch_object())
-							{
-								echo "<option value=\"$daten->lehrerID\">" . $daten->vorname . " " . $daten->nachname . "</option>";
-							}
-							?>
-						</select>
-		</p>
-		<p>
-			<label for="passwort">Passwort:</label> <input type="password" min="5" name="pwd">
-		</p>
-		<p>
-			<label for="wiederholen">Wiederholen:</label> <input type="password" min="5" name="wiederholen">
-		</p>
-		<p class="button">
-			<label>&nbsp;</label><input type="submit" name="aendern" value="Passwort ändern"> <input type="reset" name="reset" value="Zurücksetzen">
-		</p>
-		<p>
-			<label for="benutzernachname">Benutzername:</label> <select id="benutzernachname" name="benutzernachname">
-							<?php
-							$ergebnisBenutzer = $datenbank->query($abfrageBenutzer);
-							while ($daten = $ergebnisBenutzer->fetch_object())
-							{
-								echo "<option value=\"$daten->lehrerID\">" . $daten->vorname . " " . $daten->nachname . "</option>";
-							}
-							?>
-						</select>
-		</p>
-		<p>
-			<label for="neuernachname">Neuer Nachname:</label> <input type="text" maxlength="50" name="neuernachname" id="neuernachname">
-		</p>
-		<p class="button">
-			<label>&nbsp;</label><input type="submit" name="nachnameaendern" value="Nachname ändern"> <input type="reset" name="reset" value="Zurücksetzen">
-		</p>
-		<p>
-			<label for="benutzerabteilung">Benutzername:</label> <select id="benutzerabteilung" name="benutzerabteilung">
-							<?php
-							$ergebnisBenutzer = $datenbank->query($abfrageBenutzer);
-							while ($daten = $ergebnisBenutzer->fetch_object())
-							{
-								echo "<option value=\"$daten->lehrerID\">" . $daten->vorname . " " . $daten->nachname . "</option>";
-							}
-							?>
-						</select>
-		</p>
-		<p>
-			<label for="neueabteilung">Neue Abteilung:</label> <select name="neueabteilung" id="neueabteilung">
-							<?php
-							
-							$ergabteilungdb = $datenbank->query($abfrageabteilung);
-							while ($daten = $ergabteilungdb->fetch_object())
-							{
-								echo "<option value=$daten->abteilungID>" . $daten->name . "</option>";
-							}
-							
-							?>
-        </select>
-		</p>
-		<p class="button">
-			<label>&nbsp;</label><input type="submit" name="abteilungaendern" value="Abteilung ändern"> <input type="reset" name="reset" value="Zurücksetzen">
+			<label>&nbsp;</label><input type="submit" name="neuanlegen" value="Lehrer anlegen"> <input type="reset" name="reset" value="Zurücksetzen">
 		</p>
 	</fieldset>
 </form>
 
 <?php
-// Ausgabe ob eintrag in die Datenbank erfolgreich war.
+// Ausgabe ob Eintrag in die Datenbank erfolgreich war.
 if (isset($ausgabe))
 {
 	echo $ausgabe;
@@ -305,37 +310,44 @@ if (isset($ausgabe))
 		<th>Nachname</th>
 		<th>Kürzel</th>
 		<th>Benutzername</th>
-		<th>Abteilung</th>
+		<th>Neues Passwort</th>
+		<th>Passwort wiederholen</th>
+		<th>Fachbereich</th>
 		<th>Admin</th>
 		<th>
+			<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post" class="aendern">
+				<input type="submit" name="loeschelehrer" value="Löschen">
+		
+		</th>
+		<th>
 			<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-				<input type="submit" name="loeschelehrer" value="Löschen?">
+				<input type="submit" name="aendernlehrer" value="Ändern">
 		
 		</th>
 	</tr>
     <?php
 				while ($lehrertabelle = $ergabfragerlehrer->fetch_object())
 				{
-					echo "<tr>\n";
-					echo "<td>" . $lehrertabelle->lehrerID . "</td>\n";
-					echo "<td>" . $lehrertabelle->vorname . "</td>\n";
-					echo "<td><input type=\"text\" class=\"aendern\" name=\"name\" value=\"" . $lehrertabelle->nachname . "\"></td>\n";
-					echo "<td>" . $lehrertabelle->kuerzel . "</td>\n";
-					echo "<td><input type=\"text\" class=\"aendern\" name=\"name\" value=\"" . $lehrertabelle->benutzername . "\"></td>\n";
-					echo "<td><select class=\"aendern\">\n";
-					
-					$ergabteilungdb = $datenbank->query($abfrageabteilung);
-					while ($daten = $ergabteilungdb->fetch_object())
-					{
-						echo "<option value=\"$daten->abteilungID\" ";
-						if ($daten->abteilungID == $lehrertabelle->abteilungID)
-						{
-							echo "selected=\"selected\"";
-						}
-						echo " >" . $daten->name . "</option>";
-					}
-					echo "</select></td>\n";
-					
+					echo "<tr>";
+					echo "<td>" . $lehrertabelle->lehrerID . "</td>";
+					echo "<td>" . $lehrertabelle->vorname . "</td>";
+					echo "<td><input type=\"text\" class=\"aendern\" name=\"neuernachname\" value=\"" . $lehrertabelle->nachname . "\"></td>";
+					echo "<td>" . $lehrertabelle->kuerzel . "</td>";
+					echo "<td><input type=\"text\" class=\"aendern\" name=\"neuerbenutzername\" value=\"" . $lehrertabelle->benutzername . "\"></td>";
+					echo "<td><input type=\"password\" class=\"aendern\" min=\"5\" name=\"neupwd\"></td>";
+					echo "<td><input type=\"password\" class=\"aendern\" min=\"5\" name=\"neuwiederholen\"></td>";
+					echo "<td><select class=\"aendern\" name=\"neueabteilung\">";
+							$ergabteilungdb = $datenbank->query($abfrageabteilung);
+							while ($daten = $ergabteilungdb->fetch_object())
+							{
+								echo "<option value=\"$daten->abteilungID\" ";
+								if ($daten->abteilungID == $lehrertabelle->abteilungID)
+								{
+									echo "selected=\"selected\"";
+								}
+								echo " >" . $daten->name . "</option>";
+							}
+							echo "</select></td>";
 					if ($lehrertabelle->administrator == 1)
 					{
 						echo "<td>Ja</td>";
@@ -345,6 +357,7 @@ if (isset($ausgabe))
 						echo "<td>Nein</td>";
 					}
 					echo "<td><input type=\"radio\" name=\"loesche\" value=\"" . $lehrertabelle->lehrerID . "\"></td>";
+					echo "<td><input type=\"radio\" name=\"checkaendern\" value=\"" . $lehrertabelle->lehrerID . "\"></td>";
 					echo "</tr>";
 				}
 				?>
@@ -356,8 +369,18 @@ if (isset($ausgabe))
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
-		<td><input type="submit" name="loeschelehrer" value="Löschen?">
-			</form></td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<th>
+			<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+				<input type="submit" name="loeschelehrer" value="Löschen">
+		
+		</th>
+		<th>
+			<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+				<input type="submit" name="aendernlehrer" value="Ändern">
+		
+		</th>
 	</tr>
 </table>
 

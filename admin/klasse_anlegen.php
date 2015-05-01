@@ -21,6 +21,17 @@ if (isset($_POST['loescheklasse']) && isset($_POST['loesche']))
 	}
 }
 
+// Abfrage Bereich
+$abfrageLehrer = "select * from lehrer;";
+$abfrageFach = "select k.klassenID, k.name, l.vorname, l.nachname, l.lehrerID from klassen k, lehrer l ";
+$abfrageFach .= "where k.klassenlehrerID = l.lehrerID;";
+$abfrageKlasse = "SELECT klassenID, name from klassen;";
+
+// Ergebnisse der Abfragen
+$ergebnisLehrer = $datenbank->query($abfrageLehrer);
+$ergebnisFach = $datenbank->query($abfrageFach);
+$ergebnisKlasse = $datenbank->query($abfrageKlasse);
+
 // Einfügen der neuen Klasse
 if (isset($_POST['klasseanlegen']))
 {
@@ -48,41 +59,44 @@ if (isset($_POST['klasseanlegen']))
 // Überprüfung ob der Submitbutton gedrückt wurde
 // Zuständig für das Ändern des Lehrers
 // in der Tabelle Klassen
-if (isset($_POST['aendern']))
+if (isset($_POST['aendernlehrer']) && isset($_POST['checkaendern']))
 {
-	// Erstellen der Einfüge anweisung in SQL
-	$insertquery = "UPDATE klassen ";
-	$insertquery .= "SET klassenlehrerID = '" . $_POST['lehrer'] . "'";
-	$insertquery .= " WHERE klassenID = '" . $_POST['klassenauswahl'] . "'";
-	
-	// Einfügen der Formulardaten in die Klassentabelle
-	$datenbank->query($insertquery);
-	
-	// Überprüfung ob der Datensatz angelegt wurde
-	if ($datenbank->affected_rows > 0)
+	// Einfache Abfragen
+	$fragelehrer = "select l.lehrerID, k.klassenID, k.name ";
+	$fragelehrer .= "from lehrer l, klassen k ";
+	$fragelehrer .= "where k.klassenID = '" . $_POST['checkaendern'] . "';";
+
+	// Ergebnis der Abfrage aus $fragelehrer
+	$ergfragelehrer = $datenbank->query($fragelehrer);
+		
+	while ($daten = $ergfragelehrer->fetch_object())
 	{
-		// Speichern des Ausgabestrings in eine Variable
-		$ausgabe = "<hr><p class=\"erfolgreich\">Der zugehörige Klassenlehrer wurde geändert.</p>";
+	$pruefe = $daten->lehrerID;
 	}
-	else
+		
+	if ($_POST['neuerlehrer'] != $pruefe)
 	{
-		// Speichern des Fehlerstrings in eine Variable
-		$ausgabe = "<hr><p class=\"error\">Der Klassenlehrer konnte nicht geändert werden!</p>";
+		// Erstellen der Einfüge anweisung in SQL
+		$insertquery = "UPDATE klassen ";
+		$insertquery .= "SET klassenlehrerID = '" . $_POST['neuerlehrer'] . "'";
+		$insertquery .= " WHERE klassenID = '" . $_POST['checkaendern'] . "';";
+				
+		// Einfügen der Formulardaten in die Klassentabelle
+		$datenbank->query($insertquery);
+				
+		// Überprüfung ob der Datensatz angelegt wurde
+		if ($datenbank->affected_rows > 0)
+		{
+			// Speichern des Ausgabestrings in eine Variable
+			$ausgabe = "<hr><p class=\"erfolgreich\">Der zugehörige Klassenlehrer wurde geändert.</p>";
+		}
+		else
+		{
+			// Speichern des Fehlerstrings in eine Variable
+			$ausgabe = "<hr><p class=\"error\">Der Klassenlehrer konnte nicht geändert werden!</p>";
+		}
 	}
 }
-
-
-// Abfrage Bereich
-$abfrageLehrer = "select * from lehrer;";
-$abfrageFach = "select k.klassenID, k.name, l.vorname, l.nachname from klassen k, lehrer l ";
-$abfrageFach .= "where k.klassenlehrerID = l.lehrerID;";
-$abfrageKlasse = "SELECT klassenID, name from klassen;";
-
-// Ergebnisse der Abfragen
-$ergebnisLehrer = $datenbank->query($abfrageLehrer);
-$ergebnisFach = $datenbank->query($abfrageFach);
-$ergebnisKlasse = $datenbank->query($abfrageKlasse);
-
 ?>
 <form class="anlegen" action="<?php $_SERVER['PHP_SELF']?>" method="post">
 	<fieldset>
@@ -105,51 +119,27 @@ $ergebnisKlasse = $datenbank->query($abfrageKlasse);
 		</p>
 	</fieldset>
 </form>
-<form class="anlegen" action="<?php $_SERVER['PHP_SELF']?>" method="post" name="lehreraendern" class="lehreraendern">
-	<fieldset>
-		<legend>Ändern des Klassenlehrers</legend>
-		<p>
-			<label for="klassenauswahl">Klasse:</label> <select id="klassenauswahl" name="klassenauswahl">
-							<?php
-							$ergebnisKlasse = $datenbank->query($abfrageKlasse);
-							while ($daten = $ergebnisKlasse->fetch_object())
-							{
-								echo "<option value=\"$daten->klassenID\">" . $daten->name . "</option>";
-							}
-							?>
-						</select>
-		</p>
-		<p>
-			<label for="lehrer">Klassenlehrer:</label> <select id="lehrer" name="lehrer">
-							<?php
-							$ergebnisLehrer = $datenbank->query($abfrageLehrer);
-							while ($daten = $ergebnisLehrer->fetch_object())
-							{
-								echo "<option value=\"$daten->lehrerID\">" . $daten->vorname . " " . $daten->nachname . "</option>";
-							}
-							?>
-						</select>
-		</p>
-		<p class="button">
-			<label>&nbsp;</label><input type="submit" name="aendern" value="Lehrer ändern"> <input type="reset" name="reset" value="Zurücksetzen">
-		</p>
-	</fieldset>
-</form>
-
+<hr>
 <?php
 if (isset($ausgabe))
 {
 	echo $ausgabe;
 }
 ?>
-<hr>
+
 <table class="ausgabe">
 	<tr>
 		<th>KlassenID</th>
 		<th>Klassenname</th>
 		<th>Klassen Lehrer</th>
-		<th><form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-				<input type="submit" value="Löschen" name="loescheklasse" /></th>
+		<th>
+			<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+				<input type="submit" name="loescheklasse" value="Löschen">
+		</th>
+		<th>
+			<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+				<input type="submit" name="aendernlehrer" value="Ändern">
+		</th>
 	</tr>
 				<?php
 				while ($daten = $ergebnisFach->fetch_object())
@@ -157,8 +147,20 @@ if (isset($ausgabe))
 					echo "<tr>";
 					echo "<td>" . $daten->klassenID . "</td>";
 					echo "<td>" . $daten->name . "</td>";
-					echo "<td>" . $daten->vorname . " " . $daten->nachname . "</td>";
-					echo "<td><input type=\"radio\" value=\"$daten->klassenID\" name=\"loesche\" />";
+					echo "<td><select class=\"aendern\" name=\"neuerlehrer\">";
+							$ergebnisLehrer = $datenbank->query($abfrageLehrer);
+							while ($lehrertabelle = $ergebnisLehrer->fetch_object())
+							{
+								echo "<option value=\"$lehrertabelle->lehrerID\" ";
+								if ($lehrertabelle->lehrerID == $daten->lehrerID)
+								{
+									echo "selected=\"selected\"";
+								}
+								echo " >" . $lehrertabelle->vorname . " " . $lehrertabelle->nachname . "</option>";
+							}
+							echo "</select></td>";
+					echo "<td><input type=\"radio\" name=\"loesche\" value=\"" . $daten->klassenID . "\"></td>";
+					echo "<td><input type=\"radio\" name=\"checkaendern\" value=\"" . $daten->klassenID . "\"></td>";
 					echo "</tr>";
 				}
 				?>
@@ -166,8 +168,15 @@ if (isset($ausgabe))
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
-		<td><input type="submit" value="Löschen" name="loescheklasse" />
-			</form></td>
+		<th>
+			<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+				<input type="submit" name="loescheklasse" value="Löschen">
+		</th>
+		<th>
+			<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+				<input type="submit" name="aendernlehrer" value="Ändern">
+		</th>
+		
 
 </table>
 
