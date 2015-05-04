@@ -28,6 +28,7 @@ if (isset($_POST['anmelden']))
 				$_SESSION['benutzername'] = $_POST['benutzername'];
 				$_SESSION['administrator'] = $queryErgebnis->administrator;
 				$_SESSION['ID'] = $queryErgebnis->lehrerID;
+				$_SESSION['anmeldezeit'] = time();
 				$angemeldet = true;
 			}
 		}
