@@ -36,40 +36,40 @@ include_once './include/kalender.class.php';
 			{
 				switch ($_GET['seite'])
 				{
-					case 'abteilung_anlegen.php':
-						include_once 'admin/abteilung_anlegen.php';
+					// Benutzerbereich
+					case 'passwort_aendern.php':
+						include_once 'benutzer/passwort_aendern.php';
 						break;
-					case 'fach_anlegen.php':
-						include_once 'admin/fach_anlegen.php';
-						break;
-					case 'globalen_termin_anlegen.php':
-						include_once 'admin/globalen_termin_anlegen.php';
-						break;
-					case 'klasse_anlegen.php':
-						// include_once 'admin/klasse_anlegen.php';
-						include_once 'test/klasse_anlegen.php';
-						break;
-					case 'lehrer_anlegen.php':
-						// include_once 'admin/lehrer_anlegen.php';
-						include_once 'test/lehrer_anlegen.php';
-						break;
+					
+					// Kalenderbereich
 					case 'kalender_anzeigen.php':
 						include_once 'kalender/kalender_anzeigen.php';
-						break;
-					case 'globale_termine_anlegen.php':
-						include_once 'admin/globale_termine_anlegen.php';
 						break;
 					case 'neuer_termin.php':
 						include_once 'kalender/neuer_termin.php';
 						break;
-					case 'passwort_aendern.php':
-						include_once 'benutzer/passwort_aendern.php';
+					
+					// Adminbereich
+					case 'globalen_termin_anlegen.php':
+						include_once 'admin/globalen_termin_anlegen.php';
+						break;
+					case 'klasse_anlegen.php':
+						include_once 'admin/klasse_anlegen.php';
+						break;
+					case 'fach_anlegen.php':
+						include_once 'admin/fach_anlegen.php';
+						break;
+					case 'lehrer_anlegen.php':
+						include_once 'admin/lehrer_anlegen.php';
+						break;
+					case 'abteilung_anlegen.php':
+						include_once 'admin/abteilung_anlegen.php';
 						break;
 					case 'gewichtung_anlegen.php':
-						include_once 'test/gewichtung_anlegen.php';
+						include_once 'admin/gewichtung_anlegen.php';
 						break;
 					case 'stundenplan_anlegen.php':
-						include_once 'test/stundenplan_anlegen.php';
+						include_once 'admin/stundenplan_anlegen.php';
 						break;
 				}
 			}
