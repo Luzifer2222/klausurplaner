@@ -9,6 +9,7 @@ table.kalender {
 
 table.kalender tr {
 	background-color: #E0E0E0;
+	vertical-align: baseline;
 }
 
 table.kalender tr:nth-child(odd) {
@@ -30,24 +31,44 @@ table.kalender th.vonbis {
 	width: 50px;
 }
 
+table.kalender th.kw {
+	text-align: center;
+	width: 50px;
+}
+
 table.kalender td {
 	min-width: 50px;
 	max-width: 150px;
 	overflow: hidden;
 }
 
-table.kalender td:hover {
+table.kalender td.tage:hover {
 	overflow: visible;
 	background-color: #c7c7c7;
 }
 
-td.heute {
+table.kalender td.heute {
 	background-color: #FF0000;
 }
 
-p.globaletermine {
+p.globalertermin {
 	padding: 0px;
+	background-color:#80ff80;
+
+	
 }
+p.klassentermine{
+	padding: 0px;
+	background-color:#eee8aa;
+	
+}
+
+p.feiertagtermine{
+	padding: 0px;
+	background-color:#ffebcd;
+	
+}
+
 
 form.formular {
 	margin: auto;
