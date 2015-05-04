@@ -23,21 +23,26 @@
 			<a href="#">Admin</a>
 			<ul>
 				<li>
-					<a href="./index.php?seite=globale_termine_anlegen.php">Globale Termine anlegen</a>
+					<a href="./index.php?seite=globale_termine_anlegen.php">Globale Termine</a>
 				</li>
 				<li>
-					<a href="./index.php?seite=klasse_anlegen.php">Klasse anlegen</a>
+					<a href="./index.php?seite=klasse_anlegen.php">Klasse</a>
 				</li>
 				<li>
-					<a href="./index.php?seite=fach_anlegen.php">Fach anlegen</a>
+					<a href="./index.php?seite=fach_anlegen.php">Fach</a>
 				</li>
 				<li>
-					<a href="./index.php?seite=lehrer_anlegen.php">Lehrer anlegen/ändern</a>
+					<a href="./index.php?seite=lehrer_anlegen.php">Lehrer</a>
 				</li>
 				<li>
-				<a href="./index.php?seite=abteilung_anlegen.php">Abteilung anlegen</a>
+				<a href="./index.php?seite=abteilung_anlegen.php">Abteilung</a>
 				</li>
-
+				<li>
+				<a href="./index.php?seite=stundenplan_anlegen.php">Stundenplan</a>
+				</li>
+				<li>
+				<a href="./index.php?seite=gewichtung_anlegen.php">Gewichtung</a>
+				</li>
 			</ul>
 		</li>
 		<!-- Begin der Prüfung, ob Benutzer angemeldet ist -->
