@@ -29,8 +29,17 @@ $klassenErgebnis = $datenbank->query($klassenQuery);
 					
 					for ($i = 0 ; $i < 5 ; $i++)
 					{
-						echo "<option value=\"" . date("Y", strtotime($schuljahresbegin)) . "\">" . date("Y", strtotime($schuljahresbegin)) . "/" .
-									 date("Y", strtotime($schuljahresende)) . "</option>\n";
+						
+						if ($_POST['schuljahr'] == date("Y", strtotime($schuljahresbegin)))
+						{
+							echo "<option value=\"" . date("Y", strtotime($schuljahresbegin)) . "\" selected=\"selected\" >" .
+										 date("Y", strtotime($schuljahresbegin)) . "/" . date("Y", strtotime($schuljahresende)) . "</option>\n";
+						}
+						else
+						{
+							echo "<option value=\"" . date("Y", strtotime($schuljahresbegin)) . "\">" . date("Y", strtotime($schuljahresbegin)) . "/" .
+										 date("Y", strtotime($schuljahresende)) . "</option>\n";
+						}
 						$schuljahresbegin = date("d.m.Y", strtotime("$schuljahresbegin +1 year"));
 						$schuljahresende = date("d.m.Y", strtotime("$schuljahresende +1 year"));
 					}
@@ -42,12 +51,18 @@ $klassenErgebnis = $datenbank->query($klassenQuery);
 					
 					while ($daten = $klassenErgebnis->fetch_object())
 					{
-						echo "<option value=\"$daten->klassenID\">$daten->name</option>";
+						if ($_POST['klassenID'] == $daten->klassenID)
+						{
+							echo "<option value=\"$daten->klassenID\" selected=\"selected\" >$daten->name</option>";
+						}
+						else
+						{
+							echo "<option value=\"$daten->klassenID\">$daten->name</option>";
+						}
 					}
 					
 					?>
-				</select>
-		<input type="submit" name="anzeigen" value="Anzeigen">
+				</select> <input type="submit" name="anzeigen" value="Anzeigen">
 		</p>
 	</fieldset>
 </form>
