@@ -89,7 +89,7 @@
 							<p>
 								<label for="passwort">Passwort:</label><input type="password" name="passwort" id="passwort" class="loginfeld">
 							</p>
-							<input type="submit" name="anmelden" value="Anmelden"">
+							<input type="submit" name="anmelden" value="Anmelden">
 						</fieldset>
 					</form>
 				</li>

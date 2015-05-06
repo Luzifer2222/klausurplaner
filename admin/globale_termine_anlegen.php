@@ -85,7 +85,7 @@ $terminErgebnis = $datenbank->query($terminQuery);
 			<label for="nametermin">Terminname:</label><input type="text" id="nametermin" name="nametermin" />
 		</p>
 		<p>
-			<label for="beginndatum">Terminbeginn:</label><input type="text" pattern="([0-9]{2}).([0-9]{2}).([0-9]{4})" id="beginndatum" name="beginndatum" value="<?php  echo date("d.m.Y", time()) ?>" " />
+			<label for="beginndatum">Terminbeginn:</label><input type="text" pattern="([0-9]{2}).([0-9]{2}).([0-9]{4})" id="beginndatum" name="beginndatum" value="<?php  echo date("d.m.Y", time()) ?>" />
 		</p>
 		<p>
 			<label for="endedatum">Terminende:</label><input type="text" pattern="([0-9]{2}).([0-9]{2}).([0-9]{4})" id="endedatum" name="endedatum" value="<?php  echo date("d.m.Y", time()) ?>" />

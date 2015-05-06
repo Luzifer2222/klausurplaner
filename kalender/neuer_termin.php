@@ -169,20 +169,20 @@ if (isset($ausgabe))
 }
 ?>
 <hr>
-<table class="ausgabe">
-	<tr>
-		<th>TerminID</th>
-		<th>Terminname</th>
-		<th>Klasse</th>
-		<th>Lehrer</th>
-		<th>Fach</th>
-		<th>Datum</th>
-		<th>Von</th>
-		<th>Bis</th>
-		<th>Klausur?</th>
-		<th><form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-				<input type="submit" value="Löschen" name="loeschetermin" /></th>
-	</tr>
+<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+	<table class="ausgabe">
+		<tr>
+			<th>TerminID</th>
+			<th>Terminname</th>
+			<th>Klasse</th>
+			<th>Lehrer</th>
+			<th>Fach</th>
+			<th>Datum</th>
+			<th>Von</th>
+			<th>Bis</th>
+			<th>Klausur?</th>
+			<th><input type="submit" value="Löschen" name="loeschetermin" /></th>
+		</tr>
 				<?php
 				while ($daten = $terminErgebnis->fetch_object())
 				{
@@ -208,19 +208,19 @@ if (isset($ausgabe))
 				}
 				?>
 				<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td><input type="submit" value="Löschen" name="loeschetermin" />
-			</form></td>
-
-</table>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td><input type="submit" value="Löschen" name="loeschetermin" /></td>
+	
+	</table>
+</form>
 
 <?php
 $datenbank->close();

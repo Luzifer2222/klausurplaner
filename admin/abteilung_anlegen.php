@@ -1,5 +1,5 @@
-<?php 
-//Kontrolle ob User angemeldet ist und Administratorrechte hat
+<?php
+// Kontrolle ob User angemeldet ist und Administratorrechte hat
 $session = new sessionkontrolle();
 $session->AdminBereich();
 ?>
@@ -86,14 +86,14 @@ if (isset($ausgabe))
 	echo $ausgabe;
 ?>
 <hr>
-<table class="ausgabe">
-	<caption>Angelegte Abteilungen</caption>
-	<tr>
-		<th>AbteilungsID</th>
-		<th>Abteilungsname</th>
-		<th><form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-				<input type="submit" name="loescheabt" value="Löschen?"></th>
-	</tr>
+<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+	<table class="ausgabe">
+		<caption>Angelegte Abteilungen</caption>
+		<tr>
+			<th>AbteilungsID</th>
+			<th>Abteilungsname</th>
+			<th><input type="submit" name="loescheabt" value="Löschen?"></th>
+		</tr>
     	   <?php
 								while ($lehrertabelle = $datenbankAusgabe->fetch_object())
 								{
@@ -105,12 +105,12 @@ if (isset($ausgabe))
 								}
 								?>
 	    <tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td><input type="submit" name="loescheabt" value="Löschen?">
-			</form></td>
-	</tr>
-</table>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td><input type="submit" name="loescheabt" value="Löschen?"></td>
+		</tr>
+	</table>
+</form>
 
 
 

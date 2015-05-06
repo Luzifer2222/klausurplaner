@@ -73,13 +73,13 @@ if (isset($ausgabe))
 }
 ?>
 
-<table class="ausgabe">
-	<tr>
-		<th>FachID</th>
-		<th>Fachname</th>
-		<th><form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-				<input type="submit" value="Löschen" name="loeschefach" /></th>
-	</tr>
+<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+	<table class="ausgabe">
+		<tr>
+			<th>FachID</th>
+			<th>Fachname</th>
+			<th><input type="submit" value="Löschen" name="loeschefach" /></th>
+		</tr>
 				<?php
 				while ($daten = $ergebnisFach->fetch_object())
 				{
@@ -91,9 +91,9 @@ if (isset($ausgabe))
 				}
 				?>
 				<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td><input type="submit" value="Löschen" name="loeschefach" />
-			</form></td>
-
-</table>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td><input type="submit" value="Löschen" name="loeschefach" /></td>
+	
+	</table>
+</form>
