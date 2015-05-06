@@ -50,8 +50,8 @@ include_once './include/kalender.class.php';
 						break;
 					
 					// Adminbereich
-					case 'globalen_termin_anlegen.php':
-						include_once 'admin/globalen_termin_anlegen.php';
+					case 'globale_termine_anlegen.php':
+						include_once 'admin/globale_termine_anlegen.php';
 						break;
 					case 'klasse_anlegen.php':
 						include_once 'admin/klasse_anlegen.php';

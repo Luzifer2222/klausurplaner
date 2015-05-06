@@ -24,16 +24,16 @@ $anzahlErgebnis = $datenbank->query($anzahlQuery);
 	<fieldset>
 		<legend>Klausur und Test Begrenzung</legend>
 		<p>
-			<label for="kmaxtag">Max. Klausuren Tag:</label><input type="number" min="0" max="10" maxlength="2" name="kmaxtag" id="kmaxtag">
+			<label for="kmaxtag">Max. Klausuren Tag:</label><input type="number" min="1" max="10" maxlength="2" name="kmaxtag" id="kmaxtag" value="1">
 		</p>
 		<p>
-			<label for="kmaxwoche">Max. Klausuren Woche:</label><input type="number" min="0" max="10" maxlength="2" name="kmaxwoche" id="kmaxwoche">
+			<label for="kmaxwoche">Max. Klausuren Woche:</label><input type="number" min="1" max="10" maxlength="2" name="kmaxwoche" id="kmaxwoche" value="1">
 		</p>
 		<p>
-			<label for="tmaxtag">Max. Tests Tag:</label><input type="number" min="0" max="10" maxlength="2" name="tmaxtag" id="tmaxtag">
+			<label for="tmaxtag">Max. Tests Tag:</label><input type="number" min="1" max="10" maxlength="2" name="tmaxtag" id="tmaxtag" value="1">
 		</p>
 		<p>
-			<label for="tmaxwoche">Max. Tests Woche:</label><input type="number" min="0" max="10" maxlength="2" name="tmaxwoche" id="tmaxwoche">
+			<label for="tmaxwoche">Max. Tests Woche:</label><input type="number" min="1" max="10" maxlength="2" name="tmaxwoche" id="tmaxwoche" value="1">
 		</p>
 		<p>
 		<input type="submit" name="speichern" value="Speichern">
@@ -47,26 +47,34 @@ $anzahlErgebnis = $datenbank->query($anzahlQuery);
 // in die Tabelle Anzahlklausurtest
 
 if (isset($_POST['speichern']))
-{
-	// Erstellen der Einfügeanweisung in SQL
-	$insertquery = "UPDATE anzahlklausurtest ";
-	$insertquery .= "SET maxklausurtag = " . ($_POST['kmaxtag']) . ", maxklausurwoche = " . ($_POST['kmaxwoche']) . ", maxtesttag = " . ($_POST['tmaxtag']) . ", maxtestwoche = " . ($_POST['tmaxwoche']) . "";
-	$insertquery .= " WHERE anzahlID = '1';";
-	
-	// Einfügen der Formulardaten in die Lehrertabelle
-	$datenbank->query($insertquery);
-			
-	// Überprüfung ob der Datensatz angelegt wurde
-	if ($datenbank->affected_rows > 0)
+{	
+	if (($_POST['kmaxtag'] < $_POST['kmaxwoche']) OR ($_POST['tmaxtag'] < $_POST['tmaxwoche']))
 	{
-		// Speichern des Ausgabestrings in eine Variable
-		$ausgabe = "<hr><p class=\"erfolgreich\">Das Passwort wurde geändert.</p>";
+		// Erstellen der Updateanweisung in SQL
+		$insertquery = "UPDATE anzahlklausurtest ";
+		$insertquery .= "SET maxklausurtag = " . ($_POST['kmaxtag']) . ", maxklausurwoche = " . ($_POST['kmaxwoche']) . ", maxtesttag = " . ($_POST['tmaxtag']) . ", maxtestwoche = " . ($_POST['tmaxwoche']) . "";
+		$insertquery .= " WHERE anzahlID = '1';";
+	
+		// Einfügen der Formulardaten in die Lehrertabelle
+		$datenbank->query($insertquery);
+			
+		// Überprüfung ob der Datensatz angelegt wurde
+		if ($datenbank->affected_rows > 0)
+		{
+			// Speichern des Ausgabestrings in eine Variable
+			$ausgabe = "<hr><p class=\"erfolgreich\">Die Gewichtung wurde geändert.</p>";
+		}
+		else
+		{
+			// Speichern des Fehlerstrings in eine Variable
+			$ausgabe = "<hr><p class=\"error\">Die Gewichtung konnte nicht geändert werden!</p>";
+		}
 	}
 	else
 	{
 		// Speichern des Fehlerstrings in eine Variable
-		$ausgabe = "<hr><p class=\"error\">Das Passwort stimmt nicht überein!</p>";
-	}	
+		$ausgabe = "<hr><p class=\"error\">Die Anzahl pro Tag darf nicht über der Anzahl pro Woche liegen!</p>";
+	}		
 }
 ?>
 
