@@ -24,7 +24,7 @@ if (isset($_POST['anlegen']))
 		if (strtotime($_POST['beginndatum']) <= strtotime($_POST['endedatum']))
 		{
 		$insertquery = "INSERT INTO belegtetage (name, beginndatum, endedatum, ganzertag) values ";
-		$insertquery .= "('" . $_POST['nametermin'] . "', '" . $_POST['beginndatum'] . "', '" . $_POST['endedatum'];
+		$insertquery .= "('" . mysql_real_escape_string($_POST['nametermin']) . "', '" . $_POST['beginndatum'] . "', '" . $_POST['endedatum'];
 		$insertquery .= "', '" . $_POST['ganzertag'][0] . "');";
 		
 		try
@@ -38,7 +38,7 @@ if (isset($_POST['anlegen']))
 		
 		if ($datenbank->affected_rows > 0)
 		{
-			$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde 1 Datensatz angelegt.</p>";
+			$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde ein neuer Termin angelegt.</p>";
 		}
 		}
 		else
@@ -85,10 +85,10 @@ $terminErgebnis = $datenbank->query($terminQuery);
 			<label for="nametermin">Terminname:</label><input type="text" id="nametermin" name="nametermin" />
 		</p>
 		<p>
-			<label for="beginndatum">Terminbeginn:</label><input type="date" min="<?php echo date("Y-m-d", time())?>" id="beginndatum" name="beginndatum" value="<?php echo date("Y-m-d", time())?>" />
+			<label for="beginndatum">Terminbeginn: (DD.MM.YYYY)</label><input type="text" pattern="([0-9]{2}).([0-9]{2}).([0-9]{4})" id="beginndatum" name="beginndatum" value="<?php  echo date("d.m.Y", time()) ?>"" />
 		</p>
 		<p>
-			<label for="endedatum">Terminende:</label><input type="date" min="<?php echo date("Y-m-d", time())?>" id="endedatum" name="endedatum" value="<?php echo date("Y-m-d", time())?>" />
+			<label for="endedatum">Terminende: (DD.MM.YYYY)</label><input type="text" pattern="([0-9]{2}).([0-9]{2}).([0-9]{4})" id="endedatum" name="endedatum" value="<?php  echo date("d.m.Y", time()) ?>" />
 		</p>
 		<p>
 			<label for="ganzertag">Ganzer Tag:</label><input type="checkbox" id="ganzertag" name="ganzertag[]" value="1" />

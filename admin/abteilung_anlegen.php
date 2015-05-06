@@ -19,7 +19,7 @@ if (isset($_POST['abtanlegen']))
 	{
 		// Erstellen der Abfrage zum erzeugen einer neuen Abteilung
 		// und Ausführen der Abfrage
-		$abfrageabteilung = "insert into abteilung (name) values ('" . $_POST['abtname'] . "');";
+		$abfrageabteilung = "insert into abteilung (name) values ('" . mysql_real_escape_string($_POST['abtname']) . "');";
 		$datenbank->query($abfrageabteilung);
 		
 		// Überprüfung ob die Abfrage erfolgreich war

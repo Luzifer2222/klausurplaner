@@ -48,7 +48,7 @@ $anzahlErgebnis = $datenbank->query($anzahlQuery);
 
 if (isset($_POST['speichern']))
 {	
-	if (($_POST['kmaxtag'] < $_POST['kmaxwoche']) OR ($_POST['tmaxtag'] < $_POST['tmaxwoche']))
+	if (($_POST['kmaxtag'] <= $_POST['kmaxwoche']) OR ($_POST['tmaxtag'] <= $_POST['tmaxwoche']))
 	{
 		// Erstellen der Updateanweisung in SQL
 		$insertquery = "UPDATE anzahlklausurtest ";

@@ -1,10 +1,12 @@
 <?php
 
 $pruefeSession = new sessionkontrolle();
-$pruefeSession->AdminBereich()?>
+$pruefeSession->AdminBereich();
 
+?>
 
 <?php
+
 // Datenbankverbindung initialisieren
 $datenbank = new mysqli($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
 $datenbank->set_charset('utf8');
@@ -54,10 +56,10 @@ if (isset($_POST['aendernlehrer']) && isset($_POST['checkaendern']))
 	$fragelehrer = "select klassenlehrerID ";
 	$fragelehrer .= "from klassen ";
 	$fragelehrer .= "where klassenID = '" . $_POST['checkaendern'] . "';";
-	
+
 	// Ergebnis der Abfrage aus $fragelehrer
 	$ergfragelehrer = $datenbank->query($fragelehrer);
-	
+		
 	while ($daten = $ergfragelehrer->fetch_object())
 	{
 		$pruefe = $daten->klassenlehrerID;

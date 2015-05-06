@@ -22,7 +22,7 @@ $fachErgebnis = $datenbank->query($fachQuery);
 
 ?>
 
-<form action="<?php $_SERVER['PHP_SELF']?>" method="post" class="formular">
+<form action="<?php $_SERVER['PHP_SELF']?>" method="post" class="formular" name="auswahl">
 		<fieldset>
 		<legend>Stundenplan der Klasse</legend>
 		<p>
@@ -49,8 +49,9 @@ $fachErgebnis = $datenbank->query($fachQuery);
 if (isset($_POST['aendern']))
 {
 	echo "<hr>";
+	echo "<form action=\"\" method=\"post\" name=\"tabelle\" class=\"formular\">";
 	echo "<table class=\"kalender\" id=\"stundenplan\">";
-	
+		
 	// Abfrage des Namens der ausgewählten Klasse aus der Tabelle Klassen
 	$classQuery = "SELECT name FROM klassen Where klassenID = " . $_POST['klassenwahl'] . ";";
 	$classErgebnis = $datenbank->query($classQuery);
@@ -68,7 +69,7 @@ if (isset($_POST['aendern']))
 	echo "<th>Mittwoch</th>";
 	echo "<th>Donnerstag</th>";
 	echo "<th>Freitag</th>";
-	echo "</tr>";
+	echo "</tr>\n";
 	// Abfrage der Stunden der gewählten Klasse aus der Tabelle Stunden
 	$sQuery = "Select klassenID, name from stunden ";
 	$sQuery .= "where klassenID = '" . $_POST['klassenwahl'] . "';";
@@ -76,12 +77,13 @@ if (isset($_POST['aendern']))
 	
 	// Hochzählender Eintrag zur Abfrage der einzelnen Felder
 	$wert = 1;
-	$eintrag = 'feld';
+	$eintrag = "feld";
+	
 	// Erste bis achte Schulstunde, falls es mehr gibt, muss dieser erhöht werden
 	for ($schulstunde = 1 ; $schulstunde < 9 ; $schulstunde++)
 	{
 		echo "<tr>";
-		echo "<td>$schulstunde</td>";
+		echo "<td>$schulstunde</td>\n";
 		
 		// Montag bis Freitag, falls es Samstags Unterricht gibt, muss dieser Wert erhöht werden
 		for ($tag = 1 ; $tag < 6 ; $tag++)
@@ -96,6 +98,7 @@ if (isset($_POST['aendern']))
 			$ergfragestunde = $datenbank->query($fragestunde);
 			$pruefe = NULL;
 			$boolean = false;
+			// Benennung der Felder durch den hochzählenden Eintrag zur Abfrage der einzelnen Felder
 			$feld = "$eintrag$wert";
 			while ($daten = $ergfragestunde->fetch_object())
 			{
@@ -121,12 +124,14 @@ if (isset($_POST['aendern']))
 				{
 					echo "<option value=\"0\">&nbsp;</option>";
 				}
-			echo "</select></td>";
+			echo "</select></td>\n";
+			// Hochzählender Eintrag zur Abfrage der einzelnen Felder
 			$wert++;
 		}
 	echo "</tr>";
 	}
 	echo "</table>";
+	echo "</form>;"
 }
 ?>
 
@@ -218,14 +223,29 @@ if (isset($_POST['anzeigen']))
 
 if (isset($_POST['speichern']))
 {
-	foreach ($_POST as $key=>$value)
+	// Hochzählender Eintrag zur Abfrage der einzelnen Felder
+	$wert = 1;
+	$eintrag = "feld";
+	for ($schulstunde = 1 ; $schulstunde < 9 ; $schulstunde++)
 	{
-		echo $key." ".$value;
+		for ($tag = 1 ; $tag < 6 ; $tag++)
+		{
+			$feld = "$eintrag$wert";
+			if (($_POST["$feld"]) == 0)
+			{
+				
+			}
+			$wert++;
+		}
 	}
-	echo $_POST['feld1'];
-	if (isset($_POST['feld1']) == "1")
+		
+	if (($_POST['feld1']) == 2)
 	{
-		echo "test";
+		echo "test2";
+	}
+	if (($_POST['feld1']) == 1)
+	{
+		echo "test1";
 	}
 }
 ?>

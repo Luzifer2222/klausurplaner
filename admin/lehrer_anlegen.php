@@ -1,4 +1,3 @@
-
 <?php
 
 $pruefeSession = new sessionkontrolle();
@@ -7,6 +6,7 @@ $pruefeSession->AdminBereich();
 ?>
  
 <?php
+
 // Verbindung zur Datenbank herstellen
 $datenbank = new mysqli($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
 
@@ -56,10 +56,10 @@ if (isset($_POST['aendernlehrer']) && isset($_POST['checkaendern']))
 	if ($_POST['neuernachname'] != "")
 	{
 		// Einfache Abfragen
-		$fragelehrer = "select l.lehrerID, l.nachname ";
-		$fragelehrer .= "from lehrer l ";
-		$fragelehrer .= "where l.lehrerID = '" . $_POST['checkaendern'] . "';";
-		
+		$fragelehrer = "select nachname ";
+		$fragelehrer .= "from lehrer ";
+		$fragelehrer .= "where lehrerID = '" . $_POST['checkaendern'] . "';";
+
 		// Ergebnis der Abfrage aus $fragelehrer
 		$ergfragelehrer = $datenbank->query($fragelehrer);
 		
@@ -98,10 +98,10 @@ if (isset($_POST['aendernlehrer']) && isset($_POST['checkaendern']))
 	if ($_POST['neuerbenutzername'] != "")
 	{
 		// Einfache Abfragen
-		$fragelehrer = "select l.lehrerID, l.benutzername ";
-		$fragelehrer .= "from lehrer l ";
-		$fragelehrer .= "where l.lehrerID = '" . $_POST['checkaendern'] . "';";
-		
+		$fragelehrer = "select benutzername ";
+		$fragelehrer .= "from lehrer ";
+		$fragelehrer .= "where lehrerID = '" . $_POST['checkaendern'] . "';";
+
 		// Ergebnis der Abfrage aus $fragelehrer
 		$ergfragelehrer = $datenbank->query($fragelehrer);
 		
@@ -196,11 +196,9 @@ if (isset($_POST['neuanlegen']))
 			// Erstellen der Einfügeanweisung in SQL
 			$insertquery = "insert into lehrer ";
 			$insertquery .= "(vorname, nachname, kuerzel, benutzername, passwort, administrator, abteilungID) values";
-			$insertquery .= "('" . mysql_real_escape_string($_POST['vname']) . "', '" . mysql_real_escape_string($_POST['nname']) . "', '" .
-						 mysql_real_escape_string(strtoupper($_POST['kuerzel'])) . "', '" . mysql_real_escape_string(strtolower($_POST['bname'])) .
-						 "', '";
-			$insertquery .= verschluesselLogin(mysql_real_escape_string($_POST['pwd'])) . "', '" . mysql_real_escape_string(
-						$_POST['administrator'][0]) . "', '" . $_POST['abteilung'] . "');";
+			$insertquery .= "('" . mysql_real_escape_string($_POST['vname']) . "', '" . mysql_real_escape_string($_POST['nname']) . "', '" . mysql_real_escape_string(strtoupper($_POST['kuerzel'])) . "', '" .
+						 mysql_real_escape_string(strtolower($_POST['bname'])) . "', '";
+			$insertquery .= verschluesselLogin(mysql_real_escape_string($_POST['pwd'])) . "', '" . mysql_real_escape_string($_POST['administrator'][0]) . "', '" . $_POST['abteilung'] . "');";
 			
 			// Einfügen der Formulardaten in die Lehrertabelle
 			$datenbank->query($insertquery);
