@@ -7,6 +7,7 @@ table.kalender {
 	margin: auto;
 }
 
+
 table.kalender tr {
 	background-color: #E0E0E0;
 	vertical-align: baseline;
@@ -22,13 +23,16 @@ table.kalender tr th {
 
 table.kalender td {
 	height: 70px;
-	text-align: center;
-	padding: 0px;
-}
+	text-align: left;
+	}
+table.kalender td p{
+	padding-left: 5px;
+	}
 
 table.kalender th.vonbis {
 	text-align: center;
 	width: 50px;
+	vertical-align:;
 }
 
 table.kalender th.kw {
@@ -48,25 +52,28 @@ table.kalender td.tage:hover {
 }
 
 table.kalender td.heute {
-	background-color: #FF0000;
+	background-color:;
+	border-style: solid;
+	border-color: #808080;
+	border-width: 2px;
 }
 
 p.globalertermin {
 	padding: 0px;
-	background-color:#80ff80;
-
-	
-}
-p.klassentermine{
-	padding: 0px;
-	background-color:#eee8aa;
-	
+	background-color:#adadad;
+	margin: 1px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;	
 }
 
-p.feiertagtermine{
+p.klassentermin{
 	padding: 0px;
-	background-color:#ffebcd;
-	
+	background-color:#c0c0c0;
+	margin: 1px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;	
 }
 
 
