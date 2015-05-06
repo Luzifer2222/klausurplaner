@@ -131,7 +131,7 @@ if (isset($_POST['aendern']))
 	echo "</tr>";
 	}
 	echo "</table>";
-	echo "</form>;"
+	echo "</form>";
 }
 ?>
 
