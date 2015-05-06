@@ -73,26 +73,32 @@ nav ul li ul li a:hover {
 	background-color: #FAFAFA !important;
 }
 
-nav ul li.user:hover a, nav ul li.cat1:hover>ul li a {
+nav ul li.user:hover a, nav ul li:hover>ul li a {
 	background-color: #E6DD00;
 }
 
-nav ul li.kalender:hover a, nav ul li.cat2:hover>ul li a {
+nav ul li.kalender:hover a, nav ul li:hover>ul li a {
 	background-color: #8CB302;
 }
 
-nav ul li.admin:hover a, nav ul li.cat3:hover>ul li a {
+nav ul li.klassen:hover a, nav ul li:hover>ul li a {
+	background-color: #808040;
+}
+
+nav ul li.admin:hover a, nav ul li:hover>ul li a {
 	background-color: #008C74;
 }
 
-nav ul li.login:hover a, nav ul li.cat4:hover>ul li a {
+nav ul li.login:hover a, nav ul li:hover>ul li a {
 	background-color: #004C66;
 }
 
-form.anmeldeformular {
-	width: 200px;
+
+form.anmeldeformular{
+	width:200px;
+	
 }
 
-fieldset p input.loginfeld {
+fieldset p input.loginfeld{
 	width: 100%;
 }
