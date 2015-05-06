@@ -31,7 +31,7 @@ class kalender
 		echo "<table class=\"kalender\">";
 		echo "<caption>Schuljahr " . $jahr . "/" . ($jahr + 1) . "</caption>";
 		echo "<tr>
-				<th>KW</th>
+				<th class=\"kw\">KW</th>
 				<th class=\"vonbis\">Von - Bis</th>
 				<th>Montag</th>
 				<th>Dienstag</th>
@@ -42,8 +42,8 @@ class kalender
 		while (strtotime($kalenderAnfang) < strtotime($kalenderEnde))
 		{
 			echo "<tr>";
-			echo "<td>" . date("W", strtotime($kalenderAnfang)) . "</td>\n";
-			echo "<td>" . date("d.m.", strtotime("$kalenderAnfang")) . " - " . date("d.m.", strtotime("$kalenderAnfang next friday")) . "</td>\n";
+			echo "<td class=\"kw\">" . date("W", strtotime($kalenderAnfang)) . "</td>\n";
+			echo "<td class=\"vonbis\">" . date("d.m.", strtotime("$kalenderAnfang")) . " - " . date("d.m.", strtotime("$kalenderAnfang next friday")) . "</td>\n";
 			
 			for ($i = 0 ; $i < 5 ; $i++)
 			{
