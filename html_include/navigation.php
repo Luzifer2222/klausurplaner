@@ -8,6 +8,14 @@
 				</li>
 			</ul>
 		</li>
+		<li class="klassen">
+			<a href="#">Klassen</a>
+			<ul>
+				<li>
+					<a href="./index.php?seite=stundenplan_anzeigen.php">Anzeigen</a>
+				</li>
+			</ul>
+		</li>
 		<li class="kalender">
 			<a href="#">Kalender</a>
 			<ul>
@@ -38,7 +46,7 @@
 				<a href="./index.php?seite=abteilung_anlegen.php">Abteilungen</a>
 				</li>
 				<li>
-				<a href="./index.php?seite=stundenplan_anlegen.php">Stundenpläne</a>
+				<a href="./index.php?seite=stundenplan_bearbeiten.php">Stundenpläne</a>
 				</li>
 				<li>
 				<a href="./index.php?seite=gewichtung_anlegen.php">Gewichtung</a>
@@ -52,12 +60,12 @@
 			if ($sessionPruefe->navigation()):
 		?>
 		<li class="login">
-			<a href="#">Eingeloggt</a>
+			<a href="#">Logout</a>
 			<ul>
 				<li>
 					<form action="./index.php?seite=einausloggen.php" method="post" name="abmeldeformular" class="abmeldeformular">
 						<fieldset>
-							<legend>Eingeloggt</legend>
+							<legend>Eingeloggt als:</legend>
 							<p><?php echo "Benutzername: " . $_SESSION['benutzername']?></p>
 						<input type="submit" name="abmelden" value="Abmelden">
 						</fieldset>
@@ -76,10 +84,10 @@
 						<fieldset>
 							<legend>Anmeldeformular</legend>
 							<p>
-								<label for="benutzername">Benutzername:</label><input type="text" name="benutzername" id="benutzername">
+								<label for="benutzername">Benutzername:</label><input type="text" name="benutzername" id="benutzername" class="loginfeld">
 							</p>
 							<p>
-								<label for="passwort">Passwort:</label><input type="password" name="passwort" id="passwort">
+								<label for="passwort">Passwort:</label><input type="password" name="passwort" id="passwort" class="loginfeld">
 							</p>
 							<input type="submit" name="anmelden" value="Anmelden"">
 						</fieldset>
