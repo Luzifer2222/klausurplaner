@@ -88,3 +88,11 @@ nav ul li.admin:hover a, nav ul li.cat3:hover>ul li a {
 nav ul li.login:hover a, nav ul li.cat4:hover>ul li a {
 	background-color: #004C66;
 }
+
+form.anmeldeformular {
+	width: 200px;
+}
+
+fieldset p input.loginfeld {
+	width: 100%;
+}
