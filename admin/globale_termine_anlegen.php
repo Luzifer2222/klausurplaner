@@ -23,23 +23,23 @@ if (isset($_POST['anlegen']))
 	{
 		if (strtotime($_POST['beginndatum']) <= strtotime($_POST['endedatum']))
 		{
-		$insertquery = "INSERT INTO belegtetage (name, beginndatum, endedatum, ganzertag) values ";
-		$insertquery .= "('" . mysql_real_escape_string($_POST['nametermin']) . "', '" . $_POST['beginndatum'] . "', '" . $_POST['endedatum'];
-		$insertquery .= "', '" . $_POST['ganzertag'][0] . "');";
-		
-		try
-		{
-			$datenbank->query($insertquery);
-		}
-		catch (Exception $e)
-		{
-			echo $e->getMessage();
-		}
-		
-		if ($datenbank->affected_rows > 0)
-		{
-			$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde ein neuer Termin angelegt.</p>";
-		}
+			$insertquery = "INSERT INTO belegtetage (name, beginndatum, endedatum, ganzertag) values ";
+			$insertquery .= "('" . mysql_real_escape_string($_POST['nametermin']) . "', '" . $_POST['beginndatum'] . "', '" . $_POST['endedatum'];
+			$insertquery .= "', '" . $_POST['ganzertag'][0] . "');";
+			
+			try
+			{
+				$datenbank->query($insertquery);
+			}
+			catch (Exception $e)
+			{
+				echo $e->getMessage();
+			}
+			
+			if ($datenbank->affected_rows > 0)
+			{
+				$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde ein neuer Termin angelegt.</p>";
+			}
 		}
 		else
 		{
@@ -85,7 +85,7 @@ $terminErgebnis = $datenbank->query($terminQuery);
 			<label for="nametermin">Terminname:</label><input type="text" id="nametermin" name="nametermin" />
 		</p>
 		<p>
-			<label for="beginndatum">Terminbeginn: (DD.MM.YYYY)</label><input type="text" pattern="([0-9]{2}).([0-9]{2}).([0-9]{4})" id="beginndatum" name="beginndatum" value="<?php  echo date("d.m.Y", time()) ?>"" />
+			<label for="beginndatum">Terminbeginn: (DD.MM.YYYY)</label><input type="text" pattern="([0-9]{2}).([0-9]{2}).([0-9]{4})" id="beginndatum" name="beginndatum" value="<?php  echo date("d.m.Y", time()) ?>" " />
 		</p>
 		<p>
 			<label for="endedatum">Terminende: (DD.MM.YYYY)</label><input type="text" pattern="([0-9]{2}).([0-9]{2}).([0-9]{4})" id="endedatum" name="endedatum" value="<?php  echo date("d.m.Y", time()) ?>" />
@@ -105,15 +105,15 @@ if (isset($ausgabe))
 }
 ?>
 <hr>
-<table class="ausgabe">
-	<tr>
-		<th>TerminID</th>
-		<th>Terminname</th>
-		<th>Von/Bis Datum</th>
-		<th>Ganzer Tag</th>
-		<th><form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-				<input type="submit" value="Löschen" name="loeschetermin" /></th>
-	</tr>
+<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+	<table class="ausgabe">
+		<tr>
+			<th>TerminID</th>
+			<th>Terminname</th>
+			<th>Von/Bis Datum</th>
+			<th>Ganzer Tag</th>
+			<th><input type="submit" value="Löschen" name="loeschetermin" /></th>
+		</tr>
 				<?php
 				while ($daten = $terminErgebnis->fetch_object())
 				{
@@ -141,14 +141,14 @@ if (isset($ausgabe))
 				}
 				?>
 				<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		<td><input type="submit" value="Löschen" name="loeschetermin" />
-			</form></td>
-
-</table>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td><input type="submit" value="Löschen" name="loeschetermin" /></td>
+	
+	</table>
+</form>
 
 <?php
 $datenbank->close();
