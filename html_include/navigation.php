@@ -1,7 +1,7 @@
 <nav>
 	<ul>
 		<li class="user">
-			<a href="#">Benutzer</a>
+			<a href="#">Benutzerbereich</a>
 			<ul>
 				<li>
 					<a href="./index.php?seite=passwort_aendern.php">Passwort ändern</a>
@@ -20,25 +20,25 @@
 			</ul>
 		</li>
 		<li class="admin">
-			<a href="#">Admin</a>
+			<a href="#">Administration</a>
 			<ul>
 				<li>
 					<a href="./index.php?seite=globale_termine_anlegen.php">Globale Termine</a>
 				</li>
 				<li>
-					<a href="./index.php?seite=klasse_anlegen.php">Klasse</a>
+					<a href="./index.php?seite=klasse_anlegen.php">Klassen</a>
 				</li>
 				<li>
-					<a href="./index.php?seite=fach_anlegen.php">Fach</a>
+					<a href="./index.php?seite=fach_anlegen.php">Fächer</a>
 				</li>
 				<li>
 					<a href="./index.php?seite=lehrer_anlegen.php">Lehrer</a>
 				</li>
 				<li>
-				<a href="./index.php?seite=abteilung_anlegen.php">Abteilung</a>
+				<a href="./index.php?seite=abteilung_anlegen.php">Abteilungen</a>
 				</li>
 				<li>
-				<a href="./index.php?seite=stundenplan_anlegen.php">Stundenplan</a>
+				<a href="./index.php?seite=stundenplan_anlegen.php">Stundenpläne</a>
 				</li>
 				<li>
 				<a href="./index.php?seite=gewichtung_anlegen.php">Gewichtung</a>
