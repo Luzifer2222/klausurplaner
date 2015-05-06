@@ -40,6 +40,11 @@ include_once './include/kalender.class.php';
 					case 'passwort_aendern.php':
 						include_once 'benutzer/passwort_aendern.php';
 						break;
+						
+					// Klassenbereich
+					case 'stundenplan_anzeigen.php':
+						include_once 'klassen/stundenplan_anzeigen.php';
+						break;
 					
 					// Kalenderbereich
 					case 'kalender_anzeigen.php':
@@ -68,8 +73,8 @@ include_once './include/kalender.class.php';
 					case 'gewichtung_anlegen.php':
 						include_once 'admin/gewichtung_anlegen.php';
 						break;
-					case 'stundenplan_anlegen.php':
-						include_once 'admin/stundenplan_anlegen.php';
+					case 'stundenplan_bearbeiten.php':
+						include_once 'admin/stundenplan_bearbeiten.php';
 						break;
 				}
 			}
