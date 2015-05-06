@@ -8,6 +8,7 @@ table.ausgabe {
 	padding-top: 10px;
 	border-style: solid 0px;
 	margin: auto;
+	text-align: center;
 }
 
 table.ausgabe tr {
@@ -20,4 +21,12 @@ table.ausgabe tr:nth-child(odd) {
 
 tr>th {
 	background-color: #FAFAFA;
+}
+
+table.ausgabe tr td input.aendern {
+	width: 95%;
+}
+
+select.aendern {
+	width: 100%;
 }
