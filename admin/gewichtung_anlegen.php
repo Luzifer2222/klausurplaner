@@ -13,11 +13,6 @@ $datenbank = new mysqli($database_conf['host'], $database_conf['user'], $databas
 // Datenbank Colloation auf UTF-8 stellen
 $datenbank->set_charset('utf8');
 
-
-// Abfrage der Klasse
-$anzahlQuery = "SELECT * FROM anzahlklausurtest;";
-$anzahlErgebnis = $datenbank->query($anzahlQuery);
-
 ?>
 
 <form class="anlegen" action="<?php $_SERVER['PHP_SELF']?>" method="post" class="formular">
@@ -48,7 +43,7 @@ $anzahlErgebnis = $datenbank->query($anzahlQuery);
 
 if (isset($_POST['speichern']))
 {	
-	if (($_POST['kmaxtag'] <= $_POST['kmaxwoche']) OR ($_POST['tmaxtag'] <= $_POST['tmaxwoche']))
+	if (($_POST['kmaxtag'] <= $_POST['kmaxwoche']) AND ($_POST['tmaxtag'] <= $_POST['tmaxwoche']))
 	{
 		// Erstellen der Updateanweisung in SQL
 		$insertquery = "UPDATE anzahlklausurtest ";
@@ -84,6 +79,12 @@ if (isset($ausgabe))
 {
 	echo $ausgabe;
 }
+?>
+
+<?php
+// Abfrage der Klasse
+$anzahlQuery = "SELECT * FROM anzahlklausurtest;";
+$anzahlErgebnis = $datenbank->query($anzahlQuery);
 ?>
 
 <hr>
