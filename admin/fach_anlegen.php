@@ -29,7 +29,7 @@ if (isset($_POST['fachanlegen']))
 	{
 		$insertQuery = "INSERT INTO faecher ";
 		$insertQuery .= "(name) values";
-		$insertQuery .= "('" . strtoupper($_POST['fach']) . "');";
+		$insertQuery .= "('" . mysql_real_escape_string(strtoupper($_POST['fach'])) . "');";
 		
 		$datenbank->query($insertQuery);
 		
