@@ -1,5 +1,6 @@
 <?php
 
+// Kontrolle ob User angemeldet ist und Administratorrechte hat
 $pruefeSession = new sessionkontrolle();
 $pruefeSession->AdminBereich();
 
@@ -119,4 +120,3 @@ $anzahlErgebnis = $datenbank->query($anzahlQuery);
 // Schließen der Datenbank am Ende der Seite
 $datenbank->close();
 ?>
-</html>

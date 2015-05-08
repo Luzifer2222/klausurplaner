@@ -8,6 +8,7 @@ require_once './config/cts.conf.php';
 require_once './include/sessionkontrolle.class.php';
 require_once './include/loginfunktion.php';
 include_once './include/kalender.class.php';
+include_once './include/pruefedatum.php';
 ?>
 
 <?php session_start()?>

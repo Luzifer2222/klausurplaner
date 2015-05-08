@@ -1,15 +1,17 @@
 <?php
+
 // Kontrolle ob User angemeldet ist und Administratorrechte hat
 $session = new sessionkontrolle();
 $session->AdminBereich();
+
 ?>
 
 <?php
 
-// Öffnen der Datenbankverbindung
+// Datenbankverbindung initialisieren
 $datenbank = new mysqli($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
 
-// Datenbankverbindung auf UTF8 setzen
+// Datenbank Colloation auf UTF-8 stellen
 $datenbank->set_charset('utf8');
 
 // Überprüfung ob der Button zum Anlegen einer neuen Abteilung betätigt wurde
@@ -73,7 +75,7 @@ $datenbankAusgabe = $datenbank->query("select * from abteilung");
 	<fieldset>
 		<legend>Abteilung anlegen</legend>
 		<p>
-			<label>Abteilungsname:</label><input type="text" min="4" maxlength="50" name="abtname" />
+			<label>Abteilungsname:</label><input type="text" pattern="[A-z0-9ÄÖÜäöü]{2,50}[ -]{0,10}" min="4" maxlength="50" name="abtname" />
 		</p>
 		<p>
 			<label>&nbsp;</label> <input type="submit" name="abtanlegen" value="Abteilung anlegen" /> <input type="reset" value="Zurücksetzen" name="zuruecksetzen">
@@ -112,8 +114,7 @@ if (isset($ausgabe))
 	</table>
 </form>
 
-
-
 <?php
+// Schließen der Datenbank am Ende der Seite
 $datenbank->close();
 ?>

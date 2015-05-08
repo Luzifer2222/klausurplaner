@@ -1,13 +1,17 @@
 <?php
 
+// Kontrolle ob User angemeldet ist und Administratorrechte hat
 $pruefeSession = new sessionkontrolle();
 $pruefeSession->AdminBereich();
 
 ?>
 
 <?php
+
 // Datenbankverbindung initialisieren
 $datenbank = new mysqli($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
+
+// Datenbank Colloation auf UTF-8 stellen
 $datenbank->set_charset('utf8');
 
 if (isset($_POST['loeschefach']) && isset($_POST['loesche']))
@@ -58,7 +62,7 @@ $ergebnisFach = $datenbank->query($abfrageFach);
 	<fieldset>
 		<legend>Fach anlegen</legend>
 		<p>
-			<label for="fach">Fach:</label><input type="text" id="fach" name="fach">
+			<label for="fach">Fach:</label><input type="text" pattern="[A-z0-9ÄÖÜäöü]{2,50}[ -]{0,10}" min="4" maxlength="50" id="fach" name="fach">
 		</p>
 		<p>
 			<label>&nbsp;</label><input type="submit" value="Fach anlegen" name="fachanlegen"> <input type="reset" value="Zurücksetzen" name="zuruecksetzen">
@@ -97,3 +101,8 @@ if (isset($ausgabe))
 	
 	</table>
 </form>
+
+<?php
+// Schließen der Datenbank am Ende der Seite
+$datenbank->close();
+?>

@@ -22,7 +22,7 @@ $fachErgebnis = $datenbank->query($fachQuery);
 
 ?>
 
-<form action="<?php $_SERVER['PHP_SELF']?>" method="post" class="formular" name="auswahl">
+<form action="<?php $_SERVER['PHP_SELF']?>" method="post" class="planform" name="auswahl">
 		<fieldset>
 		<legend>Stundenplan der Klasse</legend>
 		<p>
@@ -46,7 +46,7 @@ $fachErgebnis = $datenbank->query($fachQuery);
 // aus der Tabelle Stunden
 if (isset($_POST['anzeigen']))
 {	
-	echo "<table class=\"kalender\" id=\"stundenplan\">";
+	echo "<table class=\"plantable\" id=\"stundenplan\">";
 	
 	// Abfrage der Namen der ausgewählten Klasse und dem zugehörigem Klassenlehrer aus der Tabelle Klassen
 	$classQuery = "SELECT name FROM klassen Where klassenID = " . $_POST['klassenwahl'] . ";";
@@ -80,7 +80,7 @@ if (isset($_POST['anzeigen']))
 	$sErgebnis = $datenbank->query($sQuery);
 	
 	// Erste bis achte Schulstunde, falls es mehr gibt, muss dieser erhöht werden
-	for ($schulstunde = 1 ; $schulstunde < 9 ; $schulstunde++)
+	for ($schulstunde = 1 ; $schulstunde < 13 ; $schulstunde++)
 	{
 		echo "<tr>";
 		echo "<td>$schulstunde</td>";
@@ -128,9 +128,7 @@ if (isset($_POST['anzeigen']))
 }
 ?>
 
-
 <?php
 // Schließen der Datenbank am Ende der Seite
 $datenbank->close();
 ?>
-</html>

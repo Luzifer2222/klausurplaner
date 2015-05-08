@@ -1,5 +1,6 @@
 <?php
 
+// Kontrolle ob User angemeldet ist und Administratorrechte hat
 $pruefeSession = new sessionkontrolle();
 $pruefeSession->AdminBereich();
 
@@ -9,8 +10,9 @@ $pruefeSession->AdminBereich();
 
 // Datenbankverbindung initialisieren
 $datenbank = new mysqli($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
-$datenbank->set_charset('utf8');
 
+// Datenbank Colloation auf UTF-8 stellen
+$datenbank->set_charset('utf8');
 
 // Abfrage der Klasse
 $klassenQuery = "SELECT klassenID, name FROM klassen;";
@@ -22,8 +24,8 @@ $fachErgebnis = $datenbank->query($fachQuery);
 
 ?>
 
-<form action="<?php $_SERVER['PHP_SELF']?>" method="post" class="formular" name="auswahl">
-		<fieldset>
+<form action="" method="post" class="planform" name="auswahl">
+	<fieldset>
 		<legend>Stundenplan der Klasse</legend>
 		<p>
 		<label for="klassenwahl">&nbsp;</label> <select name="klassenwahl">
@@ -35,21 +37,93 @@ $fachErgebnis = $datenbank->query($fachQuery);
 		?>
 		</select>
 		<input type="submit" name="aendern" value="Ändern">
-		<?php if (isset($_POST['aendern'])): ?>
+		<?php if ((isset($_POST['aendern'])) OR (isset($_POST['speichern']))): ?>
 		<input type="submit" name="speichern" value="Speichern">
 		<?php endif ?>
 		</p>
 	</fieldset>
-</form>
 
 <?php
 // Überprüfung ob der Submitbutton gedrückt wurde
+// Zuständig für das Speichern des Stundenplans
+// in die Tabelle Stunden
+
+if (isset($_POST['speichern']))
+{
+	// Hochzählender Eintrag zur Abfrage der einzelnen Felder
+	$wert = 1;
+	$eintrag = "feld";
+	
+	for ($schulstunde = 1 ; $schulstunde < 13 ; $schulstunde++)
+	{
+		for ($tag = 1 ; $tag < 6 ; $tag++)
+		{
+			$feld = "$eintrag$wert";
+			
+			$pruefe = NULL;
+			
+			// Einfache Abfragen
+			$frageeintrag = "select fachID ";
+			$frageeintrag .= "from stunden ";
+			$frageeintrag .= "where stunde = $schulstunde AND wochentag = $tag AND klassenID = '" . $_POST['klassenwahl'] . "';";
+			
+			// Ergebnis der Abfrage aus $frageeintrag
+			$ergfrageeintrag = $datenbank->query($frageeintrag);
+			
+			while ($daten = $ergfrageeintrag->fetch_object())
+			{
+				$pruefe = $daten->fachID;
+			}
+			
+			if (($_POST["$feld"]) != 0)
+			{
+				if ($pruefe == NULL)
+				{
+					// Erstellen der Einfügeanweisung in SQL
+					$insertquery = "insert into stunden ";
+					$insertquery .= "(stunde, wochentag, fachID, klassenID) values";
+					$insertquery .= "('" . $schulstunde . "', '" . $tag . "', '" . $_POST["$feld"] . "', '" . $_POST['klassenwahl'] . "');";
+				}
+				else
+				{
+					// Erstellen der Einfügeanweisung in SQL
+					$insertquery = "UPDATE stunden ";
+					$insertquery .= "SET fachID = '" . $_POST["$feld"] . "'";
+					$insertquery .= " where stunde = $schulstunde AND wochentag = $tag AND klassenID = '" . $_POST['klassenwahl'] . "';";					
+				}
+				
+				// Einfügen der Formulardaten in die Lehrertabelle
+				$datenbank->query($insertquery);
+			}
+			else
+			{
+				// Löschen des Eintrages in der Tabelle Stunden
+				$loescheQuery = "delete from stunden where stunde = $schulstunde AND wochentag = $tag AND klassenID = '" . $_POST['klassenwahl'] . "';";
+				$datenbank->query($loescheQuery);
+			}
+			$wert++;
+		}
+	}
+	// Speichern des Ausgabestrings in eine Variable
+	$ausgabe = "<hr><p class=\"erfolgreich\">Die Änderungen wurden gespeichert.</p>";
+}
+?>
+	
+<?php
+// Ausgabe ob Eintrag in die Datenbank erfolgreich war.
+if (isset($ausgabe))
+{
+	echo $ausgabe;
+}
+?>
+	
+<?php
+// Überprüfung ob der Submitbutton gedrückt wurde
 // Zuständig für das Ändern des Stundenplans
-if (isset($_POST['aendern']))
+if (isset($_POST['aendern']) OR isset($_POST['speichern']))
 {
 	echo "<hr>";
-	echo "<form action=\"\" method=\"post\" name=\"tabelle\" class=\"kalender\">";
-	echo "<table class=\"kalender\" id=\"stundenplan\">";
+	echo "<table class=\"plantable\" id=\"stundenplan\">";
 		
 	// Abfrage des Namens der ausgewählten Klasse aus der Tabelle Klassen
 	$classQuery = "SELECT name FROM klassen Where klassenID = " . $_POST['klassenwahl'] . ";";
@@ -69,7 +143,7 @@ if (isset($_POST['aendern']))
 	// Ausgabe des Stundenplans zu der ausgewählten Klasse
 	echo "<caption>Klasse: " . $klassenname . " Klassenlehrer: " . $lehrervorname . " " . $lehrernachname . "</caption>";
 	echo "<tr>";
-	echo "<th class=\"vonbis\">Stunde</th>";
+	echo "<th>Stunde</th>";
 	echo "<th>Montag</th>";
 	echo "<th>Dienstag</th>";
 	echo "<th>Mittwoch</th>";
@@ -86,7 +160,7 @@ if (isset($_POST['aendern']))
 	$eintrag = "feld";
 	
 	// Erste bis achte Schulstunde, falls es mehr gibt, muss dieser erhöht werden
-	for ($schulstunde = 1 ; $schulstunde < 9 ; $schulstunde++)
+	for ($schulstunde = 1 ; $schulstunde < 13 ; $schulstunde++)
 	{
 		echo "<tr>";
 		echo "<td>$schulstunde</td>\n";
@@ -137,49 +211,12 @@ if (isset($_POST['aendern']))
 	echo "</tr>";
 	}
 	echo "</table>";
-	echo "</form>";
 	echo "<hr>";
 }
 ?>
-
-
-<?php
-// Überprüfung ob der Submitbutton gedrückt wurde
-// Zuständig für das Speichern des Stundenplans
-// in die Tabelle Stunden
-
-if (isset($_POST['speichern']))
-{
-	// Hochzählender Eintrag zur Abfrage der einzelnen Felder
-	$wert = 1;
-	$eintrag = "feld";
-	for ($schulstunde = 1 ; $schulstunde < 9 ; $schulstunde++)
-	{
-		for ($tag = 1 ; $tag < 6 ; $tag++)
-		{
-			$feld = "$eintrag$wert";
-			if (($_POST["$feld"]) == 0)
-			{
-				
-			}
-			$wert++;
-		}
-	}
-		
-	if (($_POST['feld1']) == 2)
-	{
-		echo "test2";
-	}
-	if (($_POST['feld1']) == 1)
-	{
-		echo "test1";
-	}
-}
-?>
-
+</form>
 
 <?php
 // Schließen der Datenbank am Ende der Seite
 $datenbank->close();
 ?>
-</html>

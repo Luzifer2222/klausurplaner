@@ -1,12 +1,14 @@
 <?php
 
+// Kontrolle ob User angemeldet ist und Administratorrechte hat
 $pruefeSession = new sessionkontrolle();
 $pruefeSession->UserBereich();
 
 ?>
    
 <?php
-// Verbindung zu Datenbank herstellen
+
+// Datenbankverbindung initialisieren
 $datenbank = new mysqli($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
 
 // Datenbank Colloation auf UTF-8 stellen
@@ -62,17 +64,16 @@ if (isset($_POST['aendern']))
 							?>
 		</p>
 		<p>
-			<label for="passwort">Passwort:</label> <input type="password" min="4" name="pwd">
+			<label for="passwort">Passwort:</label><input type="password" min="5" name="pwd">
 		</p>
 		<p>
-			<label for="wiederholen">Wiederholen:</label> <input type="password" min="5" name="wiederholen">
+			<label for="wiederholen">Wiederholen:</label><input type="password" min="5" name="wiederholen">
 		</p>
 		<p class="button">
 			<label>&nbsp;</label><input type="submit" name="aendern" value="Passwort ändern"> <input type="reset" name="reset" value="Zurücksetzen">
 		</p>
 	</fieldset>
 </form>
-
 
 <?php
 // Ausgabe ob eintrag in die Datenbank erfolgreich war.
@@ -87,4 +88,3 @@ if (isset($ausgabe))
 // Schließen der Datenbank am Ende der Seite
 $datenbank->close();
 ?>
-</html>

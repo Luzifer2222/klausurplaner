@@ -1,5 +1,6 @@
 <?php
 
+// Kontrolle ob User angemeldet ist und Administratorrechte hat
 $pruefeSession = new sessionkontrolle();
 $pruefeSession->AdminBereich();
 
@@ -9,6 +10,8 @@ $pruefeSession->AdminBereich();
 
 // Datenbankverbindung initialisieren
 $datenbank = new mysqli($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
+
+// Datenbank Colloation auf UTF-8 stellen
 $datenbank->set_charset('utf8');
 
 if (isset($_POST['loescheklasse']) && isset($_POST['loesche']))
@@ -105,7 +108,7 @@ $ergebnisKlasse = $datenbank->query($abfrageKlasse);
 	<fieldset>
 		<legend>Klasse anlegen</legend>
 		<p>
-			<label for="klasse">Klasse:</label><input type="text" id="klasse" name="klasse">
+			<label for="klasse">Klasse:</label><input type="text" pattern="[A-z0-9]{2,20}[ -]{0,5}" min="4" maxlength="20" id="klasse" name="klasse">
 		</p>
 		<p>
 			<label for="klassenlehrer">Klassenlehrer:</label> <select id="klassenlehrer" name="klassenlehrer">
@@ -173,5 +176,6 @@ if (isset($ausgabe))
 </form>
 
 <?php
+// Schließen der Datenbank am Ende der Seite
 $datenbank->close();
 ?>

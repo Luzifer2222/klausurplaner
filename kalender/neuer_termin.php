@@ -1,5 +1,6 @@
 <?php
 
+// Kontrolle ob User angemeldet ist und Administratorrechte hat
 $pruefeSession = new sessionkontrolle();
 $pruefeSession->UserBereich();
 
@@ -9,10 +10,14 @@ $pruefeSession->UserBereich();
 
 // Datenbankverbindung initialisieren
 $datenbank = new mysqli($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
+
+// Datenbank Colloation auf UTF-8 stellen
 $datenbank->set_charset('utf8');
 
 if (isset($_POST['anlegen']))
 {
+	if (pruefedatum($_POST['datum']))
+	{
 	if ($_POST['vonstunde'] <= $_POST['bisstunde'])
 	{
 		if ($_POST['thema'] != "" && $_POST['datum'] != "" && $_POST['art'] != "")
@@ -51,6 +56,11 @@ if (isset($_POST['anlegen']))
 		{
 			$ausgabe = "<hr><p class=\"error\">Der Endzeitpunkt des Tests ist vor dem Beginn. Bitte ändern!</p>";
 		}
+	}
+	}
+	else
+	{
+		$ausgabe = "<hr><p class=\"error\">Es wurde kein gültiges Datum eingegeben!</p>";
 	}
 }
 
@@ -111,7 +121,7 @@ $ergebnisFach = $datenbank->query($abfrageFach);
 						</select>
 		</p>
 		<p>
-			<label for="datum">Datum:</label><input type="date" min="<?php echo date("Y-m-d", time()) ?>" id="datum" name="datum" value="<?php  echo date("Y-m-d", time()) ?>" />
+			<label for="datum">Datum:</label><input type="text" pattern="([0-9]{2}).([0-9]{2}).([0-9]{4})" id="datum" name="datum" value="<?php  echo date("d.m.Y", time()) ?>" />
 		</p>
 		<p>
 			<label for="art">Art:</label><select id="art" name="art">
@@ -121,7 +131,7 @@ $ergebnisFach = $datenbank->query($abfrageFach);
 			</select>
 		</p>
 		<p>
-			<label for="thema">Thema:</label><input type="text" id="thema" name="thema">
+			<label for="thema">Thema:</label><input type="text" pattern="[A-z0-9ÄÖÜäöü]{2,50}[ -]{0,10}" min="4" maxlength="50" id="thema" name="thema">
 		</p>
 		<p>
 			<label for="vonstunde">Beginn:</label><select id="vonstunde" name="vonstunde">
@@ -162,12 +172,14 @@ $ergebnisFach = $datenbank->query($abfrageFach);
 	
 	</fieldset>
 </form>
+
 <?php
 if (isset($ausgabe))
 {
 	echo $ausgabe;
 }
 ?>
+
 <hr>
 <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
 	<table class="ausgabe">
@@ -223,5 +235,6 @@ if (isset($ausgabe))
 </form>
 
 <?php
+// Schließen der Datenbank am Ende der Seite
 $datenbank->close();
 ?>

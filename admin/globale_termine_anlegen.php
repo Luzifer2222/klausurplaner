@@ -1,5 +1,6 @@
 <?php
 
+// Kontrolle ob User angemeldet ist und Administratorrechte hat
 $pruefeSession = new sessionkontrolle();
 $pruefeSession->AdminBereich();
 
@@ -9,6 +10,8 @@ $pruefeSession->AdminBereich();
 
 // Datenbankverbindung initialisieren
 $datenbank = new mysqli($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
+
+// Datenbank Colloation auf UTF-8 stellen
 $datenbank->set_charset('utf8');
 
 if (isset($_POST['anlegen']))
@@ -19,6 +22,8 @@ if (isset($_POST['anlegen']))
 		$_POST['ganzertag'][0] = 0;
 	}
 	
+	if (pruefedatum($_POST['beginndatum']) && pruefedatum($_POST['endedatum']))
+	{
 	if ($_POST['nametermin'] != "" && $_POST['beginndatum'] != "" && $_POST['endedatum'] != "")
 	{
 		if (strtotime($_POST['beginndatum']) <= strtotime($_POST['endedatum']))
@@ -51,6 +56,11 @@ if (isset($_POST['anlegen']))
 		// Speichern des Fehlerstrings in eine Variable
 		$ausgabe = "<hr><p class=\"error\">Alle Felder müssen ausgefüllt werden!</p>";
 	}
+	}
+	else
+	{
+		$ausgabe = "<hr><p class=\"error\">Es wurde kein gültiges Datum eingegeben!</p>";
+	}
 }
 
 if (isset($_POST['loeschetermin']) && isset($_POST['loesche']))
@@ -82,7 +92,7 @@ $terminErgebnis = $datenbank->query($terminQuery);
 	<fieldset>
 		<legend>Globale Termine anlegen</legend>
 		<p>
-			<label for="nametermin">Terminname:</label><input type="text" id="nametermin" name="nametermin" />
+			<label for="nametermin">Terminname:</label><input type="text" pattern="[A-z0-9ÄÖÜäöü]{2,100}[ -]{0,10}" min="2" maxlength="100" id="nametermin" name="nametermin" />
 		</p>
 		<p>
 			<label for="beginndatum">Terminbeginn:</label><input type="text" pattern="([0-9]{2}).([0-9]{2}).([0-9]{4})" id="beginndatum" name="beginndatum" value="<?php  echo date("d.m.Y", time()) ?>" />
@@ -151,5 +161,6 @@ if (isset($ausgabe))
 </form>
 
 <?php
+// Schließen der Datenbank am Ende der Seite
 $datenbank->close();
 ?>
