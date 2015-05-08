@@ -1,0 +1,60 @@
+@CHARSET "UTF-8";
+
+table.plantable{
+	width: 700px;
+	padding-top: 10px;
+	border: 10px;
+	margin: auto;
+
+	
+}
+
+table.plantable tr {
+	background-color: #E0E0E0;
+}
+
+table.plantable tr:nth-child(odd) {
+	background-color: #FAFAFA;
+}
+
+table.plantable tr th {
+	background-color: #c7c7c7;
+	width: 120px;
+}
+
+table.plantable td {
+	height: 20px;
+	text-align: center;
+	}
+table.plantable td p{
+	padding-left: 5px;
+	}
+
+table.plantable td {
+	min-width: 50px;
+	max-width: 150px;
+	overflow: hidden;
+}
+
+table.plantable td.tage:hover {
+	overflow: visible;
+	background-color: #c7c7c7;
+}
+
+form.planform fieldset{
+	margin: auto;
+	width: 300px;
+	padding-top: 10px;	
+	
+	
+}
+
+form.planform p{
+	text-align: center;
+}
+
+form.planform table.plantable{
+
+	
+	
+}

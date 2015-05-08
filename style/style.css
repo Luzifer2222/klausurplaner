@@ -5,6 +5,7 @@
 @IMPORT url("./table.css");
 @IMPORT url("./paragraph.css");
 @IMPORT url("./form.css");
+@IMPORT url("./stundenplan.css");
 
 body {
 	background-color: #999;
