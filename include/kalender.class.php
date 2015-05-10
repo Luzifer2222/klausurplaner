@@ -29,7 +29,7 @@ class kalender
 		}
 		
 		echo "<table class=\"kalender\">";
-		echo "<caption>Schuljahr " . $jahr . "/" . ($jahr + 1) . "</caption>";
+		echo "<caption>Schuljahr: <b>" . $jahr . "/" . ($jahr + 1) . "</b></caption>";
 		echo "<tr>
 				<th class=\"kw\">KW</th>
 				<th class=\"vonbis\">Von - Bis</th>

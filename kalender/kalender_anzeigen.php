@@ -27,7 +27,12 @@ $klassenErgebnis = $datenbank->query($klassenQuery);
 			<label for="schuljahr">&nbsp;</label> <select id="schuljahr" name="schuljahr">
 					<?php
 					
-					for ($i = 0 ; $i < 5 ; $i++)
+					if (!isset($_POST['schuljahr']))
+					{
+						$_POST['schuljahr'] = date("Y", time()) - 1;
+					}
+					
+					for ($i = 0 ; $i < 3 ; $i++)
 					{
 						
 						if ($_POST['schuljahr'] == date("Y", strtotime($schuljahresbegin)))
@@ -48,7 +53,6 @@ $klassenErgebnis = $datenbank->query($klassenQuery);
 				</select> <label for="klassenID">&nbsp;</label> <select id="klassenID" name="klassenID">
 				<option value="0">Global</option>
 					<?php
-					
 					while ($daten = $klassenErgebnis->fetch_object())
 					{
 						if ($_POST['klassenID'] == $daten->klassenID)
