@@ -141,7 +141,7 @@ if (isset($_POST['aendern']) OR isset($_POST['speichern']))
 	}
 	
 	// Ausgabe des Stundenplans zu der ausgewählten Klasse
-	echo "<caption>Klasse: " . $klassenname . " Klassenlehrer: " . $lehrervorname . " " . $lehrernachname . "</caption>";
+	echo "<caption>Klasse: <b>" . $klassenname . "</b> Klassenlehrer: <b>" . $lehrervorname . " " . $lehrernachname . "</b></caption>";
 	echo "<tr>";
 	echo "<th>Stunde</th>";
 	echo "<th>Montag</th>";
