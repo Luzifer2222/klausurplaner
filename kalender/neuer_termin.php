@@ -184,7 +184,6 @@ if (isset($ausgabe))
 <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
 	<table class="ausgabe">
 		<tr>
-			<th>TerminID</th>
 			<th>Terminname</th>
 			<th>Klasse</th>
 			<th>Lehrer</th>
@@ -199,7 +198,6 @@ if (isset($ausgabe))
 				while ($daten = $terminErgebnis->fetch_object())
 				{
 					echo "<tr>";
-					echo "<td>" . $daten->terminID . "</td>";
 					echo "<td>" . $daten->thema . "</td>";
 					echo "<td>" . $daten->klassenname . "</td>";
 					echo "<td>" . $daten->nachname . "</td>";
@@ -220,7 +218,6 @@ if (isset($ausgabe))
 				}
 				?>
 				<tr>
-			<td>&nbsp;</td>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
