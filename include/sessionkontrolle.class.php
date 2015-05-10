@@ -13,7 +13,7 @@ class sessionkontrolle
 			{
 				// Löschen der $_SESSION-Arrays
 				$_SESSION = array();
-				exit("<p class=\"error\">Sie wurden Automatisch ausgeloggt. Anmeldezeit überschritten!");
+				exit("<p class=\"error\">Sie wurden automatisch ausgeloggt. Anmeldezeit überschritten!");
 			}
 		}
 		else
@@ -44,7 +44,7 @@ class sessionkontrolle
 		{
 			// Löschen der $_SESSION-Arrays
 			$_SESSION = array();
-			exit("<p class=\"error\">Sie wurden Automatisch ausgeloggt. Anmeldezeit überschritten!");
+			exit("<p class=\"error\">Sie wurden automatisch ausgeloggt. Anmeldezeit überschritten!");
 		}
 		
 		// Prüfen ob das Array der der Session initialisiert wurde
