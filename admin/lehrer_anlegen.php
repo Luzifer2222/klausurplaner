@@ -261,7 +261,7 @@ $ergabfragerlehrer = $datenbank->query($abfragelehrer);
 			<label for="nachname">Nachname:</label> <input type="text" pattern="[A-z0-9ÄÖÜäöü]{2,50}[ -]{0,10}" min="2" maxlength="50" name="nname" id="nachname">
 		</p>
 		<p>
-			<label for="kuerzel">Kürzel:</label> <input type="text" pattern="[A-z0-9]" min="4" maxlength="5" name="kuerzel" id="kuerzel">
+			<label for="kuerzel">Kürzel:</label> <input type="text" pattern="[A-z0-9]{4,5}" min="4" maxlength="5" name="kuerzel" id="kuerzel">
 		</p>
 		<p>
 			<label for="abteilung">Abteilung:</label> <select name="abteilung" id="abteilung">
@@ -280,7 +280,7 @@ $ergabfragerlehrer = $datenbank->query($abfragelehrer);
 			<label for="administrator">Administrator:</label> <input type="checkbox" name="administrator[]" value="1">
 		</p>
 		<p>
-			<label for="benutzername">Benutzername:</label> <input type="text" pattern="[A-z0-9]" min="4" maxlength="15" name="bname">
+			<label for="benutzername">Benutzername:</label> <input type="text" pattern="[A-z0-9]*" min="4" maxlength="15" name="bname">
 		</p>
 		<p>
 			<label for="passwort">Passwort:</label> <input type="password" min="5" name="pwd">
