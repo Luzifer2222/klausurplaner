@@ -1,7 +1,7 @@
 <?php
 
 $pruefeSession = new sessionkontrolle();
-$pruefeSession->AdminBereich();
+$pruefeSession->UserBereich();
 
 ?>
 
