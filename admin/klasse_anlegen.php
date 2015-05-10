@@ -138,7 +138,7 @@ if (isset($ausgabe))
 		<tr>
 			<th>KlassenID</th>
 			<th>Klassenname</th>
-			<th>Klassen Lehrer</th>
+			<th>Klassenlehrer</th>
 			<th><input type="submit" name="loescheklasse" value="Löschen"></th>
 			<th><input type="submit" name="aendernlehrer" value="Ändern"></th>
 		</tr>
