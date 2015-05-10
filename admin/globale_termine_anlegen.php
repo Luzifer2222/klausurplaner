@@ -29,7 +29,7 @@ if (isset($_POST['anlegen']))
 		if (strtotime($_POST['beginndatum']) <= strtotime($_POST['endedatum']))
 		{
 			$insertquery = "INSERT INTO belegtetage (name, beginndatum, endedatum, ganzertag) values ";
-			$insertquery .= "('" . mysql_real_escape_string($_POST['nametermin']) . "', '" . $_POST['beginndatum'] . "', '" . $_POST['endedatum'];
+			$insertquery .= "('" . mysql_real_escape_string($_POST['nametermin']) . "', '" . date("Y-m-d", strtotime($_POST['beginndatum'])) . "', '" . date("Y-m-d", strtotime($_POST['endedatum']));
 			$insertquery .= "', '" . $_POST['ganzertag'][0] . "');";
 			
 			try
