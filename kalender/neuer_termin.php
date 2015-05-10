@@ -22,8 +22,9 @@ if (isset($_POST['anlegen']))
 	{
 		if ($_POST['thema'] != "" && $_POST['datum'] != "" && $_POST['art'] != "")
 		{
+			echo $_POST['datum'];
 			$insertquery = "INSERT INTO kalendertermine (datum, art, thema, vonstunde, bisstunde, fachID, klassenID, lehrerID) VALUES ";
-			$insertquery .= "('" . $_POST['datum'] . "', '" . $_POST['art'][0] . "', '" . $_POST['thema'] . "', '" . $_POST['vonstunde'] . "', '" .
+			$insertquery .= "('" . date("Y-m-d", strtotime($_POST['datum'])) . "', '" . $_POST['art'][0] . "', '" . $_POST['thema'] . "', '" . $_POST['vonstunde'] . "', '" .
 						 $_POST['bisstunde'] . "', '" . $_POST['fach'] . "', '" . $_POST['klasse'] . "', '" . $_SESSION['ID'] . "')";
 			
 			try
@@ -191,7 +192,7 @@ if (isset($ausgabe))
 			<th>Datum</th>
 			<th>Von</th>
 			<th>Bis</th>
-			<th>Klausur?</th>
+			<th>Art</th>
 			<th><input type="submit" value="Löschen" name="loeschetermin" /></th>
 		</tr>
 				<?php
@@ -207,11 +208,11 @@ if (isset($ausgabe))
 					echo "<td>" . $daten->bisstunde . ". Stunde</td>";
 					if ($daten->art == 1)
 					{
-						echo "<td>Ja</td>";
+						echo "<td>Klausur</td>";
 					}
-					else
+					elseif ($daten->art == 0)
 					{
-						echo "<td>Nein</td>";
+						echo "<td>Test</td>";
 					}
 					echo "<td><input type=\"radio\" value=\"$daten->terminID\" name=\"loesche\" />";
 					echo "</tr>";
