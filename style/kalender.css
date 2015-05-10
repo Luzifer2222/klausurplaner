@@ -62,20 +62,24 @@ table.kalender td.heute {
 
 p.globalertermin {
 	padding: 0px;
-	background-color:#adadad;
+	background-color:#d3d7cf;
 	margin: 1px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;	
 }
 
-p.klassentermin{
+p.klausur ,.test{
 	padding: 0px;
-	background-color:#7a7a7a;
+	background-color:#cbf6bf;
 	margin: 1px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
-	border-radius: 5px;	
+	border-radius: 5px;
+}
+
+p.test {
+	background-color:#f79494;
 }
 
 

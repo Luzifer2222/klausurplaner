@@ -92,11 +92,11 @@ class kalender
 							{
 								if ($daten->art == 1)
 								{
-									echo "<p class=\"klassentermin\">" . $daten->vonstunde . "-". $daten->bisstunde. "std. ". $daten->kuerzel . "<br /> Klausur: " . $daten->thema . "</p>\n";
+									echo "<p class=\"klausur\">" . $daten->vonstunde . "-". $daten->bisstunde. "std. ". $daten->kuerzel . "<br /> Klausur: " . $daten->thema . "</p>\n";
 								}
 								else
 								{
-									echo "<p class=\"klassentermin\">" . $daten->vonstunde. "-". $daten->bisstunde. " " .  $daten->thema."(Test)" . "</p>\n";
+									echo "<p class=\"test\">" . $daten->vonstunde . "-". $daten->bisstunde. "std. ". $daten->kuerzel . "<br /> Test: " . $daten->thema . "</p>\n";
 								}
 							}
 						}
