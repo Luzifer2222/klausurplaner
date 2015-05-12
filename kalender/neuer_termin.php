@@ -22,26 +22,96 @@ if (isset($_POST['anlegen']))
 	{
 		if ($_POST['thema'] != "" && $_POST['datum'] != "" && $_POST['art'] != "")
 		{
-			echo $_POST['datum'];
-			$insertquery = "INSERT INTO kalendertermine (datum, art, thema, vonstunde, bisstunde, fachID, klassenID, lehrerID) VALUES ";
-			$insertquery .= "('" . date("Y-m-d", strtotime($_POST['datum'])) . "', '" . $_POST['art'][0] . "', '" . $_POST['thema'] . "', '" . $_POST['vonstunde'] . "', '" .
-						 $_POST['bisstunde'] . "', '" . $_POST['fach'] . "', '" . $_POST['klasse'] . "', '" . $_SESSION['ID'] . "')";
+			// Einfache Abfragen
+			$fragetermin = "select datum, vonstunde, bisstunde ";
+			$fragetermin .= "from kalendertermine ";
+			$fragetermin .= "where klassenID = '" . $_POST['klasse'] . "';";
+			$frageplan = "select wochentag, stunde ";
+			$frageplan .= "from stunden ";
+			$frageplan .= "where klassenID = '" . $_POST['klasse'] . "';";
+			$fragegewichtung = "select * from anzahlklausurtest;";
+
+			// Ergebnis der Abfragen
+			$ergebnistermin = $datenbank->query($fragetermin);
+			$ergebnisplan = $datenbank->query($frageplan);
+			$ergebnisgewichtung = $datenbank->query($fragegewichtung);
 			
-			try
+			// Prüfen, ob zu der Zeit schon ein Termin existiert
+			$tcheck = false;
+			while ($daten = $ergebnistermin->fetch_object())
 			{
-				$datenbank->query($insertquery);
-			}
-			catch (Exception $e)
-			{
-				echo $e->getMessage();
+				$tdatum = $daten->datum;
+				$tvon = $daten->vonstunde;
+				$tbis = $daten-bisstunde;
+				if ($tdatum == $_POST['datum'])
+				{
+					if (($tvon < $_POST['bisstunde'] && $tbis < $_POST['vonstunde']) OR ($tvon > $_POST['bisstunde'] && $tbis > $_POST['vonstunde']))
+					{
+						$tcheck = true;
+					}
+				}
 			}
 			
-			if ($datenbank->affected_rows > 0)
+			// Prüfen, ob die Klasse zu der gewünschten Zeit Unterricht hat
+			// vorher Wochentag von $_POST['datum'] herausfinden! -> date("w", $_POST['datum'])?
+			// der wochentag als integer = $ttag;
+			$pstunden = array();
+			$pcheck = false;
+			while ($daten = $ergebnisplan->fetch_object())
 			{
-				$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde 1 Datensatz angelegt.</p>";
+				$ptag = $daten->wochentag;
+				$pstunde = $daten->stunde;
+				if ($ptag = $ttag)
+				{
+					$pstunden[1] += $pstunde;
+				}
+			}
+			if (empty($pstunden) = false)
+			{
+				reset($pstunden);
+				$pvon = current($pstunden);
+				end($pstunden);
+				$pbis = current($pstunden);
+			}
+			if (($pvon < $_POST['bisstunde'] && $pbis < $_POST['vonstunde']) OR ($pvon > $_POST['bisstunde'] && $pbis > $_POST['vonstunde']))
+			{
+				$pcheck = true;
+			}
+			
+			// Prüfen, ob die Gewichtung überschritten wird
+			// Man muss prüfen, ob die Gewichtung für die Woche/den Tag überschritten wird, wenn der Termin angelegt wird
+			while ($daten = $ergebnisgewichtung->fetch_object())
+			{
+				$kmaxtag = $daten->kmaxtag;
+				$kmaxwoche = $daten->kmaxwoche;
+				$tmaxtag = $daten->tmaxtag;
+				$tmaxwoche = $daten->tmaxwoche;
+			}
+				
+			// Einfügen des Termins, wenn alle Anforderungen erfüllt sind
+			if ($pcheck = true && $tcheck = true) 
+			{
+				echo $_POST['datum'];
+				$insertquery = "INSERT INTO kalendertermine (datum, art, thema, vonstunde, bisstunde, fachID, klassenID, lehrerID) VALUES ";
+				$insertquery .= "('" . date("Y-m-d", strtotime($_POST['datum'])) . "', '" . $_POST['art'][0] . "', '" . $_POST['thema'] . "', '" . $_POST['vonstunde'] . "', '" .
+				$_POST['bisstunde'] . "', '" . $_POST['fach'] . "', '" . $_POST['klasse'] . "', '" . $_SESSION['ID'] . "')";
+			
+				try
+				{
+					$datenbank->query($insertquery);
+				}
+				catch (Exception $e)
+				{
+					echo $e->getMessage();
+				}
+			
+				if ($datenbank->affected_rows > 0)
+				{
+					$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde 1 Datensatz angelegt.</p>";
+				}
 			}
 		}
-		else
+			else
 		{
 			// Speichern des Fehlerstrings in eine Variable
 			$ausgabe = "<hr><p class=\"error\">Alle Felder müssen ausgefüllt werden!</p>";

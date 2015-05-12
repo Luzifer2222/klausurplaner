@@ -22,7 +22,12 @@ if (isset($_POST['loescheklasse']) && isset($_POST['loesche']))
 	
 	if ($datenbank->affected_rows > 0)
 	{
-		$ausgabe = "<p class=\"erfolgreich\">Es wurde der Datensatz mit der ID " . $_POST['loesche'] . " gelöscht.</p><hr>";
+		$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde der Datensatz mit der ID " . $_POST['loesche'] . " gelöscht.</p>";
+	}
+	else
+	{
+		// Speichern des Fehlerstrings in eine Variable
+		$ausgabe = "<hr><p class=\"error\">Fehler! Es wurde kein Datensatz gelöscht</p>";
 	}
 }
 
@@ -31,22 +36,30 @@ if (isset($_POST['klasseanlegen']))
 {
 	if ($_POST['klasse'] != "")
 	{
+		// Erstellen der Einfügeanweisung in SQL
 		$insertQuery = "INSERT INTO klassen ";
 		$insertQuery .= "(name, klassenlehrerID) values";
 		$insertQuery .= "('" . mysql_real_escape_string($_POST['klasse']) . "', '" . $_POST['klassenlehrer'] . "');";
 		
+		// Einfügen der Formulardaten in die Lehrertabelle
 		$datenbank->query($insertQuery);
 		
+		// Überprüfung ob der Datensatz angelegt wurde
 		if ($datenbank->affected_rows > 0)
 		{
 			// Speichern des Erfolgsstrings in eine Variable
-			$ausgabe = "<p class=\"erfolgreich\">Es wurde eine neue Klasse angelegt.</p><hr>";
+			$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde eine neue Klasse angelegt.</p>";
+		}
+		else
+		{
+			// Speichern des Fehlerstrings in eine Variable
+			$ausgabe = "<hr><p class=\"error\">Fehler! Es wurde keine neue Klasse angelegt.</p>";
 		}
 	}
 	else
 	{
 		// Speichern des Fehlerstrings in eine Variable
-		$ausgabe = "<p class=\"error\">Alle Felder müssen ausgefüllt werden!</p><hr>";
+		$ausgabe = "<hr><p class=\"error\">Alle Felder müssen ausgefüllt werden!</p>";
 	}
 }
 
@@ -70,7 +83,7 @@ if (isset($_POST['aendernlehrer']) && isset($_POST['checkaendern']))
 	
 	if ($_POST['neuerlehrer'] != $pruefe)
 	{
-		// Erstellen der Einfüge anweisung in SQL
+		// Erstellen der Einfügeanweisung in SQL
 		$insertquery = "UPDATE klassen ";
 		$insertquery .= "SET klassenlehrerID = '" . $_POST['neuerlehrer'] . "'";
 		$insertquery .= " WHERE klassenID = '" . $_POST['checkaendern'] . "';";
@@ -82,12 +95,12 @@ if (isset($_POST['aendernlehrer']) && isset($_POST['checkaendern']))
 		if ($datenbank->affected_rows > 0)
 		{
 			// Speichern des Ausgabestrings in eine Variable
-			$ausgabe = "<p class=\"erfolgreich\">Der zugehörige Klassenlehrer wurde geändert.</p>";
+			$ausgabe = "<hr><p class=\"erfolgreich\">Der zugehörige Klassenlehrer wurde geändert.</p>";
 		}
 		else
 		{
 			// Speichern des Fehlerstrings in eine Variable
-			$ausgabe = "<p class=\"error\">Der Klassenlehrer konnte nicht geändert werden!</p>";
+			$ausgabe = "<hr><p class=\"error\">Der Klassenlehrer konnte nicht geändert werden!</p>";
 		}
 	}
 }
@@ -108,7 +121,7 @@ $ergebnisKlasse = $datenbank->query($abfrageKlasse);
 	<fieldset>
 		<legend>Klasse anlegen</legend>
 		<p>
-			<label for="klasse">Klasse:</label><input type="text" pattern="[A-z0-9]{2,20}[ -]{0,5}" min="4" maxlength="20" id="klasse" name="klasse">
+			<label for="klasse">Klasse:</label><input type="text" pattern="[A-Za-z0-9]{1,6}[ ]{0,1}[-]{0,1}[A-Za-z0-9]{1,6}[ ]{0,1}[-]{0,1}[A-Za-z0-9]{1,6}" min="4" maxlength="20" id="klasse" name="klasse">
 		</p>
 		<p>
 			<label for="klassenlehrer">Klassenlehrer:</label> <select id="klassenlehrer" name="klassenlehrer">
@@ -125,16 +138,17 @@ $ergebnisKlasse = $datenbank->query($abfrageKlasse);
 		</p>
 	</fieldset>
 </form>
-<hr>
+
 <?php
 if (isset($ausgabe))
 {
 	echo $ausgabe;
 }
 ?>
-
+<hr>
 <form action="" method="post">
 	<table class="ausgabe">
+	<caption>Angelegte Klassen:</caption>
 		<tr>
 			<th>KlassenID</th>
 			<th>Klassenname</th>
