@@ -148,7 +148,7 @@ if (isset($ausgabe))
 <hr>
 <form action="" method="post">
 	<table class="ausgabe">
-	<caption>Angelegte Klassen:</caption>
+	<caption>Angelegte -Klassen:</caption>
 		<tr>
 			<th>KlassenID</th>
 			<th>Klassenname</th>

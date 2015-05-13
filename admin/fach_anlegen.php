@@ -14,39 +14,58 @@ $datenbank = new mysqli($database_conf['host'], $database_conf['user'], $databas
 // Datenbank Colloation auf UTF-8 stellen
 $datenbank->set_charset('utf8');
 
+// Überprüfung ob der Lösche-Button gedrückt wurde
 if (isset($_POST['loeschefach']) && isset($_POST['loesche']))
 {
-	$loescheQuery = "delete from faecher where fachID = " . $_POST['loesche'];
-	
+	// Speichern der delete Abfrage und Durchführung der Abfrage
+	$loescheQuery = "delete from faecher where fachID = " . $_POST['loesche'];	
 	$datenbank->query($loescheQuery);
 	
+	// Überprüfung ob der Datensatz gelöscht wurde
 	if ($datenbank->affected_rows > 0)
 	{
-		$ausgabe = "<p class=\"erfolgreich\">Es wurde der Datensatz mit der ID " . $_POST['loesche'] . " gelöscht.</p><hr>";
+		// Speichern des Ausgabestrings in eine Variable
+		$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde der Datensatz mit der ID " . $_POST['loesche'] . " gelöscht.</p>";
+	}
+	else
+	{
+		// Speichern des Fehlerstrings in eine Variable
+		$ausgabe = "<hr><p class=\"error\">Fehler! Es wurde kein Datensatz gelöscht</p>";
 	}
 }
 
-// Einfügen des neuen Fachs
+// Überprüfung ob der Submitbutton gedrückt wurde
+// Zuständig für das Einfügen des neuen Fachs
+// in die Fächer Tabelle
 if (isset($_POST['fachanlegen']))
 {
+	// Überprüfung ob das Feld des Einfügeformulars ausgefüllt wurde
 	if ($_POST['fach'] != "")
 	{
+		// Erstellen der Einfügeanweisung in SQL
 		$insertQuery = "INSERT INTO faecher ";
 		$insertQuery .= "(name) values";
 		$insertQuery .= "('" . mysql_real_escape_string(strtoupper($_POST['fach'])) . "');";
 		
+		// Einfügen der Formulardaten in die Lehrertabelle
 		$datenbank->query($insertQuery);
 		
+		// Überprüfung ob der Datensatz angelegt wurde
 		if ($datenbank->affected_rows > 0)
 		{
 			// Speichern des Erfolgsstrings in eine Variable
-			$ausgabe = "<p class=\"erfolgreich\">Es wurde 1 Datensatz angelegt.</p><hr>";
+			$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde ein neues Fach angelegt.</p>";
+		}
+		else
+		{
+			// Speichern des Fehlerstrings in eine Variable
+			$ausgabe = "<hr><p class=\"error\">Fehler! Es wurde kein neues Fach angelegt.</p>";
 		}
 	}
 	else
 	{
 		// Speichern des Fehlerstrings in eine Variable
-		$ausgabe = "<p class=\"error\">Alle Felder müssen ausgefüllt werden!</p><hr>";
+		$ausgabe = "<hr><p class=\"error\">Alle Felder müssen ausgefüllt werden!</p>";
 	}
 }
 
@@ -69,16 +88,17 @@ $ergebnisFach = $datenbank->query($abfrageFach);
 		</p>
 	</fieldset>
 </form>
-<hr>
+
 <?php
 if (isset($ausgabe))
 {
 	echo $ausgabe;
 }
 ?>
-
+<hr>
 <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
 	<table class="ausgabe">
+	<caption>Angelegte Fächer:</caption>
 		<tr>
 			<th>FachID</th>
 			<th>Fachname</th>

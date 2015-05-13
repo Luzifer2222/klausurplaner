@@ -30,3 +30,18 @@ table.ausgabe tr td input.aendern {
 select.aendern {
 	width: 100%;
 }
+
+
+.ausgabe_gewichtung{
+	width: 180px;
+	
+}
+form label{
+	
+	width: 600px;
+}
+.formular_gewichtung{
+	margin-left: 10px;
+	text-align: right;
+	
+}

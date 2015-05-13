@@ -84,3 +84,4 @@ else
 	$kalender->baueKalender(date("Y", time()) - 1);
 }
 ?>
+<hr>

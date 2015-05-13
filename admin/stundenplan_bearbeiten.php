@@ -26,7 +26,7 @@ $fachErgebnis = $datenbank->query($fachQuery);
 
 <form action="" method="post" class="planform" name="auswahl">
 	<fieldset>
-		<legend>Stundenplan der Klasse</legend>
+		<legend>Auswahl der Klasse</legend>
 		<p>
 		<label for="klassenwahl">&nbsp;</label> <select name="klassenwahl">
 		<?php
@@ -42,20 +42,22 @@ $fachErgebnis = $datenbank->query($fachQuery);
 		<?php endif ?>
 		</p>
 	</fieldset>
-
+<hr>
 <?php
+
 // Überprüfung ob der Submitbutton gedrückt wurde
 // Zuständig für das Speichern des Stundenplans
 // in die Tabelle Stunden
-
 if (isset($_POST['speichern']))
 {
 	// Hochzählender Eintrag zur Abfrage der einzelnen Felder
 	$wert = 1;
 	$eintrag = "feld";
 	
+	// Schleife für 12 Schulstunden
 	for ($schulstunde = 1 ; $schulstunde < 13 ; $schulstunde++)
 	{
+		// Schleife für fünf Schultage (Montag bis Freitag)
 		for ($tag = 1 ; $tag < 6 ; $tag++)
 		{
 			$feld = "$eintrag$wert";
@@ -105,7 +107,7 @@ if (isset($_POST['speichern']))
 		}
 	}
 	// Speichern des Ausgabestrings in eine Variable
-	$ausgabe = "<hr><p class=\"erfolgreich\">Die Änderungen wurden gespeichert.</p>";
+	$ausgabe = "<p class=\"erfolgreich\">Die Änderungen wurden gespeichert.</p><hr>";
 }
 ?>
 	
@@ -122,7 +124,6 @@ if (isset($ausgabe))
 // Zuständig für das Ändern des Stundenplans
 if (isset($_POST['aendern']) OR isset($_POST['speichern']))
 {
-	echo "<hr>";
 	echo "<table class=\"plantable\" id=\"stundenplan\">";
 		
 	// Abfrage des Namens der ausgewählten Klasse aus der Tabelle Klassen
@@ -141,7 +142,7 @@ if (isset($_POST['aendern']) OR isset($_POST['speichern']))
 	}
 	
 	// Ausgabe des Stundenplans zu der ausgewählten Klasse
-	echo "<caption>Klasse: <b>" . $klassenname . "</b> Klassenlehrer: <b>" . $lehrervorname . " " . $lehrernachname . "</b></caption>";
+	echo "<caption>Stundenplan der Klasse: <b>" . $klassenname . "</b> Klassenlehrer: <b>" . $lehrervorname . " " . $lehrernachname . "</b></caption>";
 	echo "<tr>";
 	echo "<th>Stunde</th>";
 	echo "<th>Montag</th>";
@@ -159,13 +160,13 @@ if (isset($_POST['aendern']) OR isset($_POST['speichern']))
 	$wert = 1;
 	$eintrag = "feld";
 	
-	// Erste bis achte Schulstunde, falls es mehr gibt, muss dieser erhöht werden
+	// Schleife für zwölf Schulstunden
 	for ($schulstunde = 1 ; $schulstunde < 13 ; $schulstunde++)
 	{
 		echo "<tr>";
 		echo "<td>$schulstunde</td>\n";
 		
-		// Montag bis Freitag, falls es Samstags Unterricht gibt, muss dieser Wert erhöht werden
+		// Schleife für fünf Schultage (Montag bis Freitag)
 		for ($tag = 1 ; $tag < 6 ; $tag++)
 		{
 			

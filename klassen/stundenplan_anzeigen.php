@@ -24,7 +24,7 @@ $fachErgebnis = $datenbank->query($fachQuery);
 
 <form action="<?php $_SERVER['PHP_SELF']?>" method="post" class="planform" name="auswahl">
 		<fieldset>
-		<legend>Stundenplan der Klasse</legend>
+		<legend>Auswahl der Klasse</legend>
 		<p>
 		<label for="klassenwahl">&nbsp;</label> <select name="klassenwahl">
 		<?php
@@ -41,6 +41,7 @@ $fachErgebnis = $datenbank->query($fachQuery);
 <hr>
 
 <?php
+
 // Überprüfung ob der Submitbutton gedrückt wurde
 // Zuständig für das Anzeigen des Stundenplans der gewählten Klasse
 // aus der Tabelle Stunden
@@ -64,7 +65,7 @@ if (isset($_POST['anzeigen']))
 	}
 	
 	// Ausgabe des Stundenplans zu der ausgewählten Klasse
-	echo "<caption>Klasse: <b>" . $klassenname . "</b> Klassenlehrer: <b>" . $lehrervorname . " " . $lehrernachname . "</b></caption>";
+	echo "<caption>Stundenplan der Klasse: <b>" . $klassenname . "</b> Klassenlehrer: <b>" . $lehrervorname . " " . $lehrernachname . "</b></caption>";
 	echo "<tr>";
 	echo "<th class=\"vonbis\">Stunde</th>";
 	echo "<th>Montag</th>";
@@ -79,13 +80,13 @@ if (isset($_POST['anzeigen']))
 	$sQuery .= "where klassenID = '" . $_POST['klassenwahl'] . "';";
 	$sErgebnis = $datenbank->query($sQuery);
 	
-	// Erste bis achte Schulstunde, falls es mehr gibt, muss dieser erhöht werden
+	// Schleife für zwölf Schulstunden
 	for ($schulstunde = 1 ; $schulstunde < 13 ; $schulstunde++)
 	{
 		echo "<tr>";
 		echo "<td>$schulstunde</td>";
 		
-		// Montag bis Freitag, falls es Samstags Unterricht gibt, muss dieser Wert erhöht werden
+		// Schleife für fünf Schultage (Montag bis Freitag)
 		for ($tag = 1 ; $tag < 6 ; $tag++)
 		{
 			

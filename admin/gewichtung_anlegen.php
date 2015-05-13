@@ -38,10 +38,10 @@ $datenbank->set_charset('utf8');
 </form>
 
 <?php
+
 // Überprüfung ob der Submitbutton gedrückt wurde
 // Zuständig für das Aktualisieren der Gewichtung
 // in die Tabelle Anzahlklausurtest
-
 if (isset($_POST['speichern']))
 {	
 	if (($_POST['kmaxtag'] <= $_POST['kmaxwoche']) AND ($_POST['tmaxtag'] <= $_POST['tmaxwoche']))
@@ -90,12 +90,12 @@ $anzahlErgebnis = $datenbank->query($anzahlQuery);
 
 <hr>
 <table class="ausgabe">
-	<caption>Momentane Begrenzung</caption>
+	<caption>Momentane Begrenzung:</caption>
 	<tr>
-		<th>Max. Klausuren Tag</th>
-		<th>Max. Klausuren Woche</th>
-		<th>Max. Tests Tag</th>
-		<th>Max. Tests Woche</th>
+		<th class="ausgabe_gewichtung">Max. Klausuren Tag</th>
+		<th class="ausgabe_gewichtung">Max. Klausuren Woche</th>
+		<th class="ausgabe_gewichtung">Max. Tests Tag</th>
+		<th class="ausgabe_gewichtung">Max. Tests Woche</th>
 	</tr>
 	<?php
 		while ($daten = $anzahlErgebnis->fetch_object())

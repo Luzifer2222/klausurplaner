@@ -43,6 +43,11 @@ if (isset($_POST['aendernlehrer']) && isset($_POST['checkaendern']))
 				// Speichern des Ausgabestrings in eine Variable
 				$ausgabe .= "<p class=\"erfolgreich\">Das Passwort wurde geändert.</p>";
 			}
+			else
+			{
+				// Speichern des Fehlerstrings in eine Variable
+				$ausgabe = "<hr><p class=\"error\">Das Passwort konnte nicht geändert werden!y</p>";
+			}
 		}
 		else
 		{
@@ -208,7 +213,12 @@ if (isset($_POST['neuanlegen']))
 			if ($datenbank->affected_rows > 0)
 			{
 				// Speichern des Ausgabestrings in eine Variable
-				$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde 1 Datensatz angelegt.</p>";
+				$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde ein neuer Lehrer angelegt.</p>";
+			}
+			else
+			{
+				// Speichern des Fehlerstrings in eine Variable
+				$ausgabe = "<hr><p class=\"error\">Fehler! Es wurde kein neuer Lehrer angelegt.</p>";
 			}
 		}
 		else
@@ -228,15 +238,20 @@ if (isset($_POST['neuanlegen']))
 // Überprüfung ob der Button 'Lösche' gedrückt wurde
 if (isset($_POST['loeschelehrer']) && isset($_POST['loesche']))
 {
-	
 	// Speichern der delete Abfrage und Durchführung der Abfrage
 	$abfloeschelehrer = "delete from lehrer where lehrerID = " . $_POST['loesche'] . ";";
 	$datenbank->query($abfloeschelehrer);
 	
-	//
+	// Überprüfung ob der Datensatz gelöscht wurde
 	if ($datenbank->affected_rows > 0)
 	{
+		// Speichern des Ausgabestrings in eine Variable
 		$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde der Datensatz mit der ID: " . $_POST['loesche'] . " gelöscht.</p>";
+	}
+	else
+	{
+		// Speichern des Fehlerstrings in eine Variable
+		$ausgabe = "<hr><p class=\"error\">Fehler! Es wurde kein Datensatz gelöscht</p>";
 	}
 }
 
@@ -264,7 +279,7 @@ $ergabfragerlehrer = $datenbank->query($abfragelehrer);
 			<label for="kuerzel">Kürzel:</label> <input type="text" pattern="[A-z0-9]{4,5}" min="4" maxlength="5" name="kuerzel" id="kuerzel">
 		</p>
 		<p>
-			<label for="abteilung">Abteilung:</label> <select name="abteilung" id="abteilung">
+			<label for="abteilung">Fachbereich:</label> <select name="abteilung" id="abteilung">
 							<?php
 							
 							$ergabteilungdb = $datenbank->query($abfrageabteilung);
@@ -301,10 +316,11 @@ if (isset($ausgabe))
 	echo $ausgabe;
 }
 ?>
+
 <hr>
 <form action="" method="post" class="aendern">
 	<table class="ausgabe">
-		<caption>Angelegte Lehrer</caption>
+		<caption>Angelegte Lehrer:</caption>
 		<tr>
 			<th>LehrerID</th>
 			<th>Vorname</th>

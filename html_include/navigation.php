@@ -43,7 +43,7 @@
 					<a href="./index.php?seite=lehrer_anlegen.php">Lehrer</a>
 				</li>
 				<li>
-				<a href="./index.php?seite=abteilung_anlegen.php">Abteilungen</a>
+				<a href="./index.php?seite=abteilung_anlegen.php">Fachbereiche</a>
 				</li>
 				<li>
 				<a href="./index.php?seite=stundenplan_bearbeiten.php">Stundenpläne</a>

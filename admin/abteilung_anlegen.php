@@ -17,9 +17,10 @@ $datenbank->set_charset('utf8');
 // Überprüfung ob der Button zum Anlegen einer neuen Abteilung betätigt wurde
 if (isset($_POST['abtanlegen']))
 {
+	// Überprüfung ob das Feld des Einfügeformulars ausgefüllt wurde
 	if ($_POST['abtname'] != "")
 	{
-		// Erstellen der Abfrage zum erzeugen einer neuen Abteilung
+		// Erstellen der Abfrage zum Erzeugen einer neuen Abteilung
 		// und Ausführen der Abfrage
 		$abfrageabteilung = "insert into abteilung (name) values ('" . mysql_real_escape_string($_POST['abtname']) . "');";
 		$datenbank->query($abfrageabteilung);
@@ -28,19 +29,18 @@ if (isset($_POST['abtanlegen']))
 		if ($datenbank->affected_rows > 0)
 		{
 			// Speichern der Erfolgreichen Ausgabe in der Variable
-			$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde 1 Datensatz angelegt.</p>";
+			$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde ein neuer Fachbereich angelegt.</p>";
 		}
 		else
 		{
-			// Wenn nicht erfolgreich speichern der Errormeldung in der
-			// Variablen
-			$ausgabe = "<hr><p class=\"error\">Es ist ein Fehler aufgetreten <br />Es wurde kein Datensatz erzeugt.</p>";
+			// Speichern des Fehlerstrings in eine Variable
+			$ausgabe = "<hr><p class=\"error\">Fehler! Es wurde keine neue Abteilung angelegt.</p>";
 		}
 	}
 	else // Wenn kein Abteilungsname angegeben wurde
 	{
 		// Wenn nicht erfolgreich speichern der Errormeldung in der Variablen
-		$ausgabe = "<hr><p class=\"error\">Sie müssen einen Abteilungsnamen angeben.</p>";
+		$ausgabe = "<hr><p class=\"error\">Sie müssen einen Fachbereichsnamen angeben.</p>";
 	}
 }
 
@@ -60,40 +60,43 @@ if (isset($_POST['loescheabt']) && isset($_POST['loesche']))
 	}
 	else
 	{
-		// Wenn die Abteilung nicht gelöscht wurde
-		// Speichern der Error meldung in die Variable
-		$ausgabe = "<hr><p class=\"error\">Fehler! es wurde kein Datensatz gelöscht</p>";
+		// Speichern des Fehlerstrings in eine Variable
+		$ausgabe = "<hr><p class=\"error\">Fehler! Es wurde kein Datensatz gelöscht.</p>";
 	}
 }
 
 // Abfrage zur Ausgabe der Tabelle Abteilung
 // zur Übersicht
 $datenbankAusgabe = $datenbank->query("select * from abteilung");
-
 ?>
+
 <form action="<?php $_SERVER['PHP_SELF']?>" method="post" class="anlegen">
 	<fieldset>
-		<legend>Abteilung anlegen</legend>
+		<legend>Fachbereich anlegen</legend>
 		<p>
-			<label>Abteilungsname:</label><input type="text" pattern="[A-z0-9ÄÖÜäöü]{2,50}[ -]{0,10}" min="4" maxlength="50" name="abtname" />
+			<label>Fachbereichsname:</label><input type="text" pattern="[A-z0-9ÄÖÜäöü]{2,50}[ -]{0,10}" min="4" maxlength="50" name="abtname" />
 		</p>
 		<p>
-			<label>&nbsp;</label> <input type="submit" name="abtanlegen" value="Abteilung anlegen" /> <input type="reset" value="Zurücksetzen" name="zuruecksetzen">
+			<label>&nbsp;</label> <input type="submit" name="abtanlegen" value="Fachbereich anlegen" /> <input type="reset" value="Zurücksetzen" name="zuruecksetzen">
 		</p>
 	</fieldset>
 </form>
 
 <?php
+// Ausgabe ob Eintrag in die Datenbank erfolgreich war.
 if (isset($ausgabe))
+{
 	echo $ausgabe;
+}
 ?>
+
 <hr>
 <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
 	<table class="ausgabe">
-		<caption>Angelegte Abteilungen</caption>
+		<caption>Angelegte Fachbereiche:</caption>
 		<tr>
-			<th>AbteilungsID</th>
-			<th>Abteilungsname</th>
+			<th>FachbereichsID</th>
+			<th>Fachbereichsname</th>
 			<th><input type="submit" name="loescheabt" value="Löschen?"></th>
 		</tr>
     	   <?php

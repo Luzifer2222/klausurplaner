@@ -19,12 +19,12 @@ $datenbank->set_charset('utf8');
 // in der Lehrer Tabelle
 if (isset($_POST['aendern']))
 {
-	// Überprüfung ob alle Felder des Einfüge Formulars ausgefüllt wurden
+	// Überprüfung ob alle Felder des Einfügeformulars ausgefüllt wurden
 	if ($_POST['pwd'] != "")
 	{
 		if ($_POST['pwd'] == $_POST['wiederholen'])
 		{
-			// Erstellen der Einfüge anweisung in SQL
+			// Erstellen der Einfügeanweisung in SQL
 			$insertquery = "UPDATE lehrer ";
 			$insertquery .= "SET passwort = '";
 			$insertquery .= verschluesselLogin($_POST['pwd']);
@@ -37,7 +37,12 @@ if (isset($_POST['aendern']))
 			if ($datenbank->affected_rows > 0)
 			{
 				// Speichern des Ausgabestrings in eine Variable
-				$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde das Passwort geändert.</p>";
+				$ausgabe = "<hr><p class=\"erfolgreich\">Das Passwort wurde geändert.</p>";
+			}
+			else
+			{
+				// Speichern des Fehlerstrings in eine Variable
+				$ausgabe = "<hr><p class=\"error\">Das alte und das neue Passwort stimmen überein!</p>";
 			}
 		}
 		else
@@ -52,8 +57,8 @@ if (isset($_POST['aendern']))
 		$ausgabe = "<hr><p class=\"error\">Alle Felder müssen ausgefüllt werden!</p>";
 	}
 }
-
 ?>
+
 <form class="anlegen" action="<?php $_SERVER['PHP_SELF']?>" method="post" name="passwortaendern" class="passwortaendern">
 	<fieldset>
 		<legend>Passwort ändern</legend>
@@ -76,7 +81,7 @@ if (isset($_POST['aendern']))
 </form>
 
 <?php
-// Ausgabe ob eintrag in die Datenbank erfolgreich war.
+// Ausgabe ob Eintrag in die Datenbank erfolgreich war.
 if (isset($ausgabe))
 {
 	echo $ausgabe;
