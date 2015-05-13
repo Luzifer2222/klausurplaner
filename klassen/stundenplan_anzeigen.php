@@ -11,7 +11,6 @@ $pruefeSession->UserBereich();
 $datenbank = new mysqli($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
 $datenbank->set_charset('utf8');
 
-
 // Abfrage der Klasse
 $klassenQuery = "SELECT klassenID, name FROM klassen;";
 $planQuery = "Select * from stunde;";
@@ -23,18 +22,17 @@ $fachErgebnis = $datenbank->query($fachQuery);
 ?>
 
 <form action="<?php $_SERVER['PHP_SELF']?>" method="post" class="planform" name="auswahl">
-		<fieldset>
+	<fieldset>
 		<legend>Auswahl der Klasse</legend>
 		<p>
-		<label for="klassenwahl">&nbsp;</label> <select name="klassenwahl">
+			<label for="klassenwahl">&nbsp;</label> <select name="klassenwahl">
 		<?php
 		while ($daten = $klassenErgebnis->fetch_object())
 		{
 			echo "<option value=\"$daten->klassenID\">$daten->name</option>";
 		}
 		?>
-		</select>
-		<input type="submit" name="anzeigen" value="Anzeigen">
+		</select> <input type="submit" name="anzeigen" value="Anzeigen">
 		</p>
 	</fieldset>
 </form>
@@ -46,22 +44,24 @@ $fachErgebnis = $datenbank->query($fachQuery);
 // Zuständig für das Anzeigen des Stundenplans der gewählten Klasse
 // aus der Tabelle Stunden
 if (isset($_POST['anzeigen']))
-{	
+{
 	echo "<table class=\"plantable\" id=\"stundenplan\">";
 	
-	// Abfrage der Namen der ausgewählten Klasse und dem zugehörigem Klassenlehrer aus der Tabelle Klassen
+	// Abfrage der Namen der ausgewählten Klasse und dem zugehörigem Klassenlehrer aus der Tabelle
+	// Klassen
 	$classQuery = "SELECT name FROM klassen Where klassenID = " . $_POST['klassenwahl'] . ";";
 	$classErgebnis = $datenbank->query($classQuery);
 	while ($daten = $classErgebnis->fetch_object())
 	{
 		$klassenname = $daten->name;
 	}
-	$teacherQuery = "SELECT l.nachname, l.vorname FROM klassen k, lehrer l Where klassenID = " . $_POST['klassenwahl'] . " AND k.klassenlehrerID = l.lehrerID;";
+	$teacherQuery = "SELECT l.nachname, l.vorname FROM klassen k, lehrer l Where klassenID = " . $_POST['klassenwahl'] .
+				 " AND k.klassenlehrerID = l.lehrerID;";
 	$teacherErgebnis = $datenbank->query($teacherQuery);
 	while ($daten = $teacherErgebnis->fetch_object())
 	{
 		$lehrervorname = $daten->vorname;
-		$lehrernachname  = $daten->nachname;
+		$lehrernachname = $daten->nachname;
 	}
 	
 	// Ausgabe des Stundenplans zu der ausgewählten Klasse
@@ -108,7 +108,8 @@ if (isset($_POST['anzeigen']))
 				// Einfache Abfrage
 				$fQuery = "Select f.name ";
 				$fQuery .= "from faecher f, stunden s ";
-				$fQuery .= "where s.klassenID = " . $_POST['klassenwahl'] . " AND s.wochentag = $tag AND s.stunde = $schulstunde AND f.fachID = s.fachID;";
+				$fQuery .= "where s.klassenID = " . $_POST['klassenwahl'] .
+							 " AND s.wochentag = $tag AND s.stunde = $schulstunde AND f.fachID = s.fachID;";
 				
 				// Ergebnis der Abfrage aus $fQuery
 				$fachErg = $datenbank->query($fQuery);

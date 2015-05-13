@@ -31,17 +31,15 @@ select.aendern {
 	width: 100%;
 }
 
-
-.ausgabe_gewichtung{
+.ausgabe_gewichtung {
 	width: 180px;
-	
 }
-form label{
-	
+
+form label {
 	width: 600px;
 }
-.formular_gewichtung{
+
+.formular_gewichtung {
 	margin-left: 10px;
 	text-align: right;
-	
 }

@@ -43,7 +43,8 @@ class kalender
 		{
 			echo "<tr>";
 			echo "<td class=\"kw\">" . date("W", strtotime($kalenderAnfang)) . "</td>\n";
-			echo "<td class=\"vonbis\">" . date("d.m.", strtotime("$kalenderAnfang")) . " - " . date("d.m.", strtotime("$kalenderAnfang next friday")) . "</td>\n";
+			echo "<td class=\"vonbis\">" . date("d.m.", strtotime("$kalenderAnfang")) . " - " . date("d.m.", strtotime("$kalenderAnfang next friday")) .
+						 "</td>\n";
 			
 			for ($i = 0 ; $i < 5 ; $i++)
 			{
@@ -92,11 +93,13 @@ class kalender
 							{
 								if ($daten->art == 1)
 								{
-									echo "<p class=\"klausur\">" . $daten->vonstunde . "-". $daten->bisstunde. "std. ". $daten->kuerzel . "<br /> Klausur: " . $daten->thema . "</p>\n";
+									echo "<p class=\"klausur\">" . $daten->vonstunde . "-" . $daten->bisstunde . "std. " . $daten->kuerzel .
+												 "<br /> Klausur: " . $daten->thema . "</p>\n";
 								}
 								else
 								{
-									echo "<p class=\"test\">" . $daten->vonstunde . "-". $daten->bisstunde. "std. ". $daten->kuerzel . "<br /> Test: " . $daten->thema . "</p>\n";
+									echo "<p class=\"test\">" . $daten->vonstunde . "-" . $daten->bisstunde . "std. " . $daten->kuerzel .
+												 "<br /> Test: " . $daten->thema . "</p>\n";
 								}
 							}
 						}

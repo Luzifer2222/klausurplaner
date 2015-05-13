@@ -72,10 +72,10 @@ if (isset($_POST['aendernlehrer']) && isset($_POST['checkaendern']))
 	$fragelehrer = "select klassenlehrerID ";
 	$fragelehrer .= "from klassen ";
 	$fragelehrer .= "where klassenID = '" . $_POST['checkaendern'] . "';";
-
+	
 	// Ergebnis der Abfrage aus $fragelehrer
 	$ergfragelehrer = $datenbank->query($fragelehrer);
-		
+	
 	while ($daten = $ergfragelehrer->fetch_object())
 	{
 		$pruefe = $daten->klassenlehrerID;
@@ -148,7 +148,7 @@ if (isset($ausgabe))
 <hr>
 <form action="" method="post">
 	<table class="ausgabe">
-	<caption>Angelegte -Klassen:</caption>
+		<caption>Angelegte -Klassen:</caption>
 		<tr>
 			<th>KlassenID</th>
 			<th>Klassenname</th>

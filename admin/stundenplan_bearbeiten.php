@@ -28,21 +28,20 @@ $fachErgebnis = $datenbank->query($fachQuery);
 	<fieldset>
 		<legend>Auswahl der Klasse</legend>
 		<p>
-		<label for="klassenwahl">&nbsp;</label> <select name="klassenwahl">
+			<label for="klassenwahl">&nbsp;</label> <select name="klassenwahl">
 		<?php
 		while ($daten = $klassenErgebnis->fetch_object())
 		{
 			echo "<option value=\"$daten->klassenID\">$daten->name</option>";
 		}
 		?>
-		</select>
-		<input type="submit" name="aendern" value="Ändern">
+		</select> <input type="submit" name="aendern" value="Ändern">
 		<?php if ((isset($_POST['aendern'])) OR (isset($_POST['speichern']))): ?>
 		<input type="submit" name="speichern" value="Speichern">
 		<?php endif ?>
 		</p>
 	</fieldset>
-<hr>
+	<hr>
 <?php
 
 // Überprüfung ob der Submitbutton gedrückt wurde
@@ -91,7 +90,7 @@ if (isset($_POST['speichern']))
 					// Erstellen der Einfügeanweisung in SQL
 					$insertquery = "UPDATE stunden ";
 					$insertquery .= "SET fachID = '" . $_POST["$feld"] . "'";
-					$insertquery .= " where stunde = $schulstunde AND wochentag = $tag AND klassenID = '" . $_POST['klassenwahl'] . "';";					
+					$insertquery .= " where stunde = $schulstunde AND wochentag = $tag AND klassenID = '" . $_POST['klassenwahl'] . "';";
 				}
 				
 				// Einfügen der Formulardaten in die Lehrertabelle
@@ -122,10 +121,10 @@ if (isset($ausgabe))
 <?php
 // Überprüfung ob der Submitbutton gedrückt wurde
 // Zuständig für das Ändern des Stundenplans
-if (isset($_POST['aendern']) OR isset($_POST['speichern']))
+if (isset($_POST['aendern']) or isset($_POST['speichern']))
 {
 	echo "<table class=\"plantable\" id=\"stundenplan\">";
-		
+	
 	// Abfrage des Namens der ausgewählten Klasse aus der Tabelle Klassen
 	$classQuery = "SELECT name FROM klassen Where klassenID = " . $_POST['klassenwahl'] . ";";
 	$classErgebnis = $datenbank->query($classQuery);
@@ -133,12 +132,13 @@ if (isset($_POST['aendern']) OR isset($_POST['speichern']))
 	{
 		$klassenname = $daten->name;
 	}
-	$teacherQuery = "SELECT l.nachname, l.vorname FROM klassen k, lehrer l Where klassenID = " . $_POST['klassenwahl'] . " AND k.klassenlehrerID = l.lehrerID;";
+	$teacherQuery = "SELECT l.nachname, l.vorname FROM klassen k, lehrer l Where klassenID = " . $_POST['klassenwahl'] .
+				 " AND k.klassenlehrerID = l.lehrerID;";
 	$teacherErgebnis = $datenbank->query($teacherQuery);
 	while ($daten = $teacherErgebnis->fetch_object())
 	{
 		$lehrervorname = $daten->vorname;
-		$lehrernachname  = $daten->nachname;
+		$lehrernachname = $daten->nachname;
 	}
 	
 	// Ausgabe des Stundenplans zu der ausgewählten Klasse
@@ -173,7 +173,8 @@ if (isset($_POST['aendern']) OR isset($_POST['speichern']))
 			// Einfache Abfrage
 			$fragestunde = "select f.name ";
 			$fragestunde .= "from faecher f, stunden s ";
-			$fragestunde .= "where s.klassenID = " . $_POST['klassenwahl'] . " AND s.wochentag = $tag AND s.stunde = $schulstunde AND f.fachID = s.fachID;";
+			$fragestunde .= "where s.klassenID = " . $_POST['klassenwahl'] .
+						 " AND s.wochentag = $tag AND s.stunde = $schulstunde AND f.fachID = s.fachID;";
 			
 			// Ergebnis der Abfrage aus $fragestunde
 			$ergfragestunde = $datenbank->query($fragestunde);
@@ -186,30 +187,30 @@ if (isset($_POST['aendern']) OR isset($_POST['speichern']))
 				$pruefe = $daten->name;
 			}
 			echo "<td><select class=\"plan\" name=\"$feld\">";
-				$fachErgebnis = $datenbank->query($fachQuery);
-				while ($daten = $fachErgebnis->fetch_object())
+			$fachErgebnis = $datenbank->query($fachQuery);
+			while ($daten = $fachErgebnis->fetch_object())
+			{
+				echo "<option value=\"$daten->fachID\" ";
+				if ($daten->name == $pruefe)
 				{
-					echo "<option value=\"$daten->fachID\" ";
-					if ($daten->name == $pruefe)
-					{
-						echo "selected=\"selected\"";
-						$boolean = true;
-					}
-					echo " >" . $daten->name . "</option>";
+					echo "selected=\"selected\"";
+					$boolean = true;
 				}
-				if ($boolean == false)
-				{
-					echo "<option value=\"0\" selected=\"selected\">&nbsp;</option>";
-				}
-				else
-				{
-					echo "<option value=\"0\">&nbsp;</option>";
-				}
+				echo " >" . $daten->name . "</option>";
+			}
+			if ($boolean == false)
+			{
+				echo "<option value=\"0\" selected=\"selected\">&nbsp;</option>";
+			}
+			else
+			{
+				echo "<option value=\"0\">&nbsp;</option>";
+			}
 			echo "</select></td>\n";
 			// Hochzählender Eintrag zur Abfrage der einzelnen Felder
 			$wert++;
 		}
-	echo "</tr>";
+		echo "</tr>";
 	}
 	echo "</table>";
 	echo "<hr>";

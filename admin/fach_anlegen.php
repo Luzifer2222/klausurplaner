@@ -18,7 +18,7 @@ $datenbank->set_charset('utf8');
 if (isset($_POST['loeschefach']) && isset($_POST['loesche']))
 {
 	// Speichern der delete Abfrage und Durchführung der Abfrage
-	$loescheQuery = "delete from faecher where fachID = " . $_POST['loesche'];	
+	$loescheQuery = "delete from faecher where fachID = " . $_POST['loesche'];
 	$datenbank->query($loescheQuery);
 	
 	// Überprüfung ob der Datensatz gelöscht wurde
@@ -98,7 +98,7 @@ if (isset($ausgabe))
 <hr>
 <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
 	<table class="ausgabe">
-	<caption>Angelegte Fächer:</caption>
+		<caption>Angelegte Fächer:</caption>
 		<tr>
 			<th>FachID</th>
 			<th>Fachname</th>

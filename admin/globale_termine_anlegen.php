@@ -28,29 +28,30 @@ if (isset($_POST['anlegen']))
 	{
 		$_POST['relevant'][0] = 0;
 	}
-		
+	
 	if (pruefedatum($_POST['beginndatum']) && pruefedatum($_POST['endedatum']))
 	{
-	// Überprüfung ob alle Felder des Einfügeformulars ausgefüllt wurden
+		// Überprüfung ob alle Felder des Einfügeformulars ausgefüllt wurden
 		if ($_POST['nametermin'] != "" && $_POST['beginndatum'] != "" && $_POST['endedatum'] != "")
 		{
 			if (strtotime($_POST['beginndatum']) <= strtotime($_POST['endedatum']))
 			{
 				// Erstellen der Einfügeanweisung in SQL
 				$insertquery = "INSERT INTO belegtetage (name, beginndatum, endedatum, ganzertag, relevant) values ";
-				$insertquery .= "('" . mysql_real_escape_string($_POST['nametermin']) . "', '" . date("Y-m-d", strtotime($_POST['beginndatum'])) . "', '" . date("Y-m-d", strtotime($_POST['endedatum']));
+				$insertquery .= "('" . mysql_real_escape_string($_POST['nametermin']) . "', '" . date("Y-m-d", strtotime($_POST['beginndatum'])) .
+							 "', '" . date("Y-m-d", strtotime($_POST['endedatum']));
 				$insertquery .= "', '" . $_POST['ganzertag'][0] . "', '" . $_POST['relevant'][0] . "');";
 				
 				try
 				{
 					// Einfügen der Formulardaten in die Lehrertabelle
 					$datenbank->query($insertquery);
-				}	
+				}
 				catch (Exception $e)
 				{
 					echo $e->getMessage();
 				}
-			
+				
 				// Überprüfung ob der Datensatz angelegt wurde
 				if ($datenbank->affected_rows > 0)
 				{
@@ -144,7 +145,7 @@ if (isset($ausgabe))
 <hr>
 <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
 	<table class="ausgabe">
-	<caption>Angelegte globale Termine:</caption>
+		<caption>Angelegte globale Termine:</caption>
 		<tr>
 			<th>TerminID</th>
 			<th>Terminname</th>

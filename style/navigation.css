@@ -93,12 +93,10 @@ nav ul li.login:hover a, nav ul li:hover>ul li a {
 	background-color: #004C66;
 }
 
-
-form.anmeldeformular{
-	width:200px;
-	
+form.anmeldeformular {
+	width: 200px;
 }
 
-fieldset p input.loginfeld{
+fieldset p input.loginfeld {
 	width: 100%;
 }

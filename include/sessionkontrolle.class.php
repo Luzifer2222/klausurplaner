@@ -3,7 +3,7 @@
 class sessionkontrolle
 {
 
-	private $anmeldezeit = 3600;
+	private $anmeldezeit = 36;
 
 	function AdminBereich ()
 	{
@@ -40,11 +40,19 @@ class sessionkontrolle
 
 	function UserBereich ()
 	{
-		if (!(isset($_SESSION['anmeldezeit']) >= time() - $this->anmeldezeit))
+		if (isset($_SESSION['anmeldezeit']))
 		{
-			// Löschen der $_SESSION-Arrays
-			$_SESSION = array();
-			exit("<p class=\"error\">Sie wurden automatisch ausgeloggt. Anmeldezeit überschritten!");
+			if ($_SESSION['anmeldezeit'] + $this->anmeldezeit < time())
+			{
+				// Löschen der $_SESSION-Arrays
+				$_SESSION = array();
+				exit("<p class=\"error\">Sie wurden automatisch ausgeloggt. Anmeldezeit überschritten!");
+			}
+		}
+		else
+		{
+			// Neu setzen der Anmeldezeit für jeden Seiten aufruf.
+			$_SESSION['anmeldezeit'] = time();
 		}
 		
 		// Prüfen ob das Array der der Session initialisiert wurde
@@ -53,9 +61,7 @@ class sessionkontrolle
 			// Programm abbruch, da die Session nicht initialisiert wurde.
 			exit("<p class=\"error\">Sie haben keinen Zugang zu der Seite!<br>Sie sind nicht angemeldet.</p>");
 		}
-		
-		// Neu setzen der Anmeldezeit für jeden Seiten aufruf.
-		$_SESSION['anmeldezeit'] = time();
+	
 	}
 
 	function navigation ()

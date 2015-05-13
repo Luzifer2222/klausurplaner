@@ -1,10 +1,15 @@
 @CHARSET "UTF-8";
 
 @IMPORT url("./kalender.css");
+
 @IMPORT url("./navigation.css");
+
 @IMPORT url("./table.css");
+
 @IMPORT url("./paragraph.css");
+
 @IMPORT url("./form.css");
+
 @IMPORT url("./stundenplan.css");
 
 body {
@@ -19,8 +24,8 @@ body {
 	background-color: white;
 	margin: auto;
 	-moz-box-shadow: 0px 0px 20px #000; /*Firefox*/
-    -webkit-box-shadow: 0px 0px 20px #000;  /*Chrome*/
-    box-shadow: 0px 0px 20px #000; /*restliche Browser*/
+	-webkit-box-shadow: 0px 0px 20px #000; /*Chrome*/
+	box-shadow: 0px 0px 20px #000; /*restliche Browser*/
 }
 
 header {
