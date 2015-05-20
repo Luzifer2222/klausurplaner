@@ -11,7 +11,12 @@ include_once './include/kalender.class.php';
 include_once './include/pruefedatum.php';
 ?>
 
-<?php session_start()?>
+<?php
+ 
+ session_start();
+ $sessionctl = new sessionkontrolle();
+ $ausgeloggt = $sessionctl->pruefeAnmeldezeit();
+ ?>
 <!doctype html>
 <html>
 <head>
@@ -33,6 +38,9 @@ include_once './include/pruefedatum.php';
 			if (isset($einausgeloggt))
 				echo $einausgeloggt;
 			
+			if (isset($ausgeloggt))
+			{				echo $ausgeloggt;
+}else{
 			if (isset($_GET['seite']))
 			{
 				switch ($_GET['seite'])
@@ -79,6 +87,7 @@ include_once './include/pruefedatum.php';
 						break;
 				}
 			}
+}
 			
 			?>
 			</main>
