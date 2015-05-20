@@ -1,5 +1,4 @@
 <?php
-
 $database_conf = array(
 	
 		'host' => "localhost", 
@@ -9,6 +8,3 @@ $database_conf = array(
 )
 
 ?>
-
-
-
