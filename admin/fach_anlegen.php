@@ -1,4 +1,9 @@
 <?php
+// Titel:          fach_anlegen.php
+// Version:         1.0
+// Autor:			PHPmeetsSQL
+// Datum:           20.05.15
+// Beschreibung:    Zuständig für das Einfügen/Löschen eines Faches
 
 // Kontrolle ob User angemeldet ist und Administratorrechte hat
 $pruefeSession = new sessionkontrolle();
@@ -18,7 +23,7 @@ $datenbank->set_charset('utf8');
 if (isset($_POST['loeschefach']) && isset($_POST['loesche']))
 {
 	// Speichern der delete Abfrage und Durchführung der Abfrage
-	$loescheQuery = "delete from faecher where fachID = " . $_POST['loesche'];
+	$loescheQuery = "delete from faecher where fachID = " . $_POST['loesche'];	
 	$datenbank->query($loescheQuery);
 	
 	// Überprüfung ob der Datensatz gelöscht wurde
@@ -45,7 +50,7 @@ if (isset($_POST['fachanlegen']))
 		// Erstellen der Einfügeanweisung in SQL
 		$insertQuery = "INSERT INTO faecher ";
 		$insertQuery .= "(name) values";
-		$insertQuery .= "('" . mysql_real_escape_string(strtoupper($_POST['fach'])) . "');";
+		$insertQuery .= "('" . mysqli_real_escape_string($datenbank,(strtoupper($_POST['fach']))) . "');";
 		
 		// Einfügen der Formulardaten in die Lehrertabelle
 		$datenbank->query($insertQuery);
@@ -81,7 +86,7 @@ $ergebnisFach = $datenbank->query($abfrageFach);
 	<fieldset>
 		<legend>Fach anlegen</legend>
 		<p>
-			<label for="fach">Fach:</label><input type="text" pattern="[A-z0-9ÄÖÜäöü]{2,50}[ -]{0,10}" min="4" maxlength="50" id="fach" name="fach">
+			<label for="fach">Fach:</label><input type="text" pattern="[A-z0-9ÄÖÜäöü .-]{2,50}" min="4" maxlength="50" id="fach" name="fach">
 		</p>
 		<p>
 			<label>&nbsp;</label><input type="submit" value="Fach anlegen" name="fachanlegen"> <input type="reset" value="Zurücksetzen" name="zuruecksetzen">
@@ -98,7 +103,7 @@ if (isset($ausgabe))
 <hr>
 <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
 	<table class="ausgabe">
-		<caption>Angelegte Fächer:</caption>
+	<caption>Angelegte Fächer:</caption>
 		<tr>
 			<th>FachID</th>
 			<th>Fachname</th>

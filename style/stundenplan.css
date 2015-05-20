@@ -1,10 +1,12 @@
 @CHARSET "UTF-8";
 
-table.plantable {
+table.plantable{
 	width: 700px;
 	padding-top: 10px;
 	border: 10px;
 	margin: auto;
+
+	
 }
 
 table.plantable tr {
@@ -23,11 +25,10 @@ table.plantable tr th {
 table.plantable td {
 	height: 20px;
 	text-align: center;
-}
-
-table.plantable td p {
+	}
+table.plantable td p{
 	padding-left: 5px;
-}
+	}
 
 table.plantable td {
 	min-width: 50px;
@@ -40,16 +41,20 @@ table.plantable td.tage:hover {
 	background-color: #c7c7c7;
 }
 
-form.planform fieldset {
+form.planform fieldset{
 	margin: auto;
 	width: 300px;
-	padding-top: 10px;
+	padding-top: 10px;	
+	
+	
 }
 
-form.planform p {
+form.planform p{
 	text-align: center;
 }
 
-form.planform table.plantable {
+form.planform table.plantable{
+
+	
 	
 }

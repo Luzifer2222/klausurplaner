@@ -6,8 +6,9 @@ $database_conf = array(
 		'user' => "root", 
 		'password' => "", 
 		'database' => "klausurplaner"
-)?>
+)
 
+?>
 
 
 

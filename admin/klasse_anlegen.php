@@ -1,4 +1,9 @@
 <?php
+// Titel:           klasse_anlegen.php
+// Version:         1.0
+// Autor:			PHPmeetsSQL
+// Datum:           20.05.15
+// Beschreibung:    Zuständig für das Einfügen/Löschen einer Klasse und das Ändern des Klassenlehrers
 
 // Kontrolle ob User angemeldet ist und Administratorrechte hat
 $pruefeSession = new sessionkontrolle();
@@ -39,7 +44,7 @@ if (isset($_POST['klasseanlegen']))
 		// Erstellen der Einfügeanweisung in SQL
 		$insertQuery = "INSERT INTO klassen ";
 		$insertQuery .= "(name, klassenlehrerID) values";
-		$insertQuery .= "('" . mysql_real_escape_string($_POST['klasse']) . "', '" . $_POST['klassenlehrer'] . "');";
+		$insertQuery .= "('" . mysqli_real_escape_string($datenbank,($_POST['klasse'])) . "', '" . $_POST['klassenlehrer'] . "');";
 		
 		// Einfügen der Formulardaten in die Lehrertabelle
 		$datenbank->query($insertQuery);
@@ -72,10 +77,10 @@ if (isset($_POST['aendernlehrer']) && isset($_POST['checkaendern']))
 	$fragelehrer = "select klassenlehrerID ";
 	$fragelehrer .= "from klassen ";
 	$fragelehrer .= "where klassenID = '" . $_POST['checkaendern'] . "';";
-	
+
 	// Ergebnis der Abfrage aus $fragelehrer
 	$ergfragelehrer = $datenbank->query($fragelehrer);
-	
+		
 	while ($daten = $ergfragelehrer->fetch_object())
 	{
 		$pruefe = $daten->klassenlehrerID;
@@ -121,7 +126,7 @@ $ergebnisKlasse = $datenbank->query($abfrageKlasse);
 	<fieldset>
 		<legend>Klasse anlegen</legend>
 		<p>
-			<label for="klasse">Klasse:</label><input type="text" pattern="[A-Za-z0-9]{1,6}[ ]{0,1}[-]{0,1}[A-Za-z0-9]{1,6}[ ]{0,1}[-]{0,1}[A-Za-z0-9]{1,6}" min="4" maxlength="20" id="klasse" name="klasse">
+			<label for="klasse">Klasse:</label><input type="text" pattern="[A-z0-9ÄÖÜäöü .-]{4,20}" min="4" maxlength="20" id="klasse" name="klasse">
 		</p>
 		<p>
 			<label for="klassenlehrer">Klassenlehrer:</label> <select id="klassenlehrer" name="klassenlehrer">
@@ -148,7 +153,7 @@ if (isset($ausgabe))
 <hr>
 <form action="" method="post">
 	<table class="ausgabe">
-		<caption>Angelegte -Klassen:</caption>
+	<caption>Angelegte -Klassen:</caption>
 		<tr>
 			<th>KlassenID</th>
 			<th>Klassenname</th>

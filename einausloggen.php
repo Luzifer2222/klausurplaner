@@ -60,8 +60,7 @@ if (isset($_POST['abmelden']))
 				$einausgeloggt = "<p class=\"erfolgreich\">Sie sind nun eingeloggt!</p>";
 			}
 			elseif (isset($einausgeloggt))
-			{
-			}
+			{}
 			elseif (!$angemeldet)
 			{
 				$einausgeloggt = "<p class=\"erfolgreich\">Sie sind nun ausgeloggt!</p>";

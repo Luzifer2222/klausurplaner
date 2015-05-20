@@ -1,4 +1,9 @@
 <?php
+// Titel:           abteilung_anlegen.php
+// Version:         1.0
+// Autor:			PHPmeetsSQL
+// Datum:           20.05.15
+// Beschreibung:    Zuständig für das Einfügen/Löschen einer Abteilung/Fachbereich
 
 // Kontrolle ob User angemeldet ist und Administratorrechte hat
 $session = new sessionkontrolle();
@@ -22,7 +27,7 @@ if (isset($_POST['abtanlegen']))
 	{
 		// Erstellen der Abfrage zum Erzeugen einer neuen Abteilung
 		// und Ausführen der Abfrage
-		$abfrageabteilung = "insert into abteilung (name) values ('" . mysql_real_escape_string($_POST['abtname']) . "');";
+		$abfrageabteilung = "insert into abteilung (name) values ('" . mysqli_real_escape_string($datenbank,($_POST['abtname'])) . "');";
 		$datenbank->query($abfrageabteilung);
 		
 		// Überprüfung ob die Abfrage erfolgreich war
@@ -74,7 +79,7 @@ $datenbankAusgabe = $datenbank->query("select * from abteilung");
 	<fieldset>
 		<legend>Fachbereich anlegen</legend>
 		<p>
-			<label>Fachbereichsname:</label><input type="text" pattern="[A-z0-9ÄÖÜäöü]{2,50}[ -]{0,10}" min="4" maxlength="50" name="abtname" />
+			<label>Fachbereichsname:</label><input type="text" pattern="[A-z0-9ÄÖÜäöü .-]{2,50}" min="4" maxlength="50" name="abtname" />
 		</p>
 		<p>
 			<label>&nbsp;</label> <input type="submit" name="abtanlegen" value="Fachbereich anlegen" /> <input type="reset" value="Zurücksetzen" name="zuruecksetzen">

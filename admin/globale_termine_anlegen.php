@@ -1,4 +1,9 @@
 <?php
+// Titel:           globale_termine_anlegen.php
+// Version:         1.0
+// Autor:			PHPmeetsSQL
+// Datum:           20.05.15
+// Beschreibung:    Zuständig für das Einfügen/Löschen eines globalen Termins
 
 // Kontrolle ob User angemeldet ist und Administratorrechte hat
 $pruefeSession = new sessionkontrolle();
@@ -28,30 +33,29 @@ if (isset($_POST['anlegen']))
 	{
 		$_POST['relevant'][0] = 0;
 	}
-	
+		
 	if (pruefedatum($_POST['beginndatum']) && pruefedatum($_POST['endedatum']))
 	{
-		// Überprüfung ob alle Felder des Einfügeformulars ausgefüllt wurden
+	// Überprüfung ob alle Felder des Einfügeformulars ausgefüllt wurden
 		if ($_POST['nametermin'] != "" && $_POST['beginndatum'] != "" && $_POST['endedatum'] != "")
 		{
 			if (strtotime($_POST['beginndatum']) <= strtotime($_POST['endedatum']))
 			{
 				// Erstellen der Einfügeanweisung in SQL
 				$insertquery = "INSERT INTO belegtetage (name, beginndatum, endedatum, ganzertag, relevant) values ";
-				$insertquery .= "('" . mysql_real_escape_string($_POST['nametermin']) . "', '" . date("Y-m-d", strtotime($_POST['beginndatum'])) .
-							 "', '" . date("Y-m-d", strtotime($_POST['endedatum']));
+				$insertquery .= "('" . mysqli_real_escape_string($datenbank,($_POST['nametermin'])) . "', '" . date("Y-m-d", strtotime($_POST['beginndatum'])) . "', '" . date("Y-m-d", strtotime($_POST['endedatum']));
 				$insertquery .= "', '" . $_POST['ganzertag'][0] . "', '" . $_POST['relevant'][0] . "');";
 				
 				try
 				{
 					// Einfügen der Formulardaten in die Lehrertabelle
 					$datenbank->query($insertquery);
-				}
+				}	
 				catch (Exception $e)
 				{
 					echo $e->getMessage();
 				}
-				
+			
 				// Überprüfung ob der Datensatz angelegt wurde
 				if ($datenbank->affected_rows > 0)
 				{
@@ -114,7 +118,7 @@ $terminErgebnis = $datenbank->query($terminQuery);
 	<fieldset>
 		<legend>Globale Termine anlegen</legend>
 		<p>
-			<label for="nametermin">Terminname:</label><input type="text" pattern="[A-z0-9ÄÖÜäöü]{2,100}[ -]{0,10}" min="2" maxlength="100" id="nametermin" name="nametermin" />
+			<label for="nametermin">Terminname:</label><input type="text" pattern="[A-z0-9ÄÖÜäöü .-]{2,100}" min="2" maxlength="100" id="nametermin" name="nametermin" />
 		</p>
 		<p>
 			<label for="beginndatum">Terminbeginn:</label><input type="text" pattern="([0-9]{2}).([0-9]{2}).([0-9]{4})" id="beginndatum" name="beginndatum" value="<?php  echo date("d.m.Y", time()) ?>" />
@@ -145,7 +149,7 @@ if (isset($ausgabe))
 <hr>
 <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
 	<table class="ausgabe">
-		<caption>Angelegte globale Termine:</caption>
+	<caption>Angelegte globale Termine:</caption>
 		<tr>
 			<th>TerminID</th>
 			<th>Terminname</th>

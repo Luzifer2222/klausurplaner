@@ -1,4 +1,9 @@
 <?php
+// Titel:           lehrer_anlegen.php
+// Version:         1.0
+// Autor:			PHPmeetsSQL
+// Datum:           20.05.15
+// Beschreibung:    Zuständig für das Anlegen/Bearbeiten/Löschen der Benutzer/Lehrer
 
 // Kontrolle ob User angemeldet ist und Administratorrechte hat
 $pruefeSession = new sessionkontrolle();
@@ -22,7 +27,7 @@ if (isset($_POST['aendernlehrer']) && isset($_POST['checkaendern']))
 	// Zuständig für das Ändern des Passwortes
 	// in der Lehrer Tabelle
 	
-	$ausgabe = "<hr><p class=\"erfolgreich\">Folgendes wurde geändert:</p>";
+	$ausgabe = "<hr>";
 	
 	if ($_POST['neupwd'] != "")
 	{
@@ -31,7 +36,7 @@ if (isset($_POST['aendernlehrer']) && isset($_POST['checkaendern']))
 			// Erstellen der Einfügeanweisung in SQL
 			$insertquery = "UPDATE lehrer ";
 			$insertquery .= "SET passwort = '";
-			$insertquery .= verschluesselLogin(mysql_real_escape_string($_POST['neupwd']));
+			$insertquery .= verschluesselLogin(mysqli_real_escape_string($datenbank,(utf8_decode($_POST['neupwd']))));
 			$insertquery .= "' WHERE lehrerID = '" . $_POST['checkaendern'] . "'";
 			
 			// Einfügen der Formulardaten in die Lehrertabelle
@@ -46,7 +51,7 @@ if (isset($_POST['aendernlehrer']) && isset($_POST['checkaendern']))
 			else
 			{
 				// Speichern des Fehlerstrings in eine Variable
-				$ausgabe = "<hr><p class=\"error\">Das Passwort konnte nicht geändert werden!y</p>";
+				$ausgabe .= "<p class=\"error\">Das Passwort konnte nicht geändert werden!y</p>";
 			}
 		}
 		else
@@ -65,7 +70,7 @@ if (isset($_POST['aendernlehrer']) && isset($_POST['checkaendern']))
 		$fragelehrer = "select nachname ";
 		$fragelehrer .= "from lehrer ";
 		$fragelehrer .= "where lehrerID = '" . $_POST['checkaendern'] . "';";
-		
+
 		// Ergebnis der Abfrage aus $fragelehrer
 		$ergfragelehrer = $datenbank->query($fragelehrer);
 		
@@ -78,7 +83,7 @@ if (isset($_POST['aendernlehrer']) && isset($_POST['checkaendern']))
 		{
 			// Erstellen der Einfügeanweisung in SQL
 			$insertquery = "UPDATE lehrer ";
-			$insertquery .= "SET nachname = '" . mysql_real_escape_string($_POST['neuernachname']) . "'";
+			$insertquery .= "SET nachname = '" . mysqli_real_escape_string($datenbank,($_POST['neuernachname'])) . "'";
 			$insertquery .= " WHERE lehrerID = '" . $_POST['checkaendern'] . "'";
 			
 			// Einfügen der Formulardaten in die Lehrertabelle
@@ -107,7 +112,7 @@ if (isset($_POST['aendernlehrer']) && isset($_POST['checkaendern']))
 		$fragelehrer = "select benutzername ";
 		$fragelehrer .= "from lehrer ";
 		$fragelehrer .= "where lehrerID = '" . $_POST['checkaendern'] . "';";
-		
+
 		// Ergebnis der Abfrage aus $fragelehrer
 		$ergfragelehrer = $datenbank->query($fragelehrer);
 		
@@ -121,7 +126,7 @@ if (isset($_POST['aendernlehrer']) && isset($_POST['checkaendern']))
 			
 			// Erstellen der Einfügeanweisung in SQL
 			$insertquery = "UPDATE lehrer ";
-			$insertquery .= "SET benutzername = '" . mysql_real_escape_string($_POST['neuerbenutzername']) . "'";
+			$insertquery .= "SET benutzername = '" . mysqli_real_escape_string($datenbank,($_POST['neuerbenutzername'])) . "'";
 			$insertquery .= " WHERE lehrerID = '" . $_POST['checkaendern'] . "'";
 			
 			// Einfügen der Formulardaten in die Lehrertabelle
@@ -202,11 +207,9 @@ if (isset($_POST['neuanlegen']))
 			// Erstellen der Einfügeanweisung in SQL
 			$insertquery = "insert into lehrer ";
 			$insertquery .= "(vorname, nachname, kuerzel, benutzername, passwort, administrator, abteilungID) values";
-			$insertquery .= "('" . mysql_real_escape_string($_POST['vname']) . "', '" . mysql_real_escape_string($_POST['nname']) . "', '" .
-						 mysql_real_escape_string(strtoupper($_POST['kuerzel'])) . "', '" . mysql_real_escape_string(strtolower($_POST['bname'])) .
-						 "', '";
-			$insertquery .= verschluesselLogin(mysql_real_escape_string($_POST['pwd'])) . "', '" . mysql_real_escape_string(
-						$_POST['administrator'][0]) . "', '" . $_POST['abteilung'] . "');";
+			$insertquery .= "('" . mysqli_real_escape_string($datenbank,($_POST['vname'])) . "', '" . mysqli_real_escape_string($datenbank,($_POST['nname'])) . "', '" . mysqli_real_escape_string($datenbank,(strtoupper($_POST['kuerzel']))) . "', '" .
+						 mysqli_real_escape_string($datenbank,(strtolower($_POST['bname']))) . "', '";
+			$insertquery .= verschluesselLogin(mysqli_real_escape_string($datenbank,(utf8_decode($_POST['pwd'])))) . "', '" . mysqli_real_escape_string($datenbank,($_POST['administrator'][0])) . "', '" . $_POST['abteilung'] . "');";
 			
 			// Einfügen der Formulardaten in die Lehrertabelle
 			$datenbank->query($insertquery);
@@ -272,10 +275,10 @@ $ergabfragerlehrer = $datenbank->query($abfragelehrer);
 	<fieldset>
 		<legend>Einfügen des Lehrpersonals in das 'CTS'</legend>
 		<p>
-			<label for="vorname">Vorname:</label> <input type="text" pattern="[A-z0-9ÄÖÜäöü]{2,50}[ -]{0,10}" min="2" maxlength="50" name="vname" id="vorname">
+			<label for="vorname">Vorname:</label> <input type="text" pattern="[A-z0-9ÄÖÜäöü -]{2,50}" min="2" maxlength="50" name="vname" id="vorname">
 		</p>
 		<p>
-			<label for="nachname">Nachname:</label> <input type="text" pattern="[A-z0-9ÄÖÜäöü]{2,50}[ -]{0,10}" min="2" maxlength="50" name="nname" id="nachname">
+			<label for="nachname">Nachname:</label> <input type="text" pattern="[A-z0-9ÄÖÜäöü -]{2,50}" min="2" maxlength="50" name="nname" id="nachname">
 		</p>
 		<p>
 			<label for="kuerzel">Kürzel:</label> <input type="text" pattern="[A-z0-9]{4,5}" min="4" maxlength="5" name="kuerzel" id="kuerzel">

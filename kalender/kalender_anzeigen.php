@@ -1,5 +1,11 @@
 <?php
+// Titel:           kalender_anzeigen.php
+// Version:         1.0
+// Autor:			PHPmeetsSQL
+// Datum:           20.05.15
+// Beschreibung:    Zuständig für das Anzeigen des Kalenders
 
+// Kontrolle ob User angemeldet ist und Administratorrechte hat
 $pruefeSession = new sessionkontrolle();
 $pruefeSession->UserBereich();
 
@@ -12,6 +18,8 @@ $schuljahresende = date("d.m.Y", strtotime("$schuljahresbegin +1 year"));
 
 // Datenbankverbindung initialisieren
 $datenbank = new mysqli($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
+
+// Datenbank Colloation auf UTF-8 stellen
 $datenbank->set_charset('utf8');
 
 // Abfrage der Klasse
@@ -71,6 +79,7 @@ $klassenErgebnis = $datenbank->query($klassenQuery);
 	</fieldset>
 </form>
 <hr />
+
 <?php
 $kalender = new kalender();
 $kalender->setDatabaseconnection($database_conf['host'], $database_conf['user'], $database_conf['password'], $database_conf['database']);
@@ -84,4 +93,21 @@ else
 	$kalender->baueKalender(date("Y", time()) - 1);
 }
 ?>
+
+<hr>
+<table class="ausgabe">
+	<caption>Agenda:</caption>
+		<tr>
+		<th><p class=unrelevant>Unterrichtsunrelevanter Termin</p></th>
+		<th><p class=relevant>Halbtägiger unterrichtsunrelevanter Termin</p></th>
+		</tr>
+		<tr>
+		<th><p class=globalertermin>Halbtägiger globaler Termin</p></th>
+		<th><p class=ganzglobalertermin>Globaler Termin</p></th>
+		</tr>
+		<tr>
+		<th><p class=klausur>Klausur</p></th>
+		<th><p class=test>Test</p></th>
+		</tr>
+</table>
 <hr>

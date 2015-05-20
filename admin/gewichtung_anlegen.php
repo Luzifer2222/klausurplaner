@@ -1,4 +1,9 @@
 <?php
+// Titel:           gewichtung_anlegen.php
+// Version:         1.0
+// Autor:			PHPmeetsSQL
+// Datum:           20.05.15
+// Beschreibung:    Zuständig für das Ändern der Klausur-/Test-Gewichtung
 
 // Kontrolle ob User angemeldet ist und Administratorrechte hat
 $pruefeSession = new sessionkontrolle();
@@ -32,7 +37,7 @@ $datenbank->set_charset('utf8');
 			<label for="tmaxwoche">Max. Tests Woche:</label><input type="number" min="1" max="10" maxlength="2" name="tmaxwoche" id="tmaxwoche" value="1">
 		</p>
 		<p>
-			<input type="submit" name="speichern" value="Speichern">
+		<input type="submit" name="speichern" value="Speichern">
 		</p>
 	</fieldset>
 </form>
@@ -43,18 +48,17 @@ $datenbank->set_charset('utf8');
 // Zuständig für das Aktualisieren der Gewichtung
 // in die Tabelle Anzahlklausurtest
 if (isset($_POST['speichern']))
-{
-	if (($_POST['kmaxtag'] <= $_POST['kmaxwoche']) and ($_POST['tmaxtag'] <= $_POST['tmaxwoche']))
+{	
+	if (($_POST['kmaxtag'] <= $_POST['kmaxwoche']) AND ($_POST['tmaxtag'] <= $_POST['tmaxwoche']))
 	{
 		// Erstellen der Updateanweisung in SQL
 		$insertquery = "UPDATE anzahlklausurtest ";
-		$insertquery .= "SET maxklausurtag = " . ($_POST['kmaxtag']) . ", maxklausurwoche = " . ($_POST['kmaxwoche']) . ", maxtesttag = " .
-					 ($_POST['tmaxtag']) . ", maxtestwoche = " . ($_POST['tmaxwoche']) . "";
+		$insertquery .= "SET maxklausurtag = " . ($_POST['kmaxtag']) . ", maxklausurwoche = " . ($_POST['kmaxwoche']) . ", maxtesttag = " . ($_POST['tmaxtag']) . ", maxtestwoche = " . ($_POST['tmaxwoche']) . "";
 		$insertquery .= " WHERE anzahlID = '1';";
-		
+	
 		// Einfügen der Formulardaten in die Lehrertabelle
 		$datenbank->query($insertquery);
-		
+			
 		// Überprüfung ob der Datensatz angelegt wurde
 		if ($datenbank->affected_rows > 0)
 		{
@@ -71,7 +75,7 @@ if (isset($_POST['speichern']))
 	{
 		// Speichern des Fehlerstrings in eine Variable
 		$ausgabe = "<hr><p class=\"error\">Die Anzahl pro Tag darf nicht über der Anzahl pro Woche liegen!</p>";
-	}
+	}		
 }
 ?>
 
@@ -99,15 +103,15 @@ $anzahlErgebnis = $datenbank->query($anzahlQuery);
 		<th class="ausgabe_gewichtung">Max. Tests Woche</th>
 	</tr>
 	<?php
-	while ($daten = $anzahlErgebnis->fetch_object())
-	{
-		echo "<tr>";
-		echo "<td>" . $daten->maxklausurtag . "</td>";
-		echo "<td>" . $daten->maxklausurwoche . "</td>";
-		echo "<td>" . $daten->maxtesttag . "</td>";
-		echo "<td>" . $daten->maxtestwoche . "</td>";
-		echo "</tr>";
-	}
+		while ($daten = $anzahlErgebnis->fetch_object())
+		{
+			echo "<tr>";
+			echo "<td>" . $daten->maxklausurtag . "</td>";
+			echo "<td>" . $daten->maxklausurwoche . "</td>";
+			echo "<td>" . $daten->maxtesttag . "</td>";
+			echo "<td>" . $daten->maxtestwoche . "</td>";
+			echo "</tr>";
+		}
 	?>
 	<tr>
 		<td>&nbsp;</td>

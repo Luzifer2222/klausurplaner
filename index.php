@@ -41,7 +41,7 @@ include_once './include/pruefedatum.php';
 					case 'passwort_aendern.php':
 						include_once 'benutzer/passwort_aendern.php';
 						break;
-					
+						
 					// Klassenbereich
 					case 'stundenplan_anzeigen.php':
 						include_once 'klassen/stundenplan_anzeigen.php';

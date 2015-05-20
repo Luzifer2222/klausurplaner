@@ -7,6 +7,7 @@ table.kalender {
 	margin: auto;
 }
 
+
 table.kalender tr {
 	background-color: #E0E0E0;
 	vertical-align: baseline;
@@ -23,11 +24,10 @@ table.kalender tr th {
 table.kalender td {
 	height: 70px;
 	text-align: left;
-}
-
-table.kalender td p {
+	}
+table.kalender td p{
 	padding-left: 5px;
-}
+	}
 
 table.kalender td.vonbis {
 	text-align: center;
@@ -39,6 +39,7 @@ table.kalender td.kw {
 	text-align: center;
 	width: 50px;
 	vertical-align: middle;
+	
 }
 
 table.kalender td {
@@ -61,16 +62,45 @@ table.kalender td.heute {
 
 p.globalertermin {
 	padding: 0px;
-	background-color: #d3d7cf;
+	background-color:#f5deb3;
+	margin: 1px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;	
+}
+
+p.ganzglobalertermin {
+	padding: 0px;
+	background-color:#f5deb3;
 	margin: 1px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
+	text-decoration: underline;	
 }
 
-p.klausur, .test {
+p.unrelevant {
 	padding: 0px;
-	background-color: #cbf6bf;
+	background-color:#d3d7cf;
+	margin: 1px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;	
+}
+
+p.relevant {
+	padding: 0px;
+	background-color:#d3d7cf;
+	margin: 1px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	text-decoration: underline;
+}
+
+p.klausur ,.test{
+	padding: 0px;
+	background-color:#cbf6bf;
 	margin: 1px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -78,8 +108,9 @@ p.klausur, .test {
 }
 
 p.test {
-	background-color: #f79494;
+	background-color:#f79494;
 }
+
 
 form.formular {
 	margin: auto;
@@ -87,6 +118,6 @@ form.formular {
 	padding-top: 10px;
 }
 
-form.formular p {
+form.formular p{
 	text-align: center;
 }

@@ -1,4 +1,9 @@
 <?php
+// Titel:           passwort_aendern.php
+// Version:         1.0
+// Autor:			PHPmeetsSQL
+// Datum:           20.05.15
+// Beschreibung:    Zuständig für das Ändern des Passwortes des aktuellen Benutzers
 
 // Kontrolle ob User angemeldet ist und Administratorrechte hat
 $pruefeSession = new sessionkontrolle();
@@ -27,7 +32,7 @@ if (isset($_POST['aendern']))
 			// Erstellen der Einfügeanweisung in SQL
 			$insertquery = "UPDATE lehrer ";
 			$insertquery .= "SET passwort = '";
-			$insertquery .= verschluesselLogin($_POST['pwd']);
+			$insertquery .= verschluesselLogin(mysqli_real_escape_string($datenbank,(utf8_decode($_POST['pwd']))));
 			$insertquery .= "' WHERE lehrerID = '" . $_SESSION['ID'] . "'";
 			
 			// Einfügen der Formulardaten in die Lehrertabelle

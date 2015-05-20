@@ -1,4 +1,9 @@
 <?php
+// Titel:           neuer_termin.php
+// Version:         1.0
+// Autor:			PHPmeetsSQL
+// Datum:           20.05.15
+// Beschreibung:    Zuständig für das Einfügen eines Klausur- oder Test-Termins
 
 // Kontrolle ob User angemeldet ist und Administratorrechte hat
 $pruefeSession = new sessionkontrolle();
@@ -19,147 +24,305 @@ $datenbank->set_charset('utf8');
 // in die Tabelle Kalendertermine
 if (isset($_POST['anlegen']))
 {
+	$ausgabe = "<hr>";
 	if (pruefedatum($_POST['datum']))
 	{
-		if ($_POST['vonstunde'] <= $_POST['bisstunde'])
+	if ($_POST['vonstunde'] <= $_POST['bisstunde'])
+	{
+		// Überprüfung ob alle Felder des Einfügeformulars ausgefüllt wurden
+		if ($_POST['thema'] != "" && $_POST['datum'] != "" && $_POST['art'] != "")
 		{
-			// Überprüfung ob alle Felder des Einfügeformulars ausgefüllt wurden
-			if ($_POST['thema'] != "" && $_POST['datum'] != "" && $_POST['art'] != "")
+			// Einfache Abfragen
+			$fragetermin = "select datum, vonstunde, bisstunde ";
+			$fragetermin .= "from kalendertermine ";
+			$fragetermin .= "where klassenID = '" . $_POST['klasse'] . "';";
+			$frageplan = "select wochentag, stunde ";
+			$frageplan .= "from stunden ";
+			$frageplan .= "where klassenID = '" . $_POST['klasse'] . "';";
+			$fragegewichtung = "select * from anzahlklausurtest;";
+			$frageglobal = "select beginndatum, endedatum, ganzertag, relevant ";
+			$frageglobal .= "from belegtetage ";
+			$frageglobal .= "where relevant = 1;";
+			
+			// Bestimmung von Montag und Freitag der Woche des gewählten Termins für Gewichtung
+			$pruefewoche = date("N", strtotime($_POST['datum']));
+			if ($pruefewoche == 1)
 			{
-				// Einfache Abfragen
-				$fragetermin = "select datum, vonstunde, bisstunde ";
-				$fragetermin .= "from kalendertermine ";
-				$fragetermin .= "where klassenID = '" . $_POST['klasse'] . "';";
-				$frageplan = "select wochentag, stunde ";
-				$frageplan .= "from stunden ";
-				$frageplan .= "where klassenID = '" . $_POST['klasse'] . "';";
-				$fragegewichtung = "select * from anzahlklausurtest;";
-				$frageglobal = "select beginndatum, endedatum, ganztertag, relevant ";
-				$frageglobal .= "from belegtetage ";
-				// $frageglobal .= "where "; Zeitraum schon filtern?
-				
-				// Ergebnis der Abfragen
-				$ergebnistermin = $datenbank->query($fragetermin);
-				$ergebnisplan = $datenbank->query($frageplan);
-				$ergebnisgewichtung = $datenbank->query($fragegewichtung);
-				$ergebnisglobal = $datenbank->query($frageglobal);
-				
-				// Prüfen, ob zu der Zeit schon eine Klausur oder Test ist
-				$termincheck = false;
-				while ($daten = $ergebnistermin->fetch_object())
+				$start = date("Y-m-d", strtotime($_POST['datum']));
+				$ende = date("Y-m-d", strtotime($_POST['datum'] . "next friday"));
+			}
+			elseif ($pruefewoche == 5)
+			{
+				$start = date("Y-m-d", strtotime($_POST['datum'] . "last monday"));
+				$ende = date("Y-m-d", strtotime($_POST['datum']));
+			}
+			else
+			{
+				$start = date("Y-m-d", strtotime($_POST['datum'] . "last monday"));
+				$ende = date("Y-m-d", strtotime($_POST['datum'] . "next friday"));
+			}
+			$ttag = date("Y-m-d", strtotime($_POST['datum']));
+			$anzahltagklausur = "select COUNT(*) as COUNT ";
+			$anzahltagklausur .= "from kalendertermine ";
+			$anzahltagklausur .= "where klassenID = '" . $_POST['klasse'] . "' AND art = 1 AND datum = $ttag;";
+			$anzahltagtest = "select COUNT(*) as COUNT ";
+			$anzahltagtest .= "from kalendertermine ";
+			$anzahltagtest .= "where klassenID = '" . $_POST['klasse'] . "' AND art = 0 AND datum = $ttag;";
+			$anzahlwocheklausur = "select COUNT(*) as COUNT ";
+			$anzahlwocheklausur .= "from kalendertermine ";
+			$anzahlwocheklausur .= "where klassenID = '" . $_POST['klasse'] . "' AND art = 1 AND datum between $start AND $ende;";
+			$anzahlwochetest = "select COUNT(*) as COUNT ";
+			$anzahlwochetest .= "from kalendertermine ";
+			$anzahlwochetest .= "where klassenID = '" . $_POST['klasse'] . "' AND art = 0 AND datum between $start AND $ende;";
+
+			// Ergebnis der Abfragen
+			$ergebnistermin = $datenbank->query($fragetermin);
+			$ergebnisplan = $datenbank->query($frageplan);
+			$ergebnisgewichtung = $datenbank->query($fragegewichtung);
+			$ergebnisglobal = $datenbank->query($frageglobal);
+			$anzahlklausur = $datenbank->query($anzahltagklausur);
+			$anzahltest = $datenbank->query($anzahltagtest);
+			$anzahlklausurwoche = $datenbank->query($anzahlwocheklausur);
+			$anzahltestwoche = $datenbank->query($anzahlwochetest);
+			
+			// Prüfen, ob zu der Zeit schon eine Klausur oder Test ist
+			$termincheck = false;
+			while ($daten = $ergebnistermin->fetch_object())
+			{
+				$tdatum = $daten->datum;
+				$tvon = $daten->vonstunde;
+				$tbis = $daten->bisstunde;
+				if ($tdatum == date("Y-m-d", strtotime($_POST['datum'])))
 				{
-					$tdatum = $daten->datum;
-					$tvon = $daten->vonstunde;
-					$tbis = $daten->bisstunde;
-					if ($tdatum == date("Y-m-d", strtotime($_POST['datum'])))
-					{
-						if ($tvon < $_POST['bisstunde'] && $tbis < $_POST['vonstunde'])
-						{
-							$termincheck = true;
-						}
-					}
-					else
+					if ($tvon < $_POST['bisstunde'] && $tbis < $_POST['vonstunde'])
 					{
 						$termincheck = true;
 					}
 				}
-				
-				// Prüfen, ob die Klasse zu der gewünschten Zeit Unterricht hat
-				$eingabetag = date("N", strtotime($_POST['datum']));
-				$pstunden = array();
-				$plancheck = false;
-				while ($daten = $ergebnisplan->fetch_object())
+				else
 				{
-					$ptag = $daten->wochentag;
-					$pstunde = $daten->stunde;
-					if ($ptag == $eingabetag)
+					$termincheck = true;
+				}
+			}
+			if ($termincheck == false)
+			{
+				// Speichern des Fehlerstrings in eine Variable
+				$ausgabe .= "<p class=\"error\">Leider wird zu der gewählten Zeit schon eine Klausur/Test geschrieben!</p>";
+			}
+			
+			// Prüfen, ob die Klasse zu der gewünschten Zeit Unterricht hat
+			$eingabetag = date("N", strtotime($_POST['datum']));
+			$pstunden = array();
+			$plancheck = false;
+			while ($daten = $ergebnisplan->fetch_object())
+			{
+				$ptag = $daten->wochentag;
+				$pstunde = $daten->stunde;
+				if ($ptag == $eingabetag)
+				{
+					$pstunden[] = $pstunde;
+				}
+			}
+			if (!empty($pstunden))
+			{
+				reset($pstunden);
+				$pvon = current($pstunden);
+				end($pstunden);
+				$pbis = current($pstunden);
+				if ($_POST['vonstunde'] >= $pvon && $_POST['bisstunde'] <= $pbis)
+				{
+					$plancheck = true;
+				}
+			}
+			
+			if ($plancheck == false)
+			{
+				// Speichern des Fehlerstrings in eine Variable
+				$ausgabe .= "<p class=\"error\">Leider hat die Klasse in der gewählten Zeit kein Unterricht!</p>";
+			}
+						
+			// Prüfen, ob die Gewichtung überschritten wird
+			// Man muss prüfen, ob die Gewichtung für den Tag überschritten wird und danach für die Woche
+			$gewichtcheck = false;
+			while($row = mysqli_fetch_array($anzahlklausur))
+			{
+				$klausuranzahl = $row['COUNT'];
+			}
+			while($row = mysqli_fetch_array($anzahltest))
+			{
+				$testanzahl = $row['COUNT'];
+			}
+			while($row = mysqli_fetch_array($anzahlklausurwoche))
+			{
+				$klausuranzahlwoche = $row['COUNT'];
+			}
+			while($row = mysqli_fetch_array($anzahltestwoche))
+			{
+				$testanzahlwoche = $row['COUNT'];
+			}
+			if ($testanzahlwoche  == 0 && $klausuranzahlwoche == 0)
+			{
+				$gewichtcheck = true;
+			}
+			else
+			{
+				while ($daten = $ergebnisgewichtung->fetch_object())
+				{
+					$kmaxtag = $daten->maxklausurtag;
+					$kmaxwoche = $daten->maxklausurwoche;
+					$tmaxtag = $daten->maxtesttag;
+					$tmaxwoche = $daten->maxtestwoche;
+				}
+				if ($_POST['art'][0] == 1)
+				{
+					if ($klausuranzahl != NULL && $klausuranzahl < $kmaxtag)
 					{
-						$pstunden[] = $pstunde;
+						if ($klausuranzahlwoche != NULL && $klausuranzahlwoche < $kmaxwoche)
+						{
+							$gewichtcheck = true;
+						}
 					}
 				}
-				if (!empty($pstunden))
+				else
 				{
-					reset($pstunden);
-					$pvon = current($pstunden);
-					end($pstunden);
-					$pbis = current($pstunden);
-					if ($_POST['vonstunde'] >= $pvon && $_POST['bisstunde'] <= $pbis)
+					if ($testanzahl != NULL && $testanzahl < $tmaxtag)
 					{
-						$plancheck = true;
+						if ($testanzahlwoche != NULL && $testanzahlwoche < $tmaxwoche)
+						{
+							$gewichtcheck = true;
+						}
 					}
 				}
-				/*
-				 * // Prüfen, ob die Gewichtung überschritten wird // Man muss prüfen, ob die
-				 * Gewichtung für den Tag überschritten wird und danach für die Woche while ($daten
-				 * = $ergebnisgewichtung->fetch_object()) { $kmaxtag = $daten->kmaxtag; $kmaxwoche =
-				 * $daten->kmaxwoche; $tmaxtag = $daten->tmaxtag; $tmaxwoche = $daten->tmaxwoche; if
-				 * () { } }
-				 */
-				
-				/*
-				 * // Prüfen, ob zu dieser Zeit ein globaler Termin (Zeitraum) vorhanden ist while
-				 * ($daten = $ergebnisglobal->fetch_object()) { $beginn = $daten->beginndatum; $ende
-				 * = $daten->endedatum; $gtag = $daten->ganztertag; $grelevant = $daten->relevant;
-				 * if () { } }
-				 */
-				
-				// Einfügen des Termins, wenn alle Anforderungen erfüllt sind
-				if ($plancheck == true && $termincheck == true) // $globalcheck == true && $gewichtcheck
-				                                                // == true)
+			}
+			
+			if ($gewichtcheck == false)
+			{
+				// Speichern des Fehlerstrings in eine Variable
+				$ausgabe .= "<p class=\"error\">Die Anzahl der Klausur/Test Gewichtung wurde überschritten!</p>";
+			}
+						
+			// Prüfen, ob zu dieser Zeit ein globaler Termin vorhanden ist oder der Termin in einen globalen Zeitraum fällt
+			$globalcheck = false;
+			$halbcheck = false;
+			$vollcheck = false;
+			$check = false;
+			$globalarray = array();
+			$halb = false;
+			$voll = false;
+			while ($daten = $ergebnisglobal->fetch_object())
+			{
+				$beginn = $daten->beginndatum;
+				$ende = $daten->endedatum;
+				$gtag = $daten->ganzertag;
+				// Prüft, ob der gewählte Termin auf einen globalen Termin / in einen globalen Zeitraum fällt
+				if (!(date("Y-m-d", strtotime($_POST['datum'])) > $beginn && date("Y-m-d", strtotime($_POST['datum'])) < $ende))
 				{
-					// Erstellen der Einfügeanweisung in SQL
-					$insertquery = "INSERT INTO kalendertermine (datum, art, thema, vonstunde, bisstunde, fachID, klassenID, lehrerID) VALUES ";
-					$insertquery .= "('" . date("Y-m-d", strtotime($_POST['datum'])) . "', '" . $_POST['art'][0] . "', '" . $_POST['thema'] . "', '" .
-								 $_POST['vonstunde'] . "', '" . $_POST['bisstunde'] . "', '" . $_POST['fach'] . "', '" . $_POST['klasse'] . "', '" .
-								 $_SESSION['ID'] . "')";
-					
-					try
+					// Prüft, ob der Termin ganztägig ist
+					if ($gtag == 1)
 					{
-						// Einfügen der Formulardaten in die Lehrertabelle
-						$datenbank->query($insertquery);
-					}
-					catch (Exception $e)
-					{
-						echo $e->getMessage();
-					}
-					
-					// Überprüfung ob der Datensatz angelegt wurde
-					if ($datenbank->affected_rows > 0)
-					{
-						// Speichern der Erfolgreichen Ausgabe in der Variable
-						$ausgabe = "<hr><p class=\"erfolgreich\">Es wurde ein neuer Termin angelegt.</p>";
+						$vollcheck = true;
 					}
 					else
 					{
-						// Speichern des Fehlerstrings in eine Variable
-						$ausgabe = "<hr><p class=\"error\">Es ist ein Fehler aufgetreten <br />Es wurde kein Datensatz erzeugt.</p>";
+						$halbcheck = true;
 					}
 				}
+				else
+				{
+					// Es gibt zu dieser Zeit schon einen globalen Termin
+					$check = true;
+				}
+				if ($vollcheck == true && $check == false)
+				{
+					$globalarray[] = 1;
+				}
+				elseif ($halbcheck == true && $check == false)
+				{
+					if ($_POST['bisstunde'] < 6)
+					{
+						$globalarray[] = 1;
+					}
+				}
+				else
+				{
+					// Es gibt zu dieser Zeit schon einen globalen Termin
+					$globalarray[] = 0;
+				}
+			}
+			// Prüft, ob er keinen globaben Termin zu dieser Zeit gibt 
+			$pruefeglobal = true;
+			foreach ($globalarray as $a)
+			{
+				if ($a != 1)
+				{
+					$pruefeglobal = false;
+				}
+			}
+			if ($pruefeglobal == true)
+			{
+				$globalcheck = true;
 			}
 			else
 			{
 				// Speichern des Fehlerstrings in eine Variable
-				$ausgabe = "<hr><p class=\"error\">Alle Felder müssen ausgefüllt werden!</p>";
+				$ausgabe .= "<p class=\"error\">Leider existiert zu der gewählten Zeit schon ein globaler Termin!</p>";
+			}
+			
+			// Einfügen des Termins, wenn alle Anforderungen erfüllt sind
+			if ($plancheck == true && $termincheck == true && $globalcheck == true && $gewichtcheck == true)
+			{
+				// Erstellen der Einfügeanweisung in SQL
+				$insertquery = "INSERT INTO kalendertermine (datum, art, thema, vonstunde, bisstunde, fachID, klassenID, lehrerID) VALUES ";
+				$insertquery .= "('" . date("Y-m-d", strtotime($_POST['datum'])) . "', '" . $_POST['art'][0] . "', '" . mysqli_real_escape_string($datenbank,(strtoupper($_POST['thema']))) . "', '" . $_POST['vonstunde'] . "', '" .
+				$_POST['bisstunde'] . "', '" . $_POST['fach'] . "', '" . $_POST['klasse'] . "', '" . $_SESSION['ID'] . "')";
+			
+				try
+				{
+					// Einfügen der Formulardaten in die Lehrertabelle
+					$datenbank->query($insertquery);
+				}
+				catch (Exception $e)
+				{
+					echo $e->getMessage();
+				}
+			
+				// Überprüfung ob der Datensatz angelegt wurde
+				if ($datenbank->affected_rows > 0)
+				{
+					// Speichern der Erfolgreichen Ausgabe in der Variable
+					$ausgabe .= "<p class=\"erfolgreich\">Es wurde ein neuer Termin angelegt.</p>";
+				}
+				else
+				{
+					// Speichern des Fehlerstrings in eine Variable
+					$ausgabe .= "<p class=\"error\">Es ist ein Fehler aufgetreten <br />Es wurde kein Datensatz erzeugt.</p>";
+				}
 			}
 		}
-		else
-		{
-			if ($_POST['art'][0] == 1)
-			{
-				// Speichern des Fehlerstrings in eine Variable
-				$ausgabe = "<hr><p class=\"error\">Der Endzeitpunkt der Klausur ist vor dem Beginn. Bitte ändern!</p>";
-			}
 			else
-			{
-				// Speichern des Fehlerstrings in eine Variable
-				$ausgabe = "<hr><p class=\"error\">Der Endzeitpunkt des Tests ist vor dem Beginn. Bitte ändern!</p>";
-			}
+		{
+			// Speichern des Fehlerstrings in eine Variable
+			$ausgabe .= "<p class=\"error\">Alle Felder müssen ausgefüllt werden!</p>";
 		}
 	}
 	else
 	{
+		if ($_POST['art'][0] == 1)
+		{
+			// Speichern des Fehlerstrings in eine Variable
+			$ausgabe .= "<p class=\"error\">Der Endzeitpunkt der Klausur ist vor dem Beginn. Bitte ändern!</p>";
+		}
+		else
+		{
+			// Speichern des Fehlerstrings in eine Variable
+			$ausgabe .= "<p class=\"error\">Der Endzeitpunkt des Tests ist vor dem Beginn. Bitte ändern!</p>";
+		}
+	}
+	}
+	else
+	{
 		// Speichern des Fehlerstrings in eine Variable
-		$ausgabe = "<hr><p class=\"error\">Es wurde kein gültiges Datum eingegeben!</p>";
+		$ausgabe .= "<p class=\"error\">Es wurde kein gültiges Datum eingegeben!</p>";
 	}
 }
 
@@ -232,7 +395,7 @@ $ergebnisFach = $datenbank->query($abfrageFach);
 			</select>
 		</p>
 		<p>
-			<label for="thema">Thema:</label><input type="text" pattern="[A-z0-9ÄÖÜäöü]{2,50}[ -]{0,10}" min="4" maxlength="50" id="thema" name="thema">
+			<label for="thema">Thema:</label><input type="text" pattern="[A-z0-9ÄÖÜäöü .-]{2,50}" min="4" maxlength="50" id="thema" name="thema">
 		</p>
 		<p>
 			<label for="vonstunde">Beginn:</label><select id="vonstunde" name="vonstunde">
@@ -285,7 +448,7 @@ if (isset($ausgabe))
 <hr>
 <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
 	<table class="ausgabe">
-		<caption>Angelegte Termine:</caption>
+	<caption>Angelegte Termine:</caption>
 		<tr>
 			<th>Terminname</th>
 			<th>Klasse</th>
