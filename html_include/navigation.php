@@ -12,7 +12,7 @@
 			<a href="#">Klassen</a>
 			<ul>
 				<li>
-					<a href="./index.php?seite=stundenplan_anzeigen.php">Anzeigen</a>
+					<a href="./index.php?seite=stundenplan_anzeigen.php">Stundenpläne</a>
 				</li>
 			</ul>
 		</li>
