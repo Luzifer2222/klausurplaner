@@ -33,7 +33,6 @@ include_once './include/pruefedatum.php';
 		<div id="content">
 
 
-			<main>
 			<?php
 			if (isset($einausgeloggt))
 				echo $einausgeloggt;
@@ -90,7 +89,6 @@ include_once './include/pruefedatum.php';
 }
 			
 			?>
-			</main>
 
 		</div>
 		
