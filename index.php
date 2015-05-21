@@ -12,11 +12,11 @@ include_once './include/pruefedatum.php';
 ?>
 
 <?php
- 
- session_start();
- $sessionctl = new sessionkontrolle();
- $ausgeloggt = $sessionctl->pruefeAnmeldezeit();
- ?>
+
+session_start();
+$sessionctl = new sessionkontrolle();
+$ausgeloggt = $sessionctl->pruefeAnmeldezeit();
+?>
 <!doctype html>
 <html>
 <head>
@@ -38,55 +38,58 @@ include_once './include/pruefedatum.php';
 				echo $einausgeloggt;
 			
 			if (isset($ausgeloggt))
-			{				echo $ausgeloggt;
-}else{
-			if (isset($_GET['seite']))
 			{
-				switch ($_GET['seite'])
+				echo $ausgeloggt;
+			}
+			else
+			{
+				if (isset($_GET['seite']))
 				{
-					// Benutzerbereich
-					case 'passwort_aendern.php':
-						include_once 'benutzer/passwort_aendern.php';
-						break;
+					switch ($_GET['seite'])
+					{
+						// Benutzerbereich
+						case 'passwort_aendern.php':
+							include_once 'benutzer/passwort_aendern.php';
+							break;
 						
-					// Klassenbereich
-					case 'stundenplan_anzeigen.php':
-						include_once 'klassen/stundenplan_anzeigen.php';
-						break;
-					
-					// Kalenderbereich
-					case 'kalender_anzeigen.php':
-						include_once 'kalender/kalender_anzeigen.php';
-						break;
-					case 'neuer_termin.php':
-						include_once 'kalender/neuer_termin.php';
-						break;
-					
-					// Adminbereich
-					case 'globale_termine_anlegen.php':
-						include_once 'admin/globale_termine_anlegen.php';
-						break;
-					case 'klasse_anlegen.php':
-						include_once 'admin/klasse_anlegen.php';
-						break;
-					case 'fach_anlegen.php':
-						include_once 'admin/fach_anlegen.php';
-						break;
-					case 'lehrer_anlegen.php':
-						include_once 'admin/lehrer_anlegen.php';
-						break;
-					case 'abteilung_anlegen.php':
-						include_once 'admin/abteilung_anlegen.php';
-						break;
-					case 'gewichtung_anlegen.php':
-						include_once 'admin/gewichtung_anlegen.php';
-						break;
-					case 'stundenplan_bearbeiten.php':
-						include_once 'admin/stundenplan_bearbeiten.php';
-						break;
+						// Klassenbereich
+						case 'stundenplan_anzeigen.php':
+							include_once 'klassen/stundenplan_anzeigen.php';
+							break;
+						
+						// Kalenderbereich
+						case 'kalender_anzeigen.php':
+							include_once 'kalender/kalender_anzeigen.php';
+							break;
+						case 'neuer_termin.php':
+							include_once 'kalender/neuer_termin.php';
+							break;
+						
+						// Adminbereich
+						case 'globale_termine_anlegen.php':
+							include_once 'admin/globale_termine_anlegen.php';
+							break;
+						case 'klasse_anlegen.php':
+							include_once 'admin/klasse_anlegen.php';
+							break;
+						case 'fach_anlegen.php':
+							include_once 'admin/fach_anlegen.php';
+							break;
+						case 'lehrer_anlegen.php':
+							include_once 'admin/lehrer_anlegen.php';
+							break;
+						case 'abteilung_anlegen.php':
+							include_once 'admin/abteilung_anlegen.php';
+							break;
+						case 'gewichtung_anlegen.php':
+							include_once 'admin/gewichtung_anlegen.php';
+							break;
+						case 'stundenplan_bearbeiten.php':
+							include_once 'admin/stundenplan_bearbeiten.php';
+							break;
+					}
 				}
 			}
-}
 			
 			?>
 
