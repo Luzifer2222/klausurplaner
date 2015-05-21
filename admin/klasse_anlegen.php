@@ -86,11 +86,11 @@ if (isset($_POST['aendernlehrer']) && isset($_POST['checkaendern']))
 		$pruefe = $daten->klassenlehrerID;
 	}
 	
-	if ($_POST['neuerlehrer'] != $pruefe)
+	if ($_POST['neuerlehrer' . $_POST['checkaendern']] != $pruefe)
 	{
 		// Erstellen der Einfügeanweisung in SQL
 		$insertquery = "UPDATE klassen ";
-		$insertquery .= "SET klassenlehrerID = '" . $_POST['neuerlehrer'] . "'";
+		$insertquery .= "SET klassenlehrerID = '" . $_POST['neuerlehrer' . $_POST['checkaendern']] . "'";
 		$insertquery .= " WHERE klassenID = '" . $_POST['checkaendern'] . "';";
 		
 		// Einfügen der Formulardaten in die Klassentabelle
@@ -167,7 +167,7 @@ if (isset($ausgabe))
 					echo "<tr>";
 					echo "<td>" . $daten->klassenID . "</td>";
 					echo "<td>" . $daten->name . "</td>";
-					echo "<td><select class=\"aendern\" name=\"neuerlehrer\">";
+					echo "<td><select class=\"aendern\" name=\"neuerlehrer" . $daten->klassenID . "\">";
 					$ergebnisLehrer2 = $datenbank->query($abfrageLehrer);
 					while ($lehrertabelle = $ergebnisLehrer2->fetch_object())
 					{
