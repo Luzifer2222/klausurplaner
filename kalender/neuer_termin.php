@@ -36,6 +36,9 @@ if (isset($_POST['anlegen']))
 			$fragetermin = "select datum, vonstunde, bisstunde ";
 			$fragetermin .= "from kalendertermine ";
 			$fragetermin .= "where klassenID = '" . $_POST['klasse'] . "';";
+			$anzahltermin = "select COUNT(*) as COUNT ";
+			$anzahltermin .= "from kalendertermine ";
+			$anzahltermin .= "where klassenID = '" . $_POST['klasse'] . "';";
 			$frageplan = "select wochentag, stunde ";
 			$frageplan .= "from stunden ";
 			$frageplan .= "where klassenID = '" . $_POST['klasse'] . "';";
@@ -77,6 +80,7 @@ if (isset($_POST['anlegen']))
 
 			// Ergebnis der Abfragen
 			$ergebnistermin = $datenbank->query($fragetermin);
+			$zahltermin = $datenbank->query($anzahltermin);
 			$ergebnisplan = $datenbank->query($frageplan);
 			$ergebnisgewichtung = $datenbank->query($fragegewichtung);
 			$ergebnisglobal = $datenbank->query($frageglobal);
@@ -87,6 +91,14 @@ if (isset($_POST['anlegen']))
 			
 			// Prüfen, ob zu der Zeit schon eine Klausur oder Test ist
 			$termincheck = false;
+			while($row = mysqli_fetch_array($zahltermin))
+			{
+				$tergebnis = $row['COUNT'];
+			}
+			if ($tergebnis == 0)
+			{
+				$termincheck = true;
+			}
 			while ($daten = $ergebnistermin->fetch_object())
 			{
 				$tdatum = $daten->datum;
@@ -134,7 +146,6 @@ if (isset($_POST['anlegen']))
 					$plancheck = true;
 				}
 			}
-			
 			if ($plancheck == false)
 			{
 				// Speichern des Fehlerstrings in eine Variable
@@ -273,7 +284,7 @@ if (isset($_POST['anlegen']))
 			{
 				// Erstellen der Einfügeanweisung in SQL
 				$insertquery = "INSERT INTO kalendertermine (datum, art, thema, vonstunde, bisstunde, fachID, klassenID, lehrerID) VALUES ";
-				$insertquery .= "('" . date("Y-m-d", strtotime($_POST['datum'])) . "', '" . $_POST['art'][0] . "', '" . mysqli_real_escape_string($datenbank,(strtoupper($_POST['thema']))) . "', '" . $_POST['vonstunde'] . "', '" .
+				$insertquery .= "('" . date("Y-m-d", strtotime($_POST['datum'])) . "', '" . $_POST['art'][0] . "', '" . mysqli_real_escape_string($datenbank,($_POST['thema'])) . "', '" . $_POST['vonstunde'] . "', '" .
 				$_POST['bisstunde'] . "', '" . $_POST['fach'] . "', '" . $_POST['klasse'] . "', '" . $_SESSION['ID'] . "')";
 			
 				try
@@ -351,7 +362,7 @@ $terminQuery = "SELECT kal.terminID, kal.datum, kal.art, kal.thema, kal.vonstund
 $terminQuery .= "FROM kalendertermine kal, faecher fach, lehrer, klassen klasse ";
 $terminQuery .= "WHERE kal.fachID = fach.fachID ";
 $terminQuery .= "AND kal.lehrerID = lehrer.lehrerID ";
-$terminQuery .= "AND kal.klassenID = klasse.klassenID";
+$terminQuery .= "AND kal.klassenID = klasse.klassenID;";
 $abfrageKlasse = "SELECT klassenID, name from klassen;";
 $abfrageFach = "SELECT fachID, name from faecher;";
 

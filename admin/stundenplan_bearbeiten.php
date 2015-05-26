@@ -37,7 +37,15 @@ $fachErgebnis = $datenbank->query($fachQuery);
 		<?php
 		while ($daten = $klassenErgebnis->fetch_object())
 		{
-			echo "<option value=\"$daten->klassenID\">$daten->name</option>";
+			echo "<option value=\"$daten->klassenID\" ";
+			if (isset($_POST['klassenwahl']))
+			{
+				if ($daten->klassenID == ($_POST['klassenwahl']))
+				{
+					echo "selected=\"selected\"";
+				}
+			}
+			echo " >" . $daten->name . "</option>";
 		}
 		?>
 		</select>
